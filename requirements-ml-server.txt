@@ -1,0 +1,3 @@
+# Live CNN server dependencies
+-r requirements.txt
+-r requirements-training.txt

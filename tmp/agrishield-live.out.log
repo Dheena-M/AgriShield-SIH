@@ -1,0 +1,22 @@
+INFO:     127.0.0.1:53508 - "GET /api/model-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56894 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /api/metadata/features HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56894 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59424 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65524 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59424 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61140 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65271 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62630 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51358 - "POST /api/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51359 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51360 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51361 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61076 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61076 - "GET /api/crops HTTP/1.1" 200 OK
