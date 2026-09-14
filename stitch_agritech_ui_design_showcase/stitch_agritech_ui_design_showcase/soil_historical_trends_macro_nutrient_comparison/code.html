@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-low": "#f8f3e7", "outline": "#727972", "on-primary-fixed": "#002110", "on-primary-container": "#84a88f", "tertiary-container": "#c9a851", "on-secondary-fixed-variant": "#005228", "primary-container": "#1c3d2a", "tertiary-fixed-dim": "#e6c369", "surface-variant": "#e7e2d6", "on-secondary-container": "#237240", "primary-fixed": "#c6ecd0", "inverse-primary": "#aacfb5", "secondary-fixed-dim": "#89d89c", "error-container": "#ffdad6", "on-surface-variant": "#424843", "on-primary": "#ffffff", "tertiary-fixed": "#ffdf92", "on-tertiary-container": "#503d00", "outline-variant": "#c2c8c1", "on-error": "#ffffff", "error": "#ba1a1a", "inverse-surface": "#323029", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "surface": "#fef9ed", "surface-bright": "#fef9ed", "on-error-container": "#93000a", "primary": "#042716", "secondary-container": "#a4f5b6", "surface-container-highest": "#e7e2d6", "on-tertiary-fixed": "#241a00", "on-secondary-fixed": "#00210c", "on-tertiary-fixed-variant": "#594400", "surface-dim": "#dedace", "on-tertiary": "#ffffff", "secondary-fixed": "#a4f5b6", "secondary": "#1b6c3b", "surface-container-high": "#ede8dc", "surface-tint": "#446650", "on-background": "#1d1c15", "primary-fixed-dim": "#aacfb5", "on-primary-fixed-variant": "#2d4e39", "inverse-on-surface": "#f5f0e4", "on-surface": "#1d1c15", "tertiary": "#755b06", "background": "#fef9ed", "surface-container": "#f2ede2" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-tablet": "1.5rem", "gutter": "1rem", "space-lg": "1.5rem", "margin": "1rem", "space-md": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "space-xl": "2rem" }, "fontFamily": { "label-lg": ["Outfit"], "label-md": ["Outfit"], "title-lg": ["Outfit"], "body-sm": ["Outfit"], "headline-sm": ["Newsreader"], "headline-lg": ["Newsreader"], "label-sm": ["Outfit"], "title-md": ["Outfit"], "body-md": ["Outfit"], "body-lg": ["Outfit"], "display": ["Newsreader"], "headline-md": ["Newsreader"] }, "fontSize": { "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)]"><div class="h-24 px-margin flex flex-col justify-center gap-space-xs"><div class="flex items-center justify-between w-full"><div class="flex items-center gap-space-sm"><img alt="AgriShield Mobile Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VH69RNA1WI2pcLPZUTeICCNA-2nlO6O571gb-jtK22NxN4dtgzPKp2EmfbfCDGoNd52n2SyxSqFMClF9Rt68O6nix1onR6MkRczE0JCXj9YZcSaWl48E-moJwlC8T93QUfhlVirDlb3TB_k18jbsRdMitoteDdkzBIMmJoSSi7H1H4c_We1CDXLHVGArOHhYgBdcZJ03lAjWhwxqHBHV_8eELHR9GD7LkhkGs_Uynb8F6TngI64al0_Kaz"/><div class="flex flex-col"><span class="font-title-md text-title-md text-primary tracking-tight leading-none">AgriShield</span><span class="font-label-sm text-label-sm text-secondary font-medium tracking-wide leading-tight">My Farm</span></div></div><div class="flex items-center gap-space-sm"><div class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-secondary-container/60 text-on-secondary-fixed-variant font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span>Online · Synced</span></div><button aria-label="Notifications" class="relative w-11 h-11 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span></button><div class="flex items-center justify-center p-0.5 rounded-full bg-primary-fixed"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkWcbyrjeCBPR4whpnSgdCRETeTAs3v2SlFAiiOZkjLZKHBEkCK_63KKeO19t5hoZjsa-Hr5xOJvzsOLO5Q7c5sLbzYCdyRDtq8Atxarr7B7W2vggHSKIWujUNR0J7z-hb6WL4ua-t9HicKE9lgPO9JC3bgVZu1Q0z1PLvaaIkIK9XhYSdeVpmQG2QC7sMvXdIeT3VS_sQ5IBm8RJk2bW3SLAGktlPOGMhe9JTAfWFdg1VmGAmECE1cw"/></div></div></div><div class="flex items-center justify-between w-full pt-1"><div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5"><button class="px-2.5 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-sm" type="button">EN</button><button class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm transition-colors" type="button">हिन्दी</button><button class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm transition-colors" type="button">தமிழ்</button><button class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm transition-colors" type="button">मराठी</button></div><div class="flex items-center text-on-surface-variant font-label-sm text-label-sm gap-1"><span class="material-symbols-outlined text-[15px] text-secondary">wb_sunny</span><span>31°C · Field Clear</span></div></div></div></header><main class="flex flex-col relative w-full pt-24 pb-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Utility Context Bar -->
+<div class="flex items-center justify-between px-margin py-space-sm bg-surface-container-low shadow-[0_2px_8px_-2px_rgba(28,61,42,0.06)]">
+<button aria-label="Navigate back" class="inline-flex items-center gap-1 text-primary hover:text-secondary transition-colors py-1.5 pr-2 focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span class="font-title-md text-title-md font-semibold">Soil Analyzer</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md transition-all active:scale-95 shadow-sm hover:bg-surface-variant" id="audio-guide-btn" type="button">
+<span class="material-symbols-outlined text-[17px] text-secondary">volume_up</span>
+<span>मराठी Audio Guide</span>
+</button>
+</div>
+<div class="p-margin space-y-space-md">
+<!-- Plot Selector Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)] flex flex-col gap-space-sm">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">grid_view</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md text-primary">Plot A — Basmati Rice</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">#03 North</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2.0 Ha · Clay Loam · GPS 16°51'42"N 74°34'11"E</span>
+</div>
+</div>
+<button class="flex-shrink-0 px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-sm text-label-sm transition-colors active:scale-95" type="button">
+          Switch
+        </button>
+</div>
+<!-- Season Filter Pills -->
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
+<button class="season-chip px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-sm flex-shrink-0" type="button">Multi-Season (3 Years)</button>
+<button class="season-chip px-3 py-1.5 rounded-full bg-surface-container text-on-surface hover:bg-surface-variant font-label-sm text-label-sm flex-shrink-0 transition-colors" type="button">Kharif Only</button>
+<button class="season-chip px-3 py-1.5 rounded-full bg-surface-container text-on-surface hover:bg-surface-variant font-label-sm text-label-sm flex-shrink-0 transition-colors" type="button">Rabi Only</button>
+<button class="season-chip px-3 py-1.5 rounded-full bg-surface-container text-on-surface hover:bg-surface-variant font-label-sm text-label-sm flex-shrink-0 transition-colors" type="button">Custom Range</button>
+</div>
+</div>
+<!-- Soil Health Trajectory KPI Hero -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)] space-y-space-md">
+<div class="flex items-start justify-between gap-2">
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">3-Year Trajectory Evolution</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">Soil Fertility Index</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Gradual Regeneration
+        </span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-display text-primary leading-none">74</span>
+<span class="font-title-lg text-title-lg text-outline">/100</span>
+<span class="ml-2 inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-secondary-container/70 text-on-secondary-fixed-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[15px]">trending_up</span>
+          +8 pts vs 2022
+        </span>
+</div>
+<!-- 3 Vital Summaries Bento -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Organic Carbon</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">compost</span>
+</div>
+<div class="font-title-lg text-title-lg text-primary">0.82%</div>
+<span class="font-body-sm text-body-sm text-secondary font-medium leading-tight">+51% gain vs 0.54% base</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">pH Equilibrium</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">science</span>
+</div>
+<div class="font-title-lg text-title-lg text-primary">6.4 pH</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Acid stress cured (5.8 base)</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between gap-1">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Conductivity (EC)</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">bolt</span>
+</div>
+<div class="font-title-lg text-title-lg text-primary">0.72 dS/m</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Safe non-saline threshold</span>
+</div>
+</div>
+</div>
+<!-- Visual Multi-Year N-P-K Evolution -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)] space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Macro-Nutrient Trajectory (N-P-K)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Available mineral reserves across 5 cropping cycles</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+</div>
+</div>
+<!-- Nitrogen (N) -->
+<div class="bg-surface-container-low rounded-xl p-3.5 space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded bg-primary-container text-on-primary text-[11px] font-bold flex items-center justify-center">N</span>
+<span class="font-title-md text-title-md text-primary">Nitrogen</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(kg/ha)</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm">Deficit Narrowing (+30%)</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface-variant">Kharif '22: 142</span>
+<span class="text-on-surface-variant">Kharif '23: 165</span>
+<span class="text-primary font-bold">Kharif '24: 185</span>
+<span class="text-secondary font-semibold">Target: 280-560</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden relative">
+<!-- 280 target indicator line at ~60% -->
+<div class="absolute top-0 bottom-0 left-[62%] w-0.5 bg-outline z-10"></div>
+<!-- Progress Bar (scaled to max 450) -->
+<div class="h-full bg-secondary-container rounded-full relative" style="width: 41%;">
+<div class="absolute right-0 top-0 bottom-0 w-2.5 bg-secondary rounded-full"></div>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Organic green manure narrowed the gap by 43 kg/ha; maintain split bio-fertilizer top-dressing.</p>
+</div>
+</div>
+<!-- Phosphorus (P2O5) -->
+<div class="bg-surface-container-low rounded-xl p-3.5 space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded bg-tertiary-container text-on-tertiary-container text-[11px] font-bold flex items-center justify-center">P</span>
+<span class="font-title-md text-title-md text-primary">Phosphorus (P₂O₅)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(kg/ha)</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Optimal Balanced</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface-variant">Kharif '22: 16.0</span>
+<span class="text-on-surface-variant">Kharif '23: 21.2</span>
+<span class="text-primary font-bold">Current: 24.5</span>
+<span class="text-secondary font-semibold">Target: 20-30</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden relative">
+<div class="h-full bg-secondary rounded-full" style="width: 82%;"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Reached peak sufficiency via Phosphobacteria (PSB) &amp; rock phosphate mobilization.</p>
+</div>
+</div>
+<!-- Potassium (K2O) -->
+<div class="bg-surface-container-low rounded-xl p-3.5 space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded bg-surface-variant text-primary text-[11px] font-bold flex items-center justify-center">K</span>
+<span class="font-title-md text-title-md text-primary">Potassium (K₂O)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(kg/ha)</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Resilient Reserve</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface-variant">Kharif '22: 240</span>
+<span class="text-on-surface-variant">Kharif '23: 275</span>
+<span class="text-primary font-bold">Current: 290</span>
+<span class="text-secondary font-semibold">Target: 250-320</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden relative">
+<div class="h-full bg-secondary rounded-full" style="width: 90%;"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ensures thick culm walls and zero lodging risk under wet harvest conditions.</p>
+</div>
+</div>
+</div>
+<!-- Organic Carbon & Biological Health Deep Dive -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)] space-y-space-md">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Biological Health &amp; Carbon</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Active organic matter and subterranean ecology</p>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-secondary-container/70 text-secondary font-label-sm text-label-sm">Microbial: +3.2x</span>
+</div>
+<!-- Trend mini-bars for Organic Carbon -->
+<div class="bg-surface-container-low rounded-xl p-3.5 space-y-3">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Organic Carbon (OC %) 3-Year Ascent</span>
+<div class="grid grid-cols-3 gap-2 items-end pt-2">
+<!-- 2022 -->
+<div class="flex flex-col items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">0.54%</span>
+<div class="w-full h-14 bg-surface-container-highest rounded-lg flex items-end p-1">
+<div class="w-full h-[60%] bg-outline-variant rounded"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2022 (Low)</span>
+</div>
+<!-- 2023 -->
+<div class="flex flex-col items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">0.68%</span>
+<div class="w-full h-14 bg-surface-container-highest rounded-lg flex items-end p-1">
+<div class="w-full h-[78%] bg-secondary-fixed-dim rounded"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2023 (Med)</span>
+</div>
+<!-- 2024 -->
+<div class="flex flex-col items-center gap-1.5">
+<span class="font-label-md text-label-md text-primary font-bold">0.82%</span>
+<div class="w-full h-14 bg-surface-container-highest rounded-lg flex items-end p-1">
+<div class="w-full h-[95%] bg-secondary rounded"></div>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">2024 (Rich)</span>
+</div>
+</div>
+</div>
+<!-- Soil Bio-Structure Info -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">eco</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-primary leading-tight">Dhaincha Mulch Integration</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Earthworm cast count up to 14 burrows/m²; water retention improved by 22% during dry spells.</span>
+</div>
+</div>
+</div>
+<!-- YoY Fertilizer Savings & Yield Correlation -->
+<div class="bg-primary-container text-on-primary rounded-xl p-space-md shadow-[0_4px_16px_rgba(28,61,42,0.18)] space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[22px]">savings</span>
+<h3 class="font-headline-sm text-headline-sm text-on-primary">Agronomic ROI</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold">3-Year Impact</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-primary/50 rounded-xl p-3 flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-primary-container">Chemical Urea</span>
+<span class="font-headline-md text-headline-md text-secondary-fixed font-bold leading-tight">-28%</span>
+<span class="font-body-sm text-body-sm text-on-primary-container">Synthetic reduction</span>
+</div>
+<div class="bg-primary/50 rounded-xl p-3 flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-primary-container">Saved per Ha</span>
+<span class="font-headline-md text-headline-md text-tertiary-fixed font-bold leading-tight">₹1,840</span>
+<span class="font-body-sm text-body-sm text-on-primary-container">Direct bag costs saved</span>
+</div>
+</div>
+<!-- Yield correlation pill banner -->
+<div class="bg-primary/70 rounded-xl p-3 flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]">psychiatry</span>
+<span class="font-body-md text-body-md text-on-primary leading-tight">Paddy Yield Trajectory:</span>
+</div>
+<span class="font-title-md text-title-md text-secondary-fixed font-bold">4.1 → 4.8 T/Ha (+17%)</span>
+</div>
+</div>
+<!-- Soil Health Card Audit Trail & Lab Archives -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)] space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Lab Audit Records</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Govt accredited laboratory test certificates</p>
+</div>
+<span class="material-symbols-outlined text-[20px] text-secondary">verified</span>
+</div>
+<div class="space-y-2">
+<!-- 2024 Test -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-secondary flex items-center justify-center mt-0.5">
+<span class="material-symbols-outlined text-[16px]">description</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-primary font-semibold leading-tight">SHC #MH-SAN-2024-88392</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">18 Aug 2024 · KVK Sangli Lab</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-sm text-label-sm font-semibold transition-transform active:scale-95" type="button">
+            View Card
+          </button>
+</div>
+<!-- 2023 Test -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center mt-0.5">
+<span class="material-symbols-outlined text-[16px]">description</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-primary font-semibold leading-tight">SHC #MH-SAN-2023-41098</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">12 Sep 2023 · KVK Sangli Lab</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-sm text-label-sm font-semibold transition-transform active:scale-95" type="button">
+            View Card
+          </button>
+</div>
+<!-- 2022 Test -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center mt-0.5">
+<span class="material-symbols-outlined text-[16px]">description</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-primary font-semibold leading-tight">SHC #MH-SAN-2022-10822</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">05 Oct 2022 · District Lab, Sangli</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-sm text-label-sm font-semibold transition-transform active:scale-95" type="button">
+            View Card
+          </button>
+</div>
+</div>
+</div>
+<!-- Long-Term Agronomist Advisory & Next Season Soil Plan -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)] space-y-space-md">
+<div class="flex items-center gap-3">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Warm natural portrait of Dr Ananya Patil, an Indian female agricultural scientist in lab coat smiling outdoors in an experimental research paddy farm under golden morning sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxnDdY5Oysr-C_w-A75b0U1WEcBltWI-PTh7EXZukGFfRKFsn9_YInSV3FS7VIeQE92iXZ2-G0wa0vCmRDXUug-EAdq4xy-V0XNR8OcCDm2Fl1IP9GAkrawzxDykaaEHEv7896Po9JUgc5D3mkBka2Hjh0uNZhnXAWlKHQjQll3YYgK2K_UMovVbXqtV-AiqsyitQSs6NxRxSJ0NCm-CqZjnIfAK5N90QDEuyeHGy2Cg5f6ZSdx1qxmg"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-title-md text-primary">Dr. Ananya Patil</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Chief Agronomist · KVK Regional Center, Sangli</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-3.5 space-y-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Rabi 2024-25 Recommendation</span>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          “Continue split nitrogen top-dressing with neem-coated urea. Introduce <span class="font-semibold text-primary">Azospirillum bio-inoculant</span> for upcoming Rabi wheat cycle to sustain Organic Carbon above 0.85%. Maintain zero-tillage to protect root fungal mycelium networks.”
+        </p>
+</div>
+<!-- Action Cluster -->
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full h-12 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-title-md text-title-md font-semibold inline-flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Download 3-Year Soil Audit Report (PDF)</span>
+</button>
+<button class="w-full h-12 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-title-md text-title-md font-semibold inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">support_agent</span>
+<span>Consult Dr. Patil on Soil Plan</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Season filter chips micro-interaction
+  document.querySelectorAll('.season-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.season-chip').forEach(c => {
+        c.classList.remove('bg-primary', 'text-on-primary');
+        c.classList.add('bg-surface-container', 'text-on-surface');
+      });
+      chip.classList.remove('bg-surface-container', 'text-on-surface');
+      chip.classList.add('bg-primary', 'text-on-primary');
+    });
+  });
+
+  // Audio Guide Button Toast / State toggle
+  const audioBtn = document.getElementById('audio-guide-btn');
+  let isPlaying = false;
+  if (audioBtn) {
+    audioBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      const icon = audioBtn.querySelector('.material-symbols-outlined');
+      if (isPlaying) {
+        audioBtn.classList.remove('bg-surface-container-highest', 'text-on-surface');
+        audioBtn.classList.add('bg-secondary', 'text-on-secondary');
+        icon.classList.remove('text-secondary');
+        icon.classList.add('text-on-secondary');
+        icon.textContent = 'pause_circle';
+      } else {
+        audioBtn.classList.remove('bg-secondary', 'text-on-secondary');
+        audioBtn.classList.add('bg-surface-container-highest', 'text-on-surface');
+        icon.classList.add('text-secondary');
+        icon.classList.remove('text-on-secondary');
+        icon.textContent = 'volume_up';
+      }
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-4px_16px_rgba(28,61,42,0.06)]" data-active-classes="text-secondary font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] transition-colors text-secondary font-semibold" data-path="my-farm" href="#"><span class="material-symbols-outlined text-[24px]">potted_plant</span><span class="font-label-sm text-label-sm mt-0.5">My Farm</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant -mt-5 group" data-path="ai-doctor" href="#"><div class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_4px_12px_rgba(28,61,42,0.25)] transition-transform group-active:scale-95"><span class="material-symbols-outlined text-[26px] text-secondary-fixed">document_scanner</span></div><span class="font-label-sm text-label-sm mt-1 text-primary font-semibold">AI Doctor</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="consult" href="#"><span class="material-symbols-outlined text-[24px]">support_agent</span><span class="font-label-sm text-label-sm mt-0.5">Consult</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="store" href="#"><span class="material-symbols-outlined text-[24px]">storefront</span><span class="font-label-sm text-label-sm mt-0.5">Store</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="tools" href="#"><span class="material-symbols-outlined text-[24px]">construction</span><span class="font-label-sm text-label-sm mt-0.5">Tools</span></a></div></nav></body></html>

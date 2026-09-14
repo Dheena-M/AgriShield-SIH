@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1c3d2a" />
+  <title>AgriShield — Crop Doctor</title>
+  <link rel="manifest" href="/static/manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="top">
+    <a class="brand" href="#home">
+      <span class="leaf">◆</span>
+      <span>AgriShield</span>
+    </a>
+    <nav class="nav" id="nav"></nav>
+    <div class="top-right">
+      <select id="lang" class="lang"></select>
+      <button class="bell" id="bellBtn" title="Alerts">◉</button>
+      <button class="ghost" id="authBtn"></button>
+    </div>
+  </header>
+  <aside class="alerts" id="alerts" hidden></aside>
+  <div class="offline-banner" id="offlineBanner" role="status" hidden></div>
+  <main id="app"></main>
+  <footer class="foot">
+    AI indication only · Not a replacement for professional agricultural diagnosis · SIH AgriShield
+  </footer>
+  <script src="/static/i18n.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

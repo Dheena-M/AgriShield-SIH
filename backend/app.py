@@ -1,5 +1,6 @@
 import json
 import io
+import math
 import os
 import sys
 from urllib.error import HTTPError, URLError
@@ -42,7 +43,18 @@ from ai import analyze_leaf, cnn_status, crop_simulation, predict_risk
 from advisor_models import crop_profiles, crop_recommendations, soil_health, yield_estimate
 from catalog import feature_catalog
 from db import SessionLocal, UPLOADS, engine
-from knowledge import CROPS, DISEASES, DOCTORS, MEDICINES, PRODUCTS, SEEDS, chatbot_reply
+from knowledge import (
+    CROPS,
+    CROP_RECOVERY_PROTOCOLS,
+    DISEASES,
+    DOCTORS,
+    GOVERNMENT_SCHEMES,
+    MEDICINES,
+    PRODUCTS,
+    SEEDS,
+    chatbot_reply,
+)
+from ollama_client import query_ollama
 from mongo_store import initialize_mongo, mongo_status, record_prediction
 from models import (
     Appointment,
@@ -56,6 +68,7 @@ from models import (
     Message,
     Notification,
     Order,
+    OutbreakAlert,
     Plant,
     Prediction,
     User,
@@ -178,6 +191,116 @@ def seed(db: Session):
     db.commit()
 
 
+def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) ** 2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * (math.sin(dlon / 2) ** 2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return round(R * c, 1)
+
+
+INITIAL_OUTBREAKS = [
+    {
+        "title": "Rice Blast Epidemic Alert (Magnaporthe oryzae)",
+        "crop": "rice",
+        "disease_name": "Rice Blast",
+        "disease_key": "rice_blast",
+        "severity": "Critical",
+        "location_name": "Walwa - Islampur Rice Belt, Sangli",
+        "latitude": 17.0524,
+        "longitude": 74.2615,
+        "radius_km": 14.0,
+        "cases_count": 28,
+        "advisory": "High humidity (88%) and overcast conditions have accelerated blast sporulation on leaf collars. Apply Tricyclazole 75% WP @ 0.6 g/L or bio-fungicide Pseudomonas fluorescens.",
+        "quarantine_protocol": "Withhold excess nitrogen fertilizers. Maintain field drainage. Quarantine infected seedling nurseries within 10 km.",
+        "reporter_name": "KVK Sangli Disease Surveillance Unit",
+    },
+    {
+        "title": "Bacterial Leaf Blight Cluster (Xanthomonas oryzae)",
+        "crop": "rice",
+        "disease_name": "Bacterial Blight",
+        "disease_key": "bacterial_blight",
+        "severity": "High",
+        "location_name": "Miraj River Basin, Sangli",
+        "latitude": 16.8224,
+        "longitude": 74.6515,
+        "radius_km": 8.0,
+        "cases_count": 16,
+        "advisory": "Water-soaked lesions observed along leaf margins. Avoid clipping seedlings during transplanting. Spray Copper Hydroxide + Streptocycline (100 ppm) before morning rain.",
+        "quarantine_protocol": "Sanitize farm implements between plots. Discontinue flood irrigation from infected upstream canals.",
+        "reporter_name": "Dr. Ananya Patil (ICAR Plant Pathologist)",
+    },
+    {
+        "title": "Tomato Early / Late Blight Corridor Warning",
+        "crop": "tomato",
+        "disease_name": "Tomato Early Blight",
+        "disease_key": "early_blight",
+        "severity": "Moderate",
+        "location_name": "Shirala Vegetable Corridor, Sangli",
+        "latitude": 16.9924,
+        "longitude": 74.1215,
+        "radius_km": 18.5,
+        "cases_count": 11,
+        "advisory": "Concentric dark rings and yellow halos on lower canopy foliage. Prophylactic spray of Mancozeb 75% WP @ 2 g/L recommended.",
+        "quarantine_protocol": "Stake indeterminate vines off wet soil surface. Remove diseased lower foliage and destroy away from field.",
+        "reporter_name": "Maharashtra State Horticulture Dept",
+    },
+    {
+        "title": "Fall Armyworm (Spodoptera frugiperda) Aggregation",
+        "crop": "maize",
+        "disease_name": "Fall Armyworm",
+        "disease_key": "armyworm",
+        "severity": "High",
+        "location_name": "Tasgaon Maize Cluster, Sangli",
+        "latitude": 17.0324,
+        "longitude": 74.6015,
+        "radius_km": 12.0,
+        "cases_count": 19,
+        "advisory": "Whorl defoliation and sawdust-like frass observed on young seedlings. Apply Bacillus thuringiensis (Bt) or Emamectin Benzoate 5% SG @ 0.4 g/L in whorl.",
+        "quarantine_protocol": "Install 5 pheromone traps per hectare. Monitor egg masses on undersides of leaf blades.",
+        "reporter_name": "District Agriculture Officer, Sangli",
+    },
+    {
+        "title": "Paddy Sheath Blight Alert (Rhizoctonia solani)",
+        "crop": "rice",
+        "disease_name": "Sheath Blight",
+        "disease_key": "sheath_blight",
+        "severity": "High",
+        "location_name": "Thanjavur Cauvery Delta, Tamil Nadu",
+        "latitude": 10.7870,
+        "longitude": 79.1378,
+        "radius_km": 20.0,
+        "cases_count": 34,
+        "advisory": "Snake-skin lesions above waterline during maximum tillering. Spray Hexaconazole 5% EC @ 2 ml/L or validamycin.",
+        "quarantine_protocol": "Prevent weed host growth on field bunds. Ensure 30cm spacing alleyways every 2 meters.",
+        "reporter_name": "Tamil Nadu Agricultural University (TNAU)",
+    },
+    {
+        "title": "Wheat Stripe / Yellow Rust Surveillance Alert",
+        "crop": "wheat",
+        "disease_name": "Yellow Rust",
+        "disease_key": "yellow_rust",
+        "severity": "Moderate",
+        "location_name": "Karnal Agri Belt, Haryana",
+        "latitude": 29.6857,
+        "longitude": 76.9905,
+        "radius_km": 25.0,
+        "cases_count": 12,
+        "advisory": "Yellow pustules in linear stripes on flag leaves. Spray Propiconazole 25% EC @ 1 ml/L at first notice.",
+        "quarantine_protocol": "Scout northern windward border rows every 3 days during cool humid mornings.",
+        "reporter_name": "ICAR-IIWBR Karnal",
+    },
+]
+
+
+def seed_outbreaks(db: Session):
+    if db.query(OutbreakAlert).count() == 0:
+        for ob in INITIAL_OUTBREAKS:
+            db.add(OutbreakAlert(**ob))
+        db.commit()
+
+
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(bind=engine)
@@ -185,6 +308,7 @@ def startup():
     db = SessionLocal()
     try:
         seed(db)
+        seed_outbreaks(db)
     finally:
         db.close()
 
@@ -199,10 +323,15 @@ def register(
     phone: str = Form(""),
     db: Session = Depends(get_db),
 ):
+    name = name.strip()
+    email = email.strip().lower()
+    phone = phone.strip()
     if role not in ("farmer", "doctor"):
         raise HTTPException(400, "Role must be farmer or doctor")
-    if not name.strip() or len(name.strip()) > 120:
+    if not name or len(name) > 120:
         raise HTTPException(400, "Enter a name up to 120 characters")
+    if "@" not in email or len(email) > 180:
+        raise HTTPException(400, "Enter a valid email address")
     if len(password) < 8:
         raise HTTPException(400, "Password must contain at least 8 characters")
     if len(password.encode("utf-8")) > 72:
@@ -213,23 +342,28 @@ def register(
         raise HTTPException(400, "Email already registered")
     user = User(
         name=name,
-        email=email.lower(),
+        email=email,
         password_hash=bcrypt.hash(password),
         role=role,
         language=language,
         phone=phone,
     )
     db.add(user)
-    db.flush()
-    if role == "doctor":
-        db.add(DoctorProfile(user_id=user.id, qualification="Pending profile", specialization="General", verified=False))
-    db.commit()
+    try:
+        db.flush()
+        if role == "doctor":
+            db.add(DoctorProfile(user_id=user.id, qualification="Pending profile", specialization="General", verified=False))
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(400, "Email already registered")
     return {"token": token_for(user), "user": public_user(user)}
 
 
 @app.post("/api/auth/login")
 def login(email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == email.lower()).first()
+    email_clean = email.strip().lower()
+    user = db.query(User).filter(User.email == email_clean).first()
     if not user or not bcrypt.verify(password, user.password_hash):
         raise HTTPException(401, "Invalid email or password")
     return {"token": token_for(user), "user": public_user(user)}
@@ -439,9 +573,60 @@ def my_plants(user: User = Depends(current_user), db: Session = Depends(get_db))
             "location": p.location,
             "notes": p.notes,
             "has_image": bool(p.image_path),
+            "image_url": f"/uploads/{p.image_path}" if p.image_path else "",
         }
         for p in rows
     ]
+
+
+@app.get("/api/plants/{plant_id}/timeline")
+def plant_timeline(
+    plant_id: int,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+):
+    plant = db.query(Plant).filter(Plant.id == plant_id, Plant.owner_id == user.id).first()
+    if not plant:
+        raise HTTPException(404, "Plant plot not found")
+
+    # Match latest prediction for this crop or default to fungal_blight
+    latest_pred = (
+        db.query(Prediction)
+        .filter(Prediction.user_id == user.id, Prediction.crop == plant.crop_type)
+        .order_by(Prediction.created_at.desc())
+        .first()
+    )
+    disease_key = (
+        latest_pred.disease_key
+        if latest_pred and latest_pred.disease_key in CROP_RECOVERY_PROTOCOLS
+        else "fungal_blight"
+    )
+    protocol = CROP_RECOVERY_PROTOCOLS.get(disease_key, CROP_RECOVERY_PROTOCOLS["fungal_blight"])
+
+    return {
+        "plant_id": plant.id,
+        "plant_name": plant.plant_name,
+        "crop_type": plant.crop_type,
+        "location": plant.location,
+        "disease_key": disease_key,
+        "protocol_title": protocol["title"],
+        "target_disease": protocol["target_disease"],
+        "stages": protocol["stages"],
+    }
+
+
+@app.get("/api/recovery-plan")
+def get_recovery_plan(disease: str = "fungal_blight", crop: str = "rice"):
+    d_key = disease if disease in CROP_RECOVERY_PROTOCOLS else "fungal_blight"
+    protocol = CROP_RECOVERY_PROTOCOLS[d_key]
+    return {
+        "disease_key": d_key,
+        "crop": crop,
+        "protocol_title": protocol["title"],
+        "target_disease": protocol["target_disease"],
+        "stages": protocol["stages"],
+    }
+
 
 
 @app.post("/api/appointments")
@@ -645,6 +830,7 @@ async def predict(
     user: User | None = Depends(optional_user),
     db: Session = Depends(get_db),
 ):
+    crop = crop.strip().lower()
     data = await file.read()
     if len(data) > 6 * 1024 * 1024:
         raise HTTPException(400, "Image too large")
@@ -660,6 +846,58 @@ async def predict(
     risk, _ = predict_risk(crop_idx, month, 120, 28, 78, 0)
     result["crop"] = crop
     result["risk"] = risk
+
+    # Escalation Check: Low confidence (<0.65) or Severe/Critical SES Grade (>=7)
+    ses_grade = result.get("severity", {}).get("ses_grade", 0)
+    confidence = float(result.get("confidence", 0.0))
+    if confidence < 0.65 or ses_grade >= 7:
+        reasons = []
+        if confidence < 0.65:
+            reasons.append(f"AI classification confidence ({int(confidence * 100)}%) is below standard threshold (65%)")
+        if ses_grade >= 7:
+            reasons.append(f"Foliar infection severity (SES Grade {ses_grade}: {result.get('severity', {}).get('affected_area_percent', 0)}%) indicates aggressive spread")
+        result["escalation"] = {
+            "recommended": True,
+            "severity_level": "CRITICAL" if ses_grade >= 9 else "HIGH",
+            "reason": " & ".join(reasons) + " — Prompt plant pathologist verification advised.",
+            "officer": "Dr. Ananya Patil (ICAR Plant Pathologist)",
+            "kvk_centre": "KVK Sangli Disease Surveillance Unit",
+            "toll_free": "1800-180-1551 (Kisan Call Centre)",
+            "action_url": "#doctors",
+        }
+    else:
+        result["escalation"] = {
+            "recommended": False,
+            "severity_level": "NORMAL",
+            "reason": "Standard field agronomy guidelines applicable.",
+        }
+
+    # Generate real-time Agronomic Prescription via local Ollama Qwen2.5 3B
+    disease_en = result.get("name", {}).get("en", result["disease_key"].replace("_", " "))
+    affected_pct = result.get("severity", {}).get("affected_area_percent", 0.0)
+    prescription_prompt = (
+        f"Diagnosed: {crop.capitalize()} - {disease_en}. Foliar damage: {affected_pct}% (SES Grade {ses_grade}). "
+        f"Give 3 short sentences: 1. Immediate field action. 2. Spray & dosage per liter. 3. Recovery timeline."
+    )
+    ollama_res = query_ollama(prescription_prompt, language="en", crop_context=crop, timeout=12.0)
+    if ollama_res.get("success") and ollama_res.get("answer"):
+        result["ai_prescription"] = {
+            "text": ollama_res["answer"],
+            "model": "Qwen2.5 3B (Local Edge AI)",
+            "source": "ollama_qwen",
+            "success": True,
+        }
+    else:
+        rec_3 = result.get("recommendations_3tier", {})
+        chem = rec_3.get("chemical", ["Foliar copper/fungicide spray as per label."])[0]
+        cult = rec_3.get("cultural", ["Isolate heavily affected foliage."])[0]
+        result["ai_prescription"] = {
+            "text": f"1. {cult} 2. {chem} 3. Foliar recovery anticipated within 10–14 days with regular field scouting.",
+            "model": "AgriShield Agronomy Knowledge Engine (Offline Standard)",
+            "source": "curated_knowledge",
+            "success": False,
+        }
+
     db.add(
         Prediction(
             user_id=user.id if user else None,
@@ -679,6 +917,8 @@ async def predict(
         "risk": risk,
         "model": result.get("model", {}),
         "severity": result.get("severity", {}),
+        "escalation": result.get("escalation", {}),
+        "ai_prescription": result.get("ai_prescription", {}),
         "source": "leaf_upload",
     })
     return result
@@ -725,9 +965,240 @@ def risk(
     humidity: float = Form(80),
     outbreak: int = Form(0),
 ):
-    crop_idx = CROPS.index(crop) if crop in CROPS else 0
+    crop_clean = crop.strip().lower()
+    crop_idx = CROPS.index(crop_clean) if crop_clean in CROPS else 0
     label, conf = predict_risk(crop_idx, month, rain, temp, humidity, outbreak)
-    return {"risk": label, "confidence": round(conf, 3), "crop": crop}
+    return {"risk": label, "confidence": round(conf, 3), "crop": crop_clean}
+
+
+@app.get("/api/outbreaks/nearby")
+def nearby_outbreaks(
+    lat: float = 16.8524,
+    lon: float = 74.5815,
+    crop: str = "",
+    max_km: float = 150.0,
+    db: Session = Depends(get_db),
+):
+    """Return active regional disease outbreak alerts ranked by proximity."""
+    query = db.query(OutbreakAlert).filter(OutbreakAlert.active == True)
+    if crop:
+        query = query.filter(OutbreakAlert.crop == crop.strip().lower())
+    rows = query.all()
+    results = []
+    for r in rows:
+        dist = haversine_km(lat, lon, r.latitude, r.longitude)
+        if dist <= max_km:
+            results.append({
+                "id": r.id,
+                "title": r.title,
+                "crop": r.crop,
+                "disease_name": r.disease_name,
+                "disease_key": r.disease_key,
+                "severity": r.severity,
+                "location_name": r.location_name,
+                "latitude": r.latitude,
+                "longitude": r.longitude,
+                "radius_km": r.radius_km,
+                "cases_count": r.cases_count,
+                "distance_km": dist,
+                "in_quarantine_radius": dist <= r.radius_km,
+                "advisory": r.advisory,
+                "quarantine_protocol": r.quarantine_protocol,
+                "reporter_name": r.reporter_name,
+                "created_at": r.created_at.isoformat(),
+            })
+    results.sort(key=lambda x: (0 if x["severity"] == "Critical" else 1 if x["severity"] == "High" else 2, x["distance_km"]))
+    highest = "Low"
+    if any(x["severity"] == "Critical" for x in results):
+        highest = "Critical"
+    elif any(x["severity"] == "High" for x in results):
+        highest = "High"
+    elif results:
+        highest = "Moderate"
+    return {
+        "user_location": {"latitude": lat, "longitude": lon, "region": "Sangli, Maharashtra"},
+        "alerts": results,
+        "count": len(results),
+        "highest_severity": highest,
+    }
+
+
+@app.post("/api/outbreaks/report")
+def report_outbreak(
+    title: str = Form(...),
+    crop: str = Form(...),
+    disease_name: str = Form(...),
+    location_name: str = Form(...),
+    latitude: float = Form(16.8524),
+    longitude: float = Form(74.5815),
+    severity: str = Form("High"),
+    radius_km: float = Form(10.0),
+    cases_count: int = Form(1),
+    advisory: str = Form(""),
+    quarantine_protocol: str = Form(""),
+    reporter_name: str = Form("Community Farmer"),
+    db: Session = Depends(get_db),
+):
+    """Community-sourced disease outbreak reporting."""
+    alert = OutbreakAlert(
+        title=title.strip(),
+        crop=crop.strip().lower(),
+        disease_name=disease_name.strip(),
+        disease_key=disease_name.strip().lower().replace(" ", "_"),
+        severity=severity.strip(),
+        location_name=location_name.strip(),
+        latitude=latitude,
+        longitude=longitude,
+        radius_km=radius_km,
+        cases_count=cases_count,
+        advisory=advisory.strip(),
+        quarantine_protocol=quarantine_protocol.strip(),
+        reporter_name=reporter_name.strip(),
+        active=True,
+    )
+    db.add(alert)
+    db.flush()
+    for farmer in db.query(User).filter(User.role == "farmer").all():
+        db.add(
+            Notification(
+                user_id=farmer.id,
+                text=f"🚨 Nearby Outbreak Alert: {alert.disease_name} in {alert.location_name} ({alert.crop}). Check precautions.",
+            )
+        )
+    db.commit()
+    return {"message": "Outbreak report logged and broadcast to community.", "id": alert.id}
+
+
+@app.get("/api/outbreaks/map")
+def outbreaks_map_data(crop: str = "", db: Session = Depends(get_db)):
+    """Return geospatial markers and active cluster telemetry for community intelligence map."""
+    query = db.query(OutbreakAlert).filter(OutbreakAlert.active == True)
+    if crop:
+        query = query.filter(OutbreakAlert.crop == crop.strip().lower())
+    rows = query.all()
+    points = [
+        {
+            "id": r.id,
+            "title": r.title,
+            "crop": r.crop,
+            "disease_name": r.disease_name,
+            "severity": r.severity,
+            "location_name": r.location_name,
+            "latitude": r.latitude,
+            "longitude": r.longitude,
+            "radius_km": r.radius_km,
+            "cases_count": r.cases_count,
+            "advisory": r.advisory,
+            "quarantine_protocol": r.quarantine_protocol,
+            "reporter_name": r.reporter_name,
+            "created_at": r.created_at.strftime("%b %d, %Y"),
+        }
+        for r in rows
+    ]
+    return {
+        "center": {"lat": 16.8524, "lon": 74.5815, "zoom": 10},
+        "points": points,
+        "total_active_clusters": len(points),
+        "containment_status": "78% Contained",
+    }
+
+
+@app.post("/api/risk/weather-forecast")
+def weather_disease_forecast(
+    crop: str = Form("rice"),
+    temp: float = Form(28.0),
+    humidity: float = Form(78.0),
+    rain: float = Form(65.0),
+    leaf_wetness_hours: float = Form(8.5),
+    consecutive_wet_days: int = Form(2),
+):
+    """Epidemiological meteorological disease prediction and spray window calculation."""
+    crop_clean = crop.strip().lower()
+    score = 0.0
+    if humidity >= 85:
+        score += 38.0
+    elif humidity >= 75:
+        score += 26.0
+    elif humidity >= 65:
+        score += 12.0
+
+    if 24.0 <= temp <= 30.0:
+        score += 25.0
+    elif 20.0 <= temp <= 34.0:
+        score += 15.0
+    else:
+        score += 5.0
+
+    if leaf_wetness_hours >= 10.0:
+        score += 22.0
+    elif leaf_wetness_hours >= 6.0:
+        score += 14.0
+
+    if consecutive_wet_days >= 3:
+        score += 15.0
+    elif consecutive_wet_days >= 1:
+        score += 8.0
+
+    score = min(100.0, max(5.0, round(score, 1)))
+
+    if score >= 80:
+        level = "Extreme"
+        badge_class = "high"
+        advisory = f"Critical outbreak conditions for {crop_clean}. Atmospheric moisture and canopy wetness allow rapid fungal sporulation."
+    elif score >= 65:
+        level = "High"
+        badge_class = "high"
+        advisory = f"High disease pressure for {crop_clean}. Consecutive overcast hours favor leaf lesion expansion."
+    elif score >= 40:
+        level = "Medium"
+        badge_class = "med"
+        advisory = f"Moderate risk for {crop_clean}. Monitor lower canopy foliage and leaf margins daily."
+    else:
+        level = "Low"
+        badge_class = "ok"
+        advisory = f"Low environmental disease pressure for {crop_clean}. Weather conditions are safe for normal vegetative development."
+
+    trajectory = []
+    base_scores = [score, min(100, score + 4), min(100, score - 6), min(100, score - 12), min(100, score - 8)]
+    day_names = ["Today", "Tomorrow", "Day 3", "Day 4", "Day 5"]
+    for i in range(5):
+        s = round(base_scores[i], 1)
+        trajectory.append({
+            "day": day_names[i],
+            "risk_score": s,
+            "risk_level": "High" if s >= 65 else "Medium" if s >= 40 else "Low",
+            "trigger": "Canopy wetness" if i == 0 else "Forecast rain" if i == 1 else "Clearing skies",
+        })
+
+    spray_window = {
+        "status": "Optimal Window Available" if rain < 120 else "Avoid Spraying (Rain Expected)",
+        "best_hours": "07:00 AM – 11:30 AM (Low wind, dew drying)",
+        "withhold_recommendation": "Avoid applying foliar nitrogen during high humidity.",
+        "recommended_chemistry": "Bio-fungicide (Trichoderma viride @ 5g/L) or Copper Hydroxide @ 2g/L.",
+    }
+
+    return {
+        "crop": crop_clean,
+        "overall_risk_score": score,
+        "risk_level": level,
+        "badge_class": badge_class,
+        "advisory": advisory,
+        "spore_germination_window": {
+            "window": "20:30 to 05:30 (Night Condensation Window)",
+            "wetness_threshold": f"{leaf_wetness_hours} hrs continuous moisture",
+            "vulnerability_status": "Active Sporulation" if score >= 65 else "Dormant",
+        },
+        "spray_schedule": spray_window,
+        "trajectory_5_day": trajectory,
+        "weather_inputs": {
+            "temp_c": temp,
+            "humidity_pct": humidity,
+            "rainfall_mm": rain,
+            "leaf_wetness_hours": leaf_wetness_hours,
+            "consecutive_wet_days": consecutive_wet_days,
+        },
+    }
+
 
 
 @app.post("/api/simulate")
@@ -898,24 +1369,92 @@ def sowing_plan(crop: str = Form(...), area: float = Form(1), month: int = Form(
 
 @app.post("/api/chat")
 def chat(
-    message: str = Form(...),
+    message: str | None = Form(None),
+    question: str | None = Form(None),
     language: str = Form("en"),
+    crop_context: str = Form(""),
     user: User | None = Depends(optional_user),
     db: Session = Depends(get_db),
 ):
-    if not message.strip() or len(message.strip()) > 1_000:
+    clean_msg = (message or question or "").strip()
+    if not clean_msg or len(clean_msg) > 1_000:
         raise HTTPException(400, "Message must be between 1 and 1000 characters")
-    answer = chatbot_reply(message.strip(), language if language in ("en", "hi", "ta", "mr") else "en")
+    valid_lang = language if language in ("en", "hi", "ta", "mr") else "en"
+
+    # Query local Ollama Qwen2.5 3B with automatic fallback to curated knowledge
+    ollama_res = query_ollama(clean_msg, language=valid_lang, crop_context=crop_context.strip())
+    if ollama_res.get("success") and ollama_res.get("answer"):
+        answer = ollama_res["answer"]
+        model_name = "qwen2.5:3b"
+        source = "ollama_qwen"
+    else:
+        answer = chatbot_reply(clean_msg, valid_lang)
+        model_name = "knowledge_base"
+        source = "knowledge_base"
+
     db.add(
         ChatLog(
             user_id=user.id if user else None,
-            question=message,
+            question=clean_msg,
             answer=answer,
-            language=language,
+            language=valid_lang,
         )
     )
     db.commit()
-    return {"answer": answer, "language": language}
+    return {
+        "answer": answer,
+        "language": valid_lang,
+        "model": model_name,
+        "source": source,
+    }
+
+
+@app.get("/api/schemes")
+def list_government_schemes(
+    category: str | None = None,
+    q: str | None = None,
+    language: str = "en",
+):
+    valid_lang = language if language in ("en", "hi", "ta", "mr") else "en"
+    search = (q or "").strip().lower()
+    cat_filter = (category or "").strip().lower()
+
+    results = []
+    for s in GOVERNMENT_SCHEMES:
+        if cat_filter and cat_filter != "all" and s.get("category") != cat_filter:
+            continue
+
+        name_str = s["name"].get(valid_lang, s["name"]["en"])
+        benefit_str = s["benefit"].get(valid_lang, s["benefit"]["en"])
+        eligibility_str = s["eligibility"].get(valid_lang, s["eligibility"]["en"])
+        ministry_str = s["ministry"].get(valid_lang, s["ministry"]["en"])
+
+        if search:
+            combined = f"{name_str} {benefit_str} {eligibility_str} {ministry_str} {s['id']}".lower()
+            if search not in combined:
+                continue
+
+        results.append(
+            {
+                "id": s["id"],
+                "category": s["category"],
+                "name": name_str,
+                "ministry": ministry_str,
+                "subsidy": s["subsidy"],
+                "benefit": benefit_str,
+                "eligibility": eligibility_str,
+                "documents": s["documents"],
+                "portal": s["portal"],
+                "helpline": s["helpline"],
+                "icon": s.get("icon", "account_balance"),
+            }
+        )
+
+    return {
+        "total": len(results),
+        "schemes": results,
+    }
+
 
 
 @app.post("/api/feedback")
@@ -1038,6 +1577,7 @@ def crops():
 
 frontend_dir = ROOT / "frontend"
 app.mount("/static", StaticFiles(directory=str(frontend_dir)), name="static")
+app.mount("/uploads", StaticFiles(directory=str(UPLOADS)), name="uploads")
 
 
 @app.get("/sw.js", include_in_schema=False)
@@ -1045,6 +1585,20 @@ def service_worker():
     return FileResponse(frontend_dir / "sw.js", media_type="application/javascript")
 
 
+@app.get("/api/download-report")
+@app.get("/download-report")
+def download_report():
+    pdf_path = ROOT / "AgriShield_SIH_Feature_Report.pdf"
+    if not pdf_path.exists():
+        raise HTTPException(404, "Report PDF not found")
+    return FileResponse(
+        str(pdf_path),
+        media_type="application/pdf",
+        filename="AgriShield_SIH_Feature_Report.pdf",
+    )
+
+
 @app.get("/")
 def index():
     return FileResponse(frontend_dir / "index.html")
+

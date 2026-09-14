@@ -171,3 +171,23 @@ class Feedback(Base):
     message = Column(Text, nullable=False)
     status = Column(String(20), default="new")
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class OutbreakAlert(Base):
+    __tablename__ = "outbreak_alerts"
+    id = Column(Integer, primary_key=True)
+    title = Column(String(160), nullable=False)
+    crop = Column(String(80), nullable=False)
+    disease_name = Column(String(120), nullable=False)
+    disease_key = Column(String(80), default="")
+    severity = Column(String(20), default="High")  # Critical | High | Moderate
+    location_name = Column(String(160), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    radius_km = Column(Float, default=10.0)
+    cases_count = Column(Integer, default=1)
+    advisory = Column(Text, default="")
+    quarantine_protocol = Column(Text, default="")
+    reporter_name = Column(String(120), default="KVK Agronomy Center")
+    active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)

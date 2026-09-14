@@ -18,7 +18,7 @@ IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 
 
 def collect_records(data_dir: Path):
-    labels = sorted(path.name for path in data_dir.iterdir() if path.is_dir())
+    labels = sorted(path.name for path in data_dir.iterdir() if path.is_dir() and not path.name.startswith("."))
     paths, targets = [], []
     for index, label in enumerate(labels):
         images = sorted(path for path in (data_dir / label).rglob("*") if path.suffix.lower() in IMAGE_EXTENSIONS)
