@@ -28,3 +28,22 @@ crop.
 ## Included rice dataset
 
 `dataset/rice_leaf_diseases/` contains 120 labelled images from the user-provided archive: 40 each for Bacterial leaf blight, Brown spot, and Leaf smut. It can be used with `--data dataset/rice_leaf_diseases`, but is a small training set and requires independent evaluation before deployment.
+
+## Inspected Kaggle disease dataset
+
+The Kaggle dataset `vipoooool/new-plant-diseases-dataset` was downloaded to
+the local Kaggle cache and inspected on 16 September 2026:
+
+- 87,900 JPG images
+- 38 disease/healthy classes
+- 70,295 training images
+- 17,572 validation images
+- 33 test images
+- 0 corrupt images found by Pillow verification
+
+Its labels combine crop and disease, for example
+`Tomato___Early_blight`. It does not contain a rice class and is therefore not
+wired into the current rice disease model or treated as a crop-identification
+dataset. The 33-image test split is also too small for a credible independent
+test score. Keep the source and license information with any future training
+run, and evaluate on a separate field-image set.

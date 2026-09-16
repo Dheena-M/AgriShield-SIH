@@ -97,6 +97,12 @@ The included training pipelines are in `training/`. They train MobileNetV2-based
 
 The project now also includes the user-provided rice leaf dataset under `dataset/rice_leaf_diseases/`: 120 labelled images across Bacterial leaf blight, Brown spot, and Leaf smut. Its usage and limitations are documented in `dataset/rice_leaf_diseases/DATASET.md`.
 
+The Kaggle `vipoooool/new-plant-diseases-dataset` archive was inspected
+locally but is not bundled into the repository. It contains 87,900 valid JPG
+images across 38 combined crop/disease classes, does not contain rice, and has
+only 33 test images. It is not used by the active rice model without a
+separate, reproducible training and evaluation run.
+
 CNN live prediction
 -------------------
 The trained MobileNetV2 model supports only the three included rice disease classes. To run the app with this model, install both the normal server and ML dependencies once, then use `run_cnn.bat`:

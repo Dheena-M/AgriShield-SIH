@@ -154,13 +154,24 @@ story.extend([
         "validated disease models before disease results can be shown.",
         "BodySmall",
     ),
+    p("Kaggle dataset inspection", "Section"),
+    p(
+        "The downloaded vipoooool/new-plant-diseases-dataset contains 87,900 "
+        "valid JPG images across 38 combined crop/disease classes: 70,295 train, "
+        "17,572 validation, and 33 test images. Pillow verification found zero "
+        "corrupt images. It has no rice class and its test split is too small "
+        "for a credible independent score, so it was not wired into the active "
+        "rice model and no accuracy claim was generated.",
+        "BodySmall",
+    ),
     PageBreak(),
     p("Verification completed", "Section"),
 ])
 
 verification = [
     [p("<b>Check</b>"), p("<b>Result</b>")],
-    [p("Backend test suite"), p("11 tests passed")],
+    [p("Backend test suite"), p("15 tests passed")],
+    [p("Kaggle dataset integrity"), p("87,900 JPG files checked; 0 corrupt")],
     [p("Python compilation"), p("Passed for new and modified Python files")],
     [p("Frontend syntax"), p("Passed with Node.js syntax check")],
     [p("Editor diagnostics"), p("No errors reported in changed files")],

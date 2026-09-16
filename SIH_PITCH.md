@@ -27,6 +27,7 @@ Invalid images never receive a disease name or confidence score.
 - Risk note: the current agronomic risk baseline uses generated rule labels and is explicitly prototype-labelled.
 - Explainability note: the output is a lesion colour map, not Grad-CAM.
 - Field-learning loop: farmers confirm or flag scan results, and verified doctors can review corrections with timestamps before any future retraining.
+- Dataset honesty: the inspected Kaggle disease dataset has 38 combined crop/disease classes but no rice class, so it is not presented as the active rice model or as field-validated crop identification.
 
 ## Slide 4 — Evidence and honesty
 
