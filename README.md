@@ -5,7 +5,7 @@ SIH farmer-support platform from the problem statement, technology guide, and Pl
 
 What it does
 ------------
-- AI leaf analysis (CNN-style colour/texture features) with confidence and disclaimer
+- Leaf validation, crop identification, and rice disease analysis with confidence and disclaimer
 - Random Forest pest/disease risk from crop, weather and outbreak history
 - Crop advisor using NPK + climate simulation
 - Multilingual chatbot with browser **voice in/out**: English, Hindi, Tamil and Marathi
@@ -48,7 +48,7 @@ Implementation notes
 
 Honest SIH note
 ---------------
-Leaf analysis is a lightweight convolutional feature pipeline for the demo, not a fully trained PlantVillage TensorFlow CNN. Risk uses a Random Forest trained on synthetic but realistic monsoon/humidity patterns. Production would retrain on verified field images and outbreak records.
+The leaf gate is a safety heuristic, while crop identification requires the separately trained model in `models/crop_leaf_classifier.keras`. Disease prediction currently supports rice only and requires its trained CNN weights. If either model is missing or uncertain, the API rejects the scan rather than guessing. Risk uses a Random Forest trained on synthetic but realistic monsoon/humidity patterns. Production would retrain on verified field images and outbreak records.
 
 Farm decision-support tools
 ---------------------------
@@ -59,12 +59,12 @@ The crop recommender reads the bundled six-record demonstration dataset at `back
 Recent feature updates
 ----------------------
 - **Voice and language:** voice input/output works with the selected English, Hindi, Tamil or Marathi browser language.
-- **Scanning:** upload a leaf photo, use the camera, analyse a video frame, or use symptom text when no photo is available. Text symptoms are an estimate, not image confirmation.
+- **Scanning:** upload a leaf photo, use the camera, or analyse a video frame. The backend rejects non-leaf, corrupt, dark, blurry, and unsupported images before crop identification. Disease prediction runs only after a trained crop classifier identifies a supported crop.
 - **App conversion:** the installable PWA caches the application shell for offline reopening; online services reconnect when a network is available.
 - **Doctor verification:** newly registered doctors submit a registration/licence number and remain hidden from farmers until reviewed. An administrator can approve/reject with `PATCH /api/admin/doctor-verification/{id}` using the `X-Admin-Key` header and the private `ADMIN_VERIFICATION_KEY` environment variable.
 - **Farm tools:** soil health, soil analysis, irrigation, fertilizer-gap, crop suitability, yield, risk and sowing/seed-rate calculators are under **Farm tools**.
 - **Seeds and feedback:** the navigation includes a seeds marketplace and authenticated feedback form. Seed guidance must be checked against local district and seasonal recommendations.
-- **Algorithms page:** the app explains the active MobileNetV2 CNN, advisory visual-feature fallback, Random Forest risk model, rules-based calculators, and the current YOLO availability.
+- **Algorithms page:** the app explains the active crop/disease models, the Random Forest risk model, rules-based calculators, and the current YOLO availability.
 
 
 Data and model metadata
@@ -90,9 +90,9 @@ The **Farm tools** page can then request device-location permission and show cur
 
 The same key enables OpenWeather's five-day, three-hour forecast feed. AgriShield summarizes daily temperature, humidity, and rainfall and raises practical rain/humidity alerts. This is decision support, not an official weather warning service.
 
-Real disease-model training
+Real disease- and crop-model training
 ---------------------------
-The included training pipeline is in `training/`. It trains a MobileNetV2-based classifier from a locally supplied PlantVillage directory, saving the model, labels, and validation metrics under `models/`. See `training/README.md`; no trained model is bundled or claimed until you provide the dataset and run the training.
+The included training pipelines are in `training/`. They train MobileNetV2-based classifiers from locally supplied labelled directories, saving the model, labels, and validation metrics under `models/`. For crop identification, use `training/train_crop_classifier.py` with `dataset/crop_leaf_identification/<crop>/`. See `training/README.md`; no crop classifier is bundled or claimed until you provide real labelled data and run the training.
 
 The project now also includes the user-provided rice leaf dataset under `dataset/rice_leaf_diseases/`: 120 labelled images across Bacterial leaf blight, Brown spot, and Leaf smut. Its usage and limitations are documented in `dataset/rice_leaf_diseases/DATASET.md`.
 

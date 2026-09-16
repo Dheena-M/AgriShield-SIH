@@ -22,6 +22,15 @@ CNN_LABEL_TO_DISEASE = {
     "Brown spot": "fungal_blight",
     "Leaf smut": "fungal_blight",
 }
+SUPPORTED_DISEASE_CROPS = frozenset({"rice"})
+
+
+class UnsupportedDiseaseCropError(ValueError):
+    """Raised when disease prediction is requested for an unvalidated crop."""
+
+
+class DiseaseModelUnavailableError(RuntimeError):
+    """Raised when the validated crop has no loaded disease model."""
 
 RECOMMENDATIONS_3TIER = {
     "bacterial_blight": {
@@ -140,6 +149,10 @@ def get_rf():
 
 
 def predict_risk(crop_idx: int, month: int, rain: float, temp: float, humidity: float, outbreak: int):
+    """Return a transparent agronomic risk baseline trained on generated rule labels.
+
+    This is a prototype risk baseline, not a field-validated epidemiological model.
+    """
     monsoon = 1 if month in (6, 7, 8, 9) else 0
     x = np.array([[crop_idx, month, rain, temp, humidity, outbreak, monsoon]])
     pred = int(get_rf().predict(x)[0])
@@ -286,7 +299,7 @@ def _calculate_icar_ses_severity_and_heatmap(img: Image.Image) -> dict:
         "standard": "ICAR / IRRI Standard Evaluation System (SES) Scale 0–9",
         "description": f"SES Grade {ses_grade} ({label}): {affected_pct}% foliar area damaged",
         "heatmap_base64": heatmap_b64,
-        "basis": "ICAR/IRRI SES bio-spectral lesion segmentation",
+        "basis": "ICAR/IRRI SES-inspired bio-spectral lesion segmentation; not Grad-CAM",
     }
 
 
@@ -395,12 +408,19 @@ def _fallback_predict(img: Image.Image, crop: str) -> dict:
 
 
 def analyze_leaf(image_bytes: bytes, crop: str = "") -> dict:
+    crop_name = crop.lower().strip()
+    if crop_name not in SUPPORTED_DISEASE_CROPS:
+        raise UnsupportedDiseaseCropError(
+            "Disease image detection is currently validated for rice leaves only. "
+            "Please upload a rice leaf image or consult a plant doctor."
+        )
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    if crop.lower().strip() == "rice":
-        cnn_result = _cnn_predict(img)
-        if cnn_result is not None:
-            return cnn_result
-    return _fallback_predict(img, crop)
+    cnn_result = _cnn_predict(img)
+    if cnn_result is not None:
+        return cnn_result
+    raise DiseaseModelUnavailableError(
+        "The rice disease model is unavailable. Please try again later or consult a plant doctor."
+    )
 
 
 def crop_simulation(n: float, p: float, k: float, rain: float, temp: float) -> dict:

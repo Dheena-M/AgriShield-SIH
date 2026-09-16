@@ -179,15 +179,54 @@ function toggleMobileNav(force) {
   mobile.classList.toggle("open", typeof force === "boolean" ? force : undefined);
 }
 
-function previewLeaf(event) {
-  const file = event.target.files && event.target.files[0];
+const INVALID_LEAF_MESSAGE = "Invalid Image. Please upload a clear crop/plant leaf image for disease detection.";
+
+function setLeafPreview(file) {
   const preview = document.getElementById("prev");
-  const hint = document.getElementById("uploadHint");
-  if (!file || !preview) return;
+  if (!preview || !file) return;
   if (window._leafPreviewUrl) URL.revokeObjectURL(window._leafPreviewUrl);
   window._leafPreviewUrl = URL.createObjectURL(file);
+  window._leafPreviewFile = file;
   preview.src = window._leafPreviewUrl;
   preview.hidden = false;
+}
+
+function showInvalidLeafMessage() {
+  const output = document.getElementById("detectOut");
+  if (!output) return;
+  output.innerHTML = `<div class="card" style="margin-top:14px;border-color:var(--danger)">
+    <p style="color:var(--danger);margin:0 0 8px"><b>${INVALID_LEAF_MESSAGE}</b></p>
+    <p class="muted" style="margin:0">Disease detection was not run. Use a clear daylight photo of one crop leaf.</p>
+  </div>`;
+}
+
+async function validateUploadFile(file) {
+  const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/bmp"]);
+  const allowedExtensions = /\.(jpe?g|png|webp|bmp)$/i;
+  if (!file || !file.size || file.size > 6 * 1024 * 1024) return false;
+  if (!allowedTypes.has(file.type) && !allowedExtensions.test(file.name || "")) return false;
+
+  const url = URL.createObjectURL(file);
+  try {
+    const dimensions = await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve({ width: image.naturalWidth, height: image.naturalHeight });
+      image.onerror = () => reject(new Error("Image could not be decoded"));
+      image.src = url;
+    });
+    return dimensions.width >= 48 && dimensions.height >= 48;
+  } catch (_) {
+    return false;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function previewLeaf(event) {
+  const file = event.target.files && event.target.files[0];
+  const hint = document.getElementById("uploadHint");
+  if (!file) return;
+  setLeafPreview(file);
   if (hint) hint.textContent = `${file.name} ready for analysis`;
 }
 
@@ -402,7 +441,7 @@ function scannerPage() {
       </div>
       <section class="scanner-stage">
         <div class="scan-crop-row">
-          <label for="crop">Target Crop</label>
+          <label for="crop">Crop (identified automatically)</label>
           <select id="crop" class="field"></select>
           <div class="hud-controls-bar" style="margin-left:auto">
             <div class="zoom-pills">
@@ -508,9 +547,6 @@ async function runDetect(fileOverride) {
   const leafInput = document.getElementById("leaf");
   const file = fileOverride || (leafInput && leafInput.files[0]);
   if (!file) return alert("Please select or capture a leaf photo first.");
-  if (!window._leafPreviewUrl) {
-    window._leafPreviewUrl = URL.createObjectURL(file);
-  }
   const cropEl = document.getElementById("crop");
   const crop = cropEl ? cropEl.value : "rice";
   const output = document.getElementById("detectOut");
@@ -522,15 +558,21 @@ async function runDetect(fileOverride) {
       </p>
     </div>`;
   }
+  if (window._leafPreviewFile !== file) setLeafPreview(file);
+  if (!(await validateUploadFile(file))) {
+    showInvalidLeafMessage();
+    return;
+  }
   const fd = new FormData();
   fd.append("file", file);
   fd.append("crop", crop);
   try {
     const data = await api("/api/predict", { method: "POST", body: fd });
     if (!data || data.accepted === false || !data.disease_key) {
-      throw new Error("Invalid Image. Please upload a clear crop/plant leaf image for disease detection.");
+      throw new Error(INVALID_LEAF_MESSAGE);
     }
     const meds = data.medicines || [];
+    const cropIdentification = data.crop_identification || {};
     const confPct = Math.round((data.confidence || 0.85) * 100);
     const sev = data.severity || {};
     const sesGrade = sev.ses_grade !== undefined ? sev.ses_grade : 3;
@@ -552,6 +594,7 @@ async function runDetect(fileOverride) {
         </div>
 
         <h2 style="margin:6px 0 10px;font-size:1.45rem;color:var(--moss)">${escapeHtml(pick(data.name))}</h2>
+        <p class="muted" style="margin:0 0 12px">Leaf detected: <b>Yes</b> · Crop identified: <b>${escapeHtml(cropIdentification.crop || data.crop || "Unknown")}</b> (${Math.round((cropIdentification.confidence || 0) * 100)}% confidence)</p>
         
         <div class="confidence-meter">
           <div class="confidence-bar">
@@ -573,19 +616,19 @@ async function runDetect(fileOverride) {
           <span class="ses-grade-badge ses-grade-${sesGrade}">Grade ${sesGrade}</span>
         </div>
 
-        <!-- Explainable AI (XAI) Lesion Heatmap Viewer -->
+        <!-- Lesion colour map; this is not a Grad-CAM explanation -->
         ${heatB64 ? `
           <div class="xai-card-wrapper">
             <div class="xai-tabs-bar">
-              <button type="button" class="xai-tab-button active" id="xaiTabHeat" onclick="toggleXaiView('heat')"><span class="material-symbols-outlined" style="font-size:17px">local_fire_department</span> Explainable AI (XAI) Heatmap</button>
+              <button type="button" class="xai-tab-button active" id="xaiTabHeat" onclick="toggleXaiView('heat')"><span class="material-symbols-outlined" style="font-size:17px">local_fire_department</span> Lesion Colour Map</button>
               <button type="button" class="xai-tab-button" id="xaiTabOrig" onclick="toggleXaiView('orig')"><span class="material-symbols-outlined" style="font-size:17px">photo</span> Original Leaf Photo</button>
             </div>
             <div class="xai-view-container">
-              <img id="xaiHeatImg" src="${heatB64}" alt="Explainable AI Lesion Overlay" />
+              <img id="xaiHeatImg" src="${heatB64}" alt="Lesion colour map overlay" />
               <img id="xaiOrigImg" src="${origUrl || heatB64}" alt="Original Leaf" style="display:none" />
               <div class="xai-heatmap-overlay-badge">
                 <span class="material-symbols-outlined" style="font-size:15px;color:#f87171">biotech</span>
-                <span>ExG/ExR Bio-spectral Lesion Mask (${sev.affected_area_percent || 0}% Damage)</span>
+                <span>ExG/ExR lesion colour map (${sev.affected_area_percent || 0}% affected)</span>
               </div>
             </div>
           </div>
@@ -695,14 +738,21 @@ async function runDetect(fileOverride) {
     speak(`${pick(data.name)}. ${pick(data.advice)}`);
   } catch (err) {
     const invalid = /invalid image/i.test(err.message || "");
+    const cropUnavailable = /crop identification is unavailable/i.test(err.message || "");
     const message = invalid
-      ? "Invalid Image. Please upload a clear crop/plant leaf image for disease detection."
+      ? INVALID_LEAF_MESSAGE
       : err.message;
     if (output) {
+      const unavailable = cropUnavailable || /model is unavailable/i.test(err.message || "");
       output.innerHTML = invalid
         ? `<div class="card" style="margin-top:14px;border-color:var(--danger)">
             <p style="color:var(--danger);margin:0 0 8px"><b>${escapeHtml(message)}</b></p>
             <p class="muted" style="margin:0">Disease detection was not run. Use a daylight photo of one crop leaf, filling most of the frame.</p>
+          </div>`
+        : unavailable
+        ? `<div class="card" style="margin-top:14px;border-color:var(--warning,#d97706)">
+            <p style="color:var(--warning,#d97706);margin:0 0 8px"><b>${cropUnavailable ? "Crop identification is temporarily unavailable." : escapeHtml(err.message)}</b></p>
+            <p class="muted" style="margin:0">No disease name or confidence score was generated. Please try again later or consult a plant doctor.</p>
           </div>`
         : `<div class="card" style="margin-top:14px;border-color:var(--danger)"><p style="color:var(--danger)"><b>Analysis error:</b> ${escapeHtml(err.message)}</p><p class="muted">Please ensure the uploaded file is a valid image (JPG, PNG, WEBP).</p></div>`;
     }
@@ -752,10 +802,7 @@ function captureCameraPhoto() {
     if (leaf) leaf.files = container.files;
     const imgPrev = document.getElementById("prev");
     if (imgPrev) {
-      if (window._leafPreviewUrl) URL.revokeObjectURL(window._leafPreviewUrl);
-      window._leafPreviewUrl = URL.createObjectURL(blob);
-      imgPrev.src = window._leafPreviewUrl;
-      imgPrev.hidden = false;
+      setLeafPreview(file);
     }
     const hint = document.getElementById("uploadHint");
     if (hint) hint.textContent = "Camera snapshot ready for analysis";
@@ -785,10 +832,7 @@ function analyzeVideoFrame() {
       const frameFile = new File([blob], "leaf-video-frame.jpg", { type: "image/jpeg" });
       const imgPrev = document.getElementById("prev");
       if (imgPrev) {
-        if (window._leafPreviewUrl) URL.revokeObjectURL(window._leafPreviewUrl);
-        window._leafPreviewUrl = URL.createObjectURL(blob);
-        imgPrev.src = window._leafPreviewUrl;
-        imgPrev.hidden = false;
+        setLeafPreview(frameFile);
       }
       runDetect(frameFile);
     }, "image/jpeg", 0.9);
@@ -2800,4 +2844,3 @@ window.addEventListener("appinstalled", () => {
 
 updateConnectivity();
 render();
-

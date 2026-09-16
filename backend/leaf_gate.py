@@ -29,6 +29,8 @@ def evaluate_leaf_image(image_bytes: bytes) -> dict:
 
     try:
         with Image.open(io.BytesIO(image_bytes)) as raw:
+            if (raw.format or "").upper() not in {"JPEG", "PNG", "WEBP", "BMP"}:
+                return _reject("unsupported_format")
             raw.load()
             raw = ImageOps.exif_transpose(raw)
             img = raw.convert("RGB")

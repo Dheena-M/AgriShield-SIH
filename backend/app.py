@@ -40,8 +40,21 @@ def load_local_env(path: Path) -> None:
 load_local_env(ROOT / ".env")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from ai import analyze_leaf, cnn_status, crop_simulation, predict_risk
+from ai import (
+    DiseaseModelUnavailableError,
+    UnsupportedDiseaseCropError,
+    analyze_leaf,
+    cnn_status,
+    crop_simulation,
+    predict_risk,
+)
 from leaf_gate import INVALID_LEAF_MESSAGE, evaluate_leaf_image
+from crop_classifier import (
+    CropClassifierUnavailableError,
+    CropIdentificationUncertainError,
+    crop_classifier_status,
+    identify_crop,
+)
 from advisor_models import crop_profiles, crop_recommendations, soil_health, yield_estimate
 from catalog import feature_catalog
 from db import SessionLocal, UPLOADS, engine
@@ -76,15 +89,25 @@ from models import (
     User,
 )
 
-SECRET = os.environ.get("AGRISHIELD_SECRET", "agrishield-sih-demo-secret")
+ENVIRONMENT = os.environ.get("AGRISHIELD_ENV", "development").strip().lower()
+SECRET = os.environ.get("AGRISHIELD_SECRET", "").strip()
+if not SECRET:
+    if ENVIRONMENT in {"production", "staging"}:
+        raise RuntimeError("AGRISHIELD_SECRET must be configured outside development.")
+    SECRET = "development-only-change-me"
 ALGO = "HS256"
 
 app = FastAPI(title="AgriShield", version="1.0")
 WEATHER_CACHE: dict[tuple[float, float], tuple[datetime, dict]] = {}
 FORECAST_CACHE: dict[tuple[float, float], tuple[datetime, dict]] = {}
+configured_origins = os.environ.get(
+    "AGRISHIELD_CORS_ORIGINS",
+    "http://127.0.0.1:8000,http://localhost:8000",
+)
+cors_origins = [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -842,15 +865,33 @@ async def predict(
     gate = evaluate_leaf_image(data)
     if not gate["accepted"]:
         raise HTTPException(400, INVALID_LEAF_MESSAGE)
+    try:
+        crop_identification = identify_crop(data)
+    except CropIdentificationUncertainError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    except CropClassifierUnavailableError as exc:
+        raise HTTPException(503, str(exc)) from exc
+    crop = crop_identification["crop"]
+    try:
+        result = analyze_leaf(data, crop)
+    except UnsupportedDiseaseCropError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except DiseaseModelUnavailableError as exc:
+        raise HTTPException(503, str(exc)) from exc
     dest = UPLOADS / f"{datetime.utcnow().timestamp()}_{Path(file.filename or 'leaf.jpg').name}"
     dest.write_bytes(data)
-    result = analyze_leaf(data, crop)
     result["leaf_validation"] = {"accepted": True, "reason": gate["reason"]}
+    result["crop_identification"] = crop_identification
     month = datetime.utcnow().month
     crop_idx = CROPS.index(crop) if crop in CROPS else 2
     risk, _ = predict_risk(crop_idx, month, 120, 28, 78, 0)
     result["crop"] = crop
     result["risk"] = risk
+    result["risk_model"] = {
+        "name": "Agronomic risk baseline",
+        "mode": "prototype_synthetic_labels",
+        "disclaimer": "Risk is a prototype estimate from generated rule labels, not a field-validated epidemiological model.",
+    }
 
     # Escalation Check: Low confidence (<0.65) or Severe/Critical SES Grade (>=7)
     ses_grade = result.get("severity", {}).get("ses_grade", 0)
@@ -1335,7 +1376,11 @@ def weather_forecast(lat: float, lon: float):
 @app.get("/api/model-status")
 def model_status():
     """Reports model availability without exposing model files."""
-    return {"cnn": cnn_status(load=True), "yolo": {"active": False, "reason": "YOLO weights and labelled bounding-box dataset have not been added."}}
+    return {
+        "crop_classifier": crop_classifier_status(load=True),
+        "cnn": cnn_status(load=True),
+        "yolo": {"active": False, "reason": "YOLO weights and labelled bounding-box dataset have not been added."},
+    }
 
 
 def lan_phone_urls(port: int = 8000) -> list[str]:
@@ -1364,8 +1409,6 @@ def lan_phone_urls(port: int = 8000) -> list[str]:
 def health_check():
     status = cnn_status()
     return {"status": "ok", "environment": os.environ.get("AGRISHIELD_ENV", "development"), "services": {"database": "sqlite", "mongodb": mongo_status(), "live_weather_configured": bool(os.environ.get("OPENWEATHER_API_KEY")), "rice_cnn_weights_present": status["weights_present"], "rice_cnn_loaded": status["loaded"]}}
-
-
 @app.get("/api/phone-link")
 def phone_link():
     urls = lan_phone_urls()
@@ -1649,4 +1692,3 @@ def phone_install():
 @app.get("/")
 def index():
     return FileResponse(frontend_dir / "index.html")
-
