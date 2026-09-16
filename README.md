@@ -45,6 +45,7 @@ Implementation notes
 - Slot availability is checked on the backend and active doctor slots have a database-level uniqueness rule to prevent double booking.
 - Only the assigned doctor can accept an appointment or write notes. Only the appointment farmer or doctor can access an accepted consultation chat.
 - Doctor profiles must be verified before a farmer can book them. Uploaded plant photos are size/type checked and stored outside the public static files.
+- Farmers can confirm or flag their own AI scan results, while verified doctors can review field confirmations through `/api/field-confirmations`. Corrections are stored with reviewer and timestamp for evaluation; they are not silently used for retraining.
 
 Honest SIH note
 ---------------

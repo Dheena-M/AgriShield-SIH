@@ -119,6 +119,12 @@ class Prediction(Base):
     confidence = Column(Float)
     risk = Column(String(20))
     created_at = Column(DateTime, default=datetime.utcnow)
+    feedback_status = Column(String(20), nullable=True)  # confirmed | incorrect
+    corrected_crop = Column(String(80), nullable=True)
+    corrected_disease = Column(String(80), nullable=True)
+    feedback_note = Column(Text, nullable=True)
+    reviewed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    reviewed_at = Column(DateTime, nullable=True)
 
 
 class CartItem(Base):

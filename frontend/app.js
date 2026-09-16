@@ -595,6 +595,16 @@ async function runDetect(fileOverride) {
 
         <h2 style="margin:6px 0 10px;font-size:1.45rem;color:var(--moss)">${escapeHtml(pick(data.name))}</h2>
         <p class="muted" style="margin:0 0 12px">Leaf detected: <b>Yes</b> · Crop identified: <b>${escapeHtml(cropIdentification.crop || data.crop || "Unknown")}</b> (${Math.round((cropIdentification.confidence || 0) * 100)}% confidence)</p>
+        ${data.prediction_id && state.token ? `
+          <div class="card" style="margin:12px 0;border-color:var(--line)">
+            <p style="margin:0 0 8px"><b>Was this field result correct?</b></p>
+            <div class="row" style="gap:8px;flex-wrap:wrap">
+              <button class="btn light" type="button" onclick="submitScanFeedback(${data.prediction_id}, 'confirmed')">Confirm result</button>
+              <button class="ghost" type="button" onclick="submitScanFeedback(${data.prediction_id}, 'incorrect')">Mark as incorrect</button>
+            </div>
+            <small class="muted" id="feedback-${data.prediction_id}">Your confirmation helps improve field evaluation.</small>
+          </div>
+        ` : ""}
         
         <div class="confidence-meter">
           <div class="confidence-bar">
@@ -756,6 +766,25 @@ async function runDetect(fileOverride) {
           </div>`
         : `<div class="card" style="margin-top:14px;border-color:var(--danger)"><p style="color:var(--danger)"><b>Analysis error:</b> ${escapeHtml(err.message)}</p><p class="muted">Please ensure the uploaded file is a valid image (JPG, PNG, WEBP).</p></div>`;
     }
+  }
+}
+
+async function submitScanFeedback(predictionId, status) {
+  const note = status === "incorrect"
+    ? window.prompt("Optional: what was the correct crop or disease?") || ""
+    : "";
+  const form = new FormData();
+  form.append("status", status);
+  form.append("note", note);
+  const target = document.getElementById(`feedback-${predictionId}`);
+  try {
+    const result = await api(`/api/predictions/${predictionId}/feedback`, {
+      method: "POST",
+      body: form,
+    });
+    if (target) target.textContent = `Field result ${result.feedback_status}. Thank you for the verification.`;
+  } catch (error) {
+    if (target) target.textContent = error.message || "Could not save field confirmation.";
   }
 }
 

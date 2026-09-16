@@ -26,6 +26,7 @@ Invalid images never receive a disease name or confidence score.
 - Model boundary: rice-only disease model; missing weights produce a model-unavailable response.
 - Risk note: the current agronomic risk baseline uses generated rule labels and is explicitly prototype-labelled.
 - Explainability note: the output is a lesion colour map, not Grad-CAM.
+- Field-learning loop: farmers confirm or flag scan results, and verified doctors can review corrections with timestamps before any future retraining.
 
 ## Slide 4 — Evidence and honesty
 

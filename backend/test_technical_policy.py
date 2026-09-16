@@ -138,6 +138,39 @@ class TechnicalPolicyTests(unittest.TestCase):
             app.book(2, date, "09:00", "", None, farmer, Database())
         self.assertEqual(error.exception.status_code, 409)
 
+    def test_farmer_can_confirm_own_prediction(self):
+        import app
+        from models import Prediction
+
+        prediction = Prediction(id=3, user_id=7, crop="rice", disease_key="blast", confidence=0.9, risk="Low")
+        farmer = type("Farmer", (), {"id": 7, "role": "farmer"})()
+
+        class Database:
+            def get(self, model, identifier):
+                return prediction
+
+            def commit(self):
+                return None
+
+        result = app.submit_prediction_feedback(3, "confirmed", "", "", "", farmer, Database())
+        self.assertEqual(result["feedback_status"], "confirmed")
+        self.assertEqual(prediction.reviewed_by, 7)
+
+    def test_unrelated_farmer_cannot_review_prediction(self):
+        import app
+        from models import Prediction
+
+        prediction = Prediction(id=3, user_id=7, crop="rice", disease_key="blast", confidence=0.9, risk="Low")
+        farmer = type("Farmer", (), {"id": 8, "role": "farmer"})()
+
+        class Database:
+            def get(self, model, identifier):
+                return prediction
+
+        with self.assertRaises(app.HTTPException) as error:
+            app.submit_prediction_feedback(3, "confirmed", "", "", "", farmer, Database())
+        self.assertEqual(error.exception.status_code, 403)
+
 
 if __name__ == "__main__":
     unittest.main()

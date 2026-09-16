@@ -329,6 +329,24 @@ def seed_outbreaks(db: Session):
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(bind=engine)
+    with engine.begin() as connection:
+        columns = {
+            row[1]
+            for row in connection.exec_driver_sql("PRAGMA table_info(predictions)").fetchall()
+        }
+        additions = {
+            "feedback_status": "VARCHAR(20)",
+            "corrected_crop": "VARCHAR(80)",
+            "corrected_disease": "VARCHAR(80)",
+            "feedback_note": "TEXT",
+            "reviewed_by": "INTEGER",
+            "reviewed_at": "DATETIME",
+        }
+        for name, definition in additions.items():
+            if name not in columns:
+                connection.exec_driver_sql(
+                    f"ALTER TABLE predictions ADD COLUMN {name} {definition}"
+                )
     initialize_mongo()
     db = SessionLocal()
     try:
@@ -944,16 +962,16 @@ async def predict(
             "success": False,
         }
 
-    db.add(
-        Prediction(
-            user_id=user.id if user else None,
-            crop=crop,
-            disease_key=result["disease_key"],
-            confidence=result["confidence"],
-            risk=risk,
-        )
+    prediction = Prediction(
+        user_id=user.id if user else None,
+        crop=crop,
+        disease_key=result["disease_key"],
+        confidence=result["confidence"],
+        risk=risk,
     )
+    db.add(prediction)
     db.commit()
+    result["prediction_id"] = prediction.id
     result["mongo_saved"] = record_prediction({
         "sqlite_user_id": user.id if user else None,
         "crop": crop,
@@ -1371,6 +1389,72 @@ def weather_forecast(lat: float, lon: float):
     result = {"location": payload.get("city", {}).get("name", "Selected location"), "days": days, "alerts": alerts, "cached": False}
     FORECAST_CACHE[cache_key] = (datetime.utcnow(), result)
     return result
+
+
+@app.post("/api/predictions/{prediction_id}/feedback")
+def submit_prediction_feedback(
+    prediction_id: int,
+    status: str = Form(...),
+    corrected_crop: str = Form(""),
+    corrected_disease: str = Form(""),
+    note: str = Form(""),
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+):
+    status = status.strip().lower()
+    if status not in {"confirmed", "incorrect"}:
+        raise HTTPException(400, "Feedback status must be confirmed or incorrect")
+    prediction = db.get(Prediction, prediction_id)
+    if not prediction:
+        raise HTTPException(404, "Prediction not found")
+    if user.role != "doctor" and prediction.user_id != user.id:
+        raise HTTPException(403, "Only the farmer who submitted the scan or a doctor can review it")
+    if user.role == "doctor" and not user.doctor_profile:
+        raise HTTPException(403, "Doctor verification is required to review field predictions")
+    prediction.feedback_status = status
+    prediction.corrected_crop = corrected_crop.strip().lower() or None
+    prediction.corrected_disease = corrected_disease.strip().lower() or None
+    prediction.feedback_note = note.strip()[:2000] or None
+    prediction.reviewed_by = user.id
+    prediction.reviewed_at = datetime.utcnow()
+    db.commit()
+    return {
+        "prediction_id": prediction.id,
+        "feedback_status": prediction.feedback_status,
+        "corrected_crop": prediction.corrected_crop,
+        "corrected_disease": prediction.corrected_disease,
+        "reviewed_at": prediction.reviewed_at.isoformat(),
+    }
+
+
+@app.get("/api/field-confirmations")
+def list_field_confirmations(
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+):
+    if user.role != "doctor":
+        raise HTTPException(403, "Doctor access required")
+    rows = (
+        db.query(Prediction)
+        .filter(Prediction.feedback_status.isnot(None))
+        .order_by(Prediction.reviewed_at.desc())
+        .limit(100)
+        .all()
+    )
+    return [
+        {
+            "prediction_id": row.id,
+            "crop": row.crop,
+            "disease_key": row.disease_key,
+            "confidence": row.confidence,
+            "feedback_status": row.feedback_status,
+            "corrected_crop": row.corrected_crop,
+            "corrected_disease": row.corrected_disease,
+            "feedback_note": row.feedback_note,
+            "reviewed_at": row.reviewed_at.isoformat() if row.reviewed_at else None,
+        }
+        for row in rows
+    ]
 
 
 @app.get("/api/model-status")
