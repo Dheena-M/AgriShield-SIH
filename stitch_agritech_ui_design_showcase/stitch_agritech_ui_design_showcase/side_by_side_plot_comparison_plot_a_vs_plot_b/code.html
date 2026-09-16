@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-low": "#f8f3e7", "outline": "#727972", "on-primary-fixed": "#002110", "on-primary-container": "#84a88f", "tertiary-container": "#c9a851", "on-secondary-fixed-variant": "#005228", "primary-container": "#1c3d2a", "tertiary-fixed-dim": "#e6c369", "surface-variant": "#e7e2d6", "on-secondary-container": "#237240", "primary-fixed": "#c6ecd0", "inverse-primary": "#aacfb5", "secondary-fixed-dim": "#89d89c", "error-container": "#ffdad6", "on-surface-variant": "#424843", "on-primary": "#ffffff", "tertiary-fixed": "#ffdf92", "on-tertiary-container": "#503d00", "outline-variant": "#c2c8c1", "on-error": "#ffffff", "error": "#ba1a1a", "inverse-surface": "#323029", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "surface": "#fef9ed", "surface-bright": "#fef9ed", "on-error-container": "#93000a", "primary": "#042716", "secondary-container": "#a4f5b6", "surface-container-highest": "#e7e2d6", "on-tertiary-fixed": "#241a00", "on-secondary-fixed": "#00210c", "on-tertiary-fixed-variant": "#594400", "surface-dim": "#dedace", "on-tertiary": "#ffffff", "secondary-fixed": "#a4f5b6", "secondary": "#1b6c3b", "surface-container-high": "#ede8dc", "surface-tint": "#446650", "on-background": "#1d1c15", "primary-fixed-dim": "#aacfb5", "on-primary-fixed-variant": "#2d4e39", "inverse-on-surface": "#f5f0e4", "on-surface": "#1d1c15", "tertiary": "#755b06", "background": "#fef9ed", "surface-container": "#f2ede2" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-tablet": "1.5rem", "gutter": "1rem", "space-lg": "1.5rem", "margin": "1rem", "space-md": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "space-xl": "2rem" }, "fontFamily": { "label-lg": ["Outfit"], "label-md": ["Outfit"], "title-lg": ["Outfit"], "body-sm": ["Outfit"], "headline-sm": ["Newsreader"], "headline-lg": ["Newsreader"], "label-sm": ["Outfit"], "title-md": ["Outfit"], "body-md": ["Outfit"], "body-lg": ["Outfit"], "display": ["Newsreader"], "headline-md": ["Newsreader"] }, "fontSize": { "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_2px_8px_-2px_rgba(28,61,42,0.08)]"><div class="h-24 px-margin flex flex-col justify-center gap-space-xs"><div class="flex items-center justify-between w-full"><div class="flex items-center gap-space-sm"><img alt="AgriShield Mobile Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VH69RNA1WI2pcLPZUTeICCNA-2nlO6O571gb-jtK22NxN4dtgzPKp2EmfbfCDGoNd52n2SyxSqFMClF9Rt68O6nix1onR6MkRczE0JCXj9YZcSaWl48E-moJwlC8T93QUfhlVirDlb3TB_k18jbsRdMitoteDdkzBIMmJoSSi7H1H4c_We1CDXLHVGArOHhYgBdcZJ03lAjWhwxqHBHV_8eELHR9GD7LkhkGs_Uynb8F6TngI64al0_Kaz"/><div class="flex flex-col"><span class="font-title-md text-title-md text-primary tracking-tight leading-none">AgriShield</span><span class="font-label-sm text-label-sm text-secondary font-medium tracking-wide leading-tight">My Farm</span></div></div><div class="flex items-center gap-space-sm"><div class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-secondary-container/60 text-on-secondary-fixed-variant font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span>Online · Synced</span></div><button aria-label="Notifications" class="relative w-11 h-11 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span></button><div class="flex items-center justify-center p-0.5 rounded-full bg-primary-fixed"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkWcbyrjeCBPR4whpnSgdCRETeTAs3v2SlFAiiOZkjLZKHBEkCK_63KKeO19t5hoZjsa-Hr5xOJvzsOLO5Q7c5sLbzYCdyRDtq8Atxarr7B7W2vggHSKIWujUNR0J7z-hb6WL4ua-t9HicKE9lgPO9JC3bgVZu1Q0z1PLvaaIkIK9XhYSdeVpmQG2QC7sMvXdIeT3VS_sQ5IBm8RJk2bW3SLAGktlPOGMhe9JTAfWFdg1VmGAmECE1cw"/></div></div></div><div class="flex items-center justify-between w-full pt-1"><div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5"><button class="px-2.5 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-sm" type="button">EN</button><button class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm transition-colors" type="button">हिन्दी</button><button class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm transition-colors" type="button">தமிழ்</button><button class="px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm transition-colors" type="button">मराठी</button></div><div class="flex items-center text-on-surface-variant font-label-sm text-label-sm gap-1"><span class="material-symbols-outlined text-[15px] text-secondary">wb_sunny</span><span>31°C · Field Clear</span></div></div></div></header><main class="flex flex-col relative w-full pt-24 pb-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Utility Context Bar -->
+<div class="px-margin pt-space-xs pb-space-sm flex items-center justify-between">
+<button class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-primary font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Soil &amp; Plot Analytics</span>
+</button>
+<button class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-tertiary-fixed text-on-tertiary-fixed shadow-sm hover:bg-tertiary-fixed-dim transition-all active:scale-95" id="audioGuideBtn" type="button">
+<span class="material-symbols-outlined text-[17px] text-tertiary">volume_up</span>
+<span class="font-label-sm text-label-sm font-semibold">मराठी Audio Guide</span>
+</button>
+</div>
+<!-- Screen Title Header -->
+<div class="px-margin mb-space-md">
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Telemetry · Dual Diagnostic</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary leading-tight">Multi-Plot Diagnostic Comparison</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Simultaneous field sensor telemetry &amp; Soil Health Card benchmark</p>
+</div>
+<!-- Dual Plot Selector Control Bar -->
+<div class="px-margin mb-space-md">
+<div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-surface-container-high">
+<!-- Plot A Active Selector -->
+<div class="p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-1">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">PLOT A</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+</button>
+</div>
+<div class="font-title-md text-title-md text-primary truncate leading-snug">Basmati Rice</div>
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span>2.0 Ha · Kharif</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+</div>
+<!-- Plot B Active Selector -->
+<div class="p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-1">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">PLOT B</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+</button>
+</div>
+<div class="font-title-md text-title-md text-primary truncate leading-snug">Sugarcane Co 86032</div>
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span>1.5 Ha · Ratoon 1</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 1: Dual Column Plot Profiles & Vitals -->
+<div class="px-margin mb-space-md">
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm border-b border-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">eco</span>
+<h2 class="font-title-md text-title-md text-primary">Plot Profiles &amp; Soil Index</h2>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">ICAR Spec</span>
+</div>
+<!-- Side-by-Side Metadata Cards -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Plot A Col -->
+<div class="flex flex-col gap-2 p-2.5 rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-on-surface-variant">PLOT A VITALS</span>
+<span class="material-symbols-outlined text-[16px] text-primary">water_drop</span>
+</div>
+<!-- Soil Health Score Plot A -->
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary">74</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 100</span>
+</div>
+<span class="self-start px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+            Gradual Recovery
+          </span>
+<div class="mt-1 space-y-1.5 pt-1.5 border-t border-surface-variant">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Phenology</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Day 28 Tillering</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Soil Class</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Heavy Clay Loam</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Irrigation Regime</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Canal Flood Basin</span>
+</div>
+</div>
+</div>
+<!-- Plot B Col -->
+<div class="flex flex-col gap-2 p-2.5 rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-on-surface-variant">PLOT B VITALS</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">valve</span>
+</div>
+<!-- Soil Health Score Plot B -->
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-secondary">86</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 100</span>
+</div>
+<span class="self-start px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">
+            Optimal Fertility
+          </span>
+<div class="mt-1 space-y-1.5 pt-1.5 border-t border-surface-variant">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Phenology</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Grand Growth</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Soil Class</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Sandy Loam</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Irrigation Regime</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Drip Fertigation</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 2: Macro-Nutrient Benchmark (N-P-K) -->
+<div class="px-margin mb-space-md">
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-tertiary">science</span>
+<h2 class="font-title-md text-title-md text-primary">N-P-K Macro-Nutrient Delta</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Target kg/Ha</span>
+</div>
+<!-- Sub header indicator key -->
+<div class="flex items-center gap-4 mb-space-sm px-1">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Plot A (Rice)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Plot B (Cane)</span>
+</div>
+</div>
+<!-- 1. NITROGEN (N) COMPARISON -->
+<div class="p-space-sm rounded-xl bg-surface-container-low mb-space-sm">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center font-bold text-[12px]">N</span>
+<span class="font-title-md text-title-md text-primary">Available Nitrogen</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">High Divergence</span>
+</div>
+<!-- Metric Bars -->
+<div class="space-y-2 mb-2">
+<!-- Plot A Bar -->
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1">
+<span class="text-on-surface">Plot A: <strong class="font-semibold text-primary">185 kg/ha</strong></span>
+<span class="text-error font-semibold">-95 deficit (280 target)</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+<!-- Plot B Bar -->
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1">
+<span class="text-on-surface">Plot B: <strong class="font-semibold text-secondary">295 kg/ha</strong></span>
+<span class="text-tertiary font-semibold">-25 mild (320 target)</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+</div>
+<!-- Comparative insight pill -->
+<div class="flex items-start gap-1.5 p-2 rounded-lg bg-surface-container text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[17px] text-tertiary flex-shrink-0 mt-0.5">lightbulb</span>
+<span>Plot B maintains <strong>+110 kg/ha higher N reserves</strong> attributed to cane trash-mulch organic decomposition.</span>
+</div>
+</div>
+<!-- 2. PHOSPHORUS (P2O5) COMPARISON -->
+<div class="p-space-sm rounded-xl bg-surface-container-low mb-space-sm">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center font-bold text-[12px]">P</span>
+<span class="font-title-md text-title-md text-primary">Phosphorus (P₂O₅)</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Safe Margin</span>
+</div>
+<!-- Metric Bars -->
+<div class="space-y-2">
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1">
+<span class="text-on-surface">Plot A: <strong class="font-semibold text-primary">24.5 kg/ha</strong></span>
+<span class="text-secondary font-semibold">Sufficient</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1">
+<span class="text-on-surface">Plot B: <strong class="font-semibold text-secondary">38.0 kg/ha</strong></span>
+<span class="text-secondary font-semibold">Optimal High</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 95%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. POTASSIUM (K2O) COMPARISON -->
+<div class="p-space-sm rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center font-bold text-[12px]">K</span>
+<span class="font-title-md text-title-md text-primary">Potassium (K₂O)</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Balanced</span>
+</div>
+<!-- Metric Bars -->
+<div class="space-y-2">
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1">
+<span class="text-on-surface">Plot A: <strong class="font-semibold text-primary">290 kg/ha</strong></span>
+<span class="text-secondary font-semibold">Resilient</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 82%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1">
+<span class="text-on-surface">Plot B: <strong class="font-semibold text-secondary">310 kg/ha</strong></span>
+<span class="text-secondary font-semibold">Optimal Peak</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Secondary Soil Indicators & Live Telemetry -->
+<div class="px-margin mb-space-md">
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">sensors</span>
+<h2 class="font-title-md text-title-md text-primary">Soil Physics &amp; Live Telemetry</h2>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span>Live 5m ago</span>
+</div>
+</div>
+<!-- 2x2 Comparison Matrix for Secondary Indicators -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- 1. pH Comparison -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Soil Reaction (pH)</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">bubble_chart</span>
+</div>
+<div class="grid grid-cols-2 gap-2 my-1">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Plot A</span>
+<div class="font-headline-sm text-headline-sm text-primary">6.4</div>
+<span class="font-label-sm text-label-sm text-tertiary">Slightly Acidic</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Plot B</span>
+<div class="font-headline-sm text-headline-sm text-secondary">7.1</div>
+<span class="font-label-sm text-label-sm text-secondary">Ideal Neutral</span>
+</div>
+</div>
+</div>
+<!-- 2. Organic Carbon Comparison -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Organic Humus (OC)</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">compost</span>
+</div>
+<div class="grid grid-cols-2 gap-2 my-1">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Plot A</span>
+<div class="font-headline-sm text-headline-sm text-primary">0.82%</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Moderate</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Plot B</span>
+<div class="font-headline-sm text-headline-sm text-secondary">1.04%</div>
+<span class="font-label-sm text-label-sm text-secondary">+27% Humus</span>
+</div>
+</div>
+</div>
+<!-- 3. Moisture & Sensor Temp -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Moisture &amp; Temp</span>
+<span class="material-symbols-outlined text-[16px] text-primary">device_thermostat</span>
+</div>
+<div class="space-y-1 my-1">
+<div class="flex justify-between items-baseline">
+<span class="font-label-sm text-label-sm text-on-surface">Plot A</span>
+<span class="font-title-md text-title-md text-primary font-semibold">34% <span class="text-body-sm font-normal text-on-surface-variant">· 26.2°C</span></span>
+</div>
+<div class="flex justify-between items-baseline">
+<span class="font-label-sm text-label-sm text-on-surface">Plot B</span>
+<span class="font-title-md text-title-md text-secondary font-semibold">22% <span class="text-body-sm font-normal text-on-surface-variant">· 28.4°C</span></span>
+</div>
+<span class="block font-label-sm text-label-sm text-tertiary pt-0.5">Plot B Drip queued: 2h</span>
+</div>
+</div>
+<!-- 4. Electrical Conductivity -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Conductivity (EC)</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">electric_bolt</span>
+</div>
+<div class="grid grid-cols-2 gap-2 my-1">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Plot A</span>
+<div class="font-headline-sm text-headline-sm text-primary">0.72</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">dS/m (Safe)</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Plot B</span>
+<div class="font-headline-sm text-headline-sm text-secondary">0.65</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">dS/m (Non-saline)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 4: Agronomic Differences & Actionable Prescriptions -->
+<div class="px-margin mb-space-md">
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm pb-space-xs border-b border-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">fact_check</span>
+<h2 class="font-title-md text-title-md text-primary">Split Action Prescriptions</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Stage Tailored</span>
+</div>
+<!-- Prescriptions split -->
+<div class="space-y-space-sm">
+<!-- Plot A Prescription -->
+<div class="p-space-sm rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">PLOT A</span>
+<span class="font-title-md text-title-md text-primary">Rice Nutrient Recovery</span>
+</div>
+<span class="inline-flex items-center gap-1 text-error font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">warning</span> Action Required
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mb-2">
+            Top-dress with <strong>84 kg Neem-Coated Urea</strong> + Bio-fertilizer (<em>Azospirillum</em> 2 kg/ha) prior to Day 35 canal flooding cycle.
+          </p>
+<div class="flex items-center gap-2 pt-1.5 border-t border-surface-variant text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary">pest_control</span>
+<span><strong>Pest Threat:</strong> Moderate risk for Brown Spot (<em>Helminthosporium</em>) under persistent canopy humidity.</span>
+</div>
+</div>
+<!-- Plot B Prescription -->
+<div class="p-space-sm rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">PLOT B</span>
+<span class="font-title-md text-title-md text-primary">Sugarcane Elongation</span>
+</div>
+<span class="inline-flex items-center gap-1 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> On Schedule
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mb-2">
+            Apply water-soluble <strong>0:0:50 Sulphate of Potash (15 kg/ha)</strong> via drip line venturi for stalk elongation &amp; brix synthesis.
+          </p>
+<div class="flex items-center gap-2 pt-1.5 border-t border-surface-variant text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">health_and_safety</span>
+<span><strong>Pest Threat:</strong> Low risk, zero borer signs. Cane canopy fully closed.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 5: Quick Action & Field Operations CTAs -->
+<div class="px-margin mb-space-lg space-y-space-sm">
+<!-- Primary CTA Button -->
+<button class="w-full h-14 rounded-full bg-primary-container text-on-primary font-title-md text-title-md shadow-md hover:bg-secondary transition-all flex items-center justify-center gap-2 active:scale-[0.99]" type="button">
+<span class="material-symbols-outlined text-[22px]">assignment_turned_in</span>
+<span>Apply Split Prescription for Both Plots</span>
+</button>
+<!-- Secondary Split CTA Buttons -->
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="h-12 rounded-xl bg-surface-container-lowest text-primary font-title-md text-title-md shadow-sm hover:bg-surface-container transition-all flex items-center justify-center gap-1.5 px-2" type="button">
+<span class="material-symbols-outlined text-[19px] text-secondary">picture_as_pdf</span>
+<span class="truncate font-body-sm text-body-sm font-semibold">Export PDF Report</span>
+</button>
+<button class="h-12 rounded-xl bg-surface-container-lowest text-primary font-title-md text-title-md shadow-sm hover:bg-surface-container transition-all flex items-center justify-center gap-1.5 px-2" type="button">
+<span class="material-symbols-outlined text-[19px] text-tertiary">support_agent</span>
+<span class="truncate font-body-sm text-body-sm font-semibold">Consult Expert</span>
+</button>
+</div>
+<!-- Regulatory Compliance / Benchmark Footer Note -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary flex-shrink-0">verified</span>
+<p class="font-body-sm text-body-sm leading-tight">
+        Calibrated with KVK Sangli &amp; ICAR Agro-Climatic Zone IV protocols for precision sugarcane and paddy rotations.
+      </p>
+</div>
+</div>
+</div>
+<script>
+  // Simple interactive audio toggle feedback
+  const audioBtn = document.getElementById('audioGuideBtn');
+  if (audioBtn) {
+    let isPlaying = false;
+    audioBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      const icon = audioBtn.querySelector('.material-symbols-outlined');
+      const text = audioBtn.querySelector('span:last-child');
+      if (isPlaying) {
+        audioBtn.classList.add('bg-secondary-container', 'text-on-secondary-fixed-variant');
+        audioBtn.classList.remove('bg-tertiary-fixed', 'text-on-tertiary-fixed');
+        icon.innerText = 'pause_circle';
+        text.innerText = 'ऐकत आहे... (Playing)';
+      } else {
+        audioBtn.classList.remove('bg-secondary-container', 'text-on-secondary-fixed-variant');
+        audioBtn.classList.add('bg-tertiary-fixed', 'text-on-tertiary-fixed');
+        icon.innerText = 'volume_up';
+        text.innerText = 'मराठी Audio Guide';
+      }
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-4px_16px_rgba(28,61,42,0.06)]" data-active-classes="text-secondary font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] transition-colors text-secondary font-semibold" data-path="my-farm" href="#"><span class="material-symbols-outlined text-[24px]">potted_plant</span><span class="font-label-sm text-label-sm mt-0.5">My Farm</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant -mt-5 group" data-path="ai-doctor" href="#"><div class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_4px_12px_rgba(28,61,42,0.25)] transition-transform group-active:scale-95"><span class="material-symbols-outlined text-[26px] text-secondary-fixed">document_scanner</span></div><span class="font-label-sm text-label-sm mt-1 text-primary font-semibold">AI Doctor</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="consult" href="#"><span class="material-symbols-outlined text-[24px]">support_agent</span><span class="font-label-sm text-label-sm mt-0.5">Consult</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="store" href="#"><span class="material-symbols-outlined text-[24px]">storefront</span><span class="font-label-sm text-label-sm mt-0.5">Store</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-w-[56px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="tools" href="#"><span class="material-symbols-outlined text-[24px]">construction</span><span class="font-label-sm text-label-sm mt-0.5">Tools</span></a></div></nav></body></html>

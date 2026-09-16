@@ -1,0 +1,5 @@
+# Install in a separate Python 3.11 or 3.12 virtual environment.
+tensorflow>=2.16,<2.19
+scikit-learn>=1.5
+pillow>=10
+numpy>=1.26

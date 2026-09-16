@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Put AgriShield on your phone</title>
+  <style>
+    body { margin: 0; font-family: Segoe UI, sans-serif; background: #10251a; color: #f4efe3; }
+    .box { max-width: 520px; margin: 0 auto; padding: 32px 20px; text-align: center; }
+    h1 { margin: 0 0 12px; }
+    .url { font-size: 1.35rem; word-break: break-all; background: #1c3d2a; padding: 14px; border-radius: 12px; }
+    img { margin: 20px 0; background: #fff; padding: 12px; border-radius: 12px; }
+    ol { text-align: left; line-height: 1.55; color: #d7e3d6; }
+    a { color: #6ee7b7; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Phone app (one icon)</h1>
+    <p>Keep this PC on the same Wi-Fi as the phone. Backend, website and LLM stay on the PC.</p>
+    <p class="url" id="url">Loading…</p>
+    <img id="qr" width="240" height="240" alt="QR code for phone" />
+    <ol>
+      <li>On the phone, scan the QR (or type the address in Chrome).</li>
+      <li>Chrome menu → <b>Add to Home screen</b> / <b>Install app</b>.</li>
+      <li>After that, tap the AgriShield icon. No commands.</li>
+    </ol>
+    <p><a href="/">Open AgriShield on this PC</a></p>
+  </div>
+  <script>
+    fetch("/api/phone-link").then((r) => r.json()).then((data) => {
+      const url = data.primary || "http://127.0.0.1:8000";
+      document.getElementById("url").textContent = url;
+      document.getElementById("qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(url);
+    }).catch(() => {
+      document.getElementById("url").textContent = "Start AgriShield on this PC first.";
+    });
+  </script>
+</body>
+</html>

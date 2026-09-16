@@ -1,0 +1,10 @@
+{
+  "appId": "in.agrishield.app",
+  "appName": "AgriShield",
+  "webDir": "phone-shell",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "https",
+    "allowNavigation": ["http://*", "https://*"]
+  }
+}

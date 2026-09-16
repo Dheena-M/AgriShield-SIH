@@ -1,0 +1,33 @@
+INFO:     127.0.0.1:62212 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63352 - "GET /api/model-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53993 - "GET /api/seeds HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53994 - "POST /api/sowing-plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53995 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64093 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64094 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64095 - "PATCH /api/admin/doctor-verification/999999 HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:59528 - "GET /api/model-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59529 - "GET /api/seeds HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59530 - "POST /api/sowing-plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59531 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59532 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59533 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59534 - "PATCH /api/admin/doctor-verification/999999 HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:57950 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57950 - "GET /static/styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57950 - "GET /static/i18n.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55617 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63155 - "GET /static/manifest.webmanifest HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57950 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57950 - "GET /static/icon.svg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60053 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60053 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60872 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60872 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60872 - "GET /api/doctor-profile/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60323 - "PATCH /api/appointments/1/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60323 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60323 - "GET /api/doctor-profile/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61312 - "PUT /api/doctor-profile/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61312 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61312 - "GET /api/doctor-profile/me HTTP/1.1" 200 OK

@@ -1,0 +1,10 @@
+{
+  "plugins": {
+    "firecrawl": {
+      "enabled": true
+    },
+    "firebase": {
+      "enabled": true
+    }
+  }
+}

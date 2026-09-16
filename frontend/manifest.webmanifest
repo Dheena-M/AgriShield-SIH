@@ -1,0 +1,18 @@
+{
+  "name": "AgriShield - Crop Doctor",
+  "short_name": "AgriShield",
+  "description": "Offline-ready farmer support for crop guidance, doctor consultation and agri-input ordering.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4efe3",
+  "theme_color": "#1c3d2a",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/static/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,292 @@
+Requirement already satisfied: fastapi in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 1)) (0.141.1)
+Requirement already satisfied: sqlalchemy in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 3)) (2.0.52)
+Requirement already satisfied: python-multipart in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 4)) (0.0.32)
+Requirement already satisfied: pillow in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 5)) (12.3.0)
+Requirement already satisfied: numpy in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 6)) (2.5.3)
+Requirement already satisfied: scikit-learn in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 7)) (1.9.0)
+Requirement already satisfied: pydantic in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 8)) (2.13.5)
+Requirement already satisfied: bcrypt==4.0.1 in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 11)) (4.0.1)
+Requirement already satisfied: uvicorn[standard] in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 2)) (0.52.4)
+Requirement already satisfied: passlib[bcrypt] in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 9)) (1.7.4)
+Requirement already satisfied: python-jose[cryptography] in d:\sih agri\.venv\lib\site-packages (from -r requirements.txt (line 12)) (3.5.0)
+Requirement already satisfied: starlette>=0.46.0 in d:\sih agri\.venv\lib\site-packages (from fastapi->-r requirements.txt (line 1)) (1.6.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in d:\sih agri\.venv\lib\site-packages (from fastapi->-r requirements.txt (line 1)) (4.16.0)
+Requirement already satisfied: typing-inspection>=0.4.2 in d:\sih agri\.venv\lib\site-packages (from fastapi->-r requirements.txt (line 1)) (0.4.4)
+Requirement already satisfied: annotated-doc>=0.0.2 in d:\sih agri\.venv\lib\site-packages (from fastapi->-r requirements.txt (line 1)) (0.0.5)
+Requirement already satisfied: click>=7.0 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (8.5.0)
+Requirement already satisfied: h11>=0.8 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.16.0)
+Requirement already satisfied: httptools>=0.8.0 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.8.0)
+Requirement already satisfied: python-dotenv>=0.13 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (1.2.3)
+Requirement already satisfied: pyyaml>=5.1 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (6.0.3)
+Requirement already satisfied: watchfiles>=0.20 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (1.2.0)
+Requirement already satisfied: websockets>=13.0 in d:\sih agri\.venv\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (16.1.1)
+Requirement already satisfied: greenlet>=1 in d:\sih agri\.venv\lib\site-packages (from sqlalchemy->-r requirements.txt (line 3)) (3.5.5)
+Requirement already satisfied: scipy>=1.10.0 in d:\sih agri\.venv\lib\site-packages (from scikit-learn->-r requirements.txt (line 7)) (1.18.1)
+Requirement already satisfied: joblib>=1.4.0 in d:\sih agri\.venv\lib\site-packages (from scikit-learn->-r requirements.txt (line 7)) (1.6.0)
+Requirement already satisfied: narwhals>=2.0.1 in d:\sih agri\.venv\lib\site-packages (from scikit-learn->-r requirements.txt (line 7)) (2.26.0)
+Requirement already satisfied: threadpoolctl>=3.5.0 in d:\sih agri\.venv\lib\site-packages (from scikit-learn->-r requirements.txt (line 7)) (3.6.0)
+Requirement already satisfied: annotated-types>=0.6.0 in d:\sih agri\.venv\lib\site-packages (from pydantic->-r requirements.txt (line 8)) (0.8.0)
+Requirement already satisfied: pydantic-core==2.46.5 in d:\sih agri\.venv\lib\site-packages (from pydantic->-r requirements.txt (line 8)) (2.46.5)
+Requirement already satisfied: ecdsa!=0.15 in d:\sih agri\.venv\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 12)) (0.19.2)
+Requirement already satisfied: rsa!=4.1.1,!=4.4,<5.0,>=4.0 in d:\sih agri\.venv\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 12)) (4.9.1)
+Requirement already satisfied: pyasn1>=0.5.0 in d:\sih agri\.venv\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 12)) (0.6.4)
+Requirement already satisfied: cryptography>=3.4.0 in d:\sih agri\.venv\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 12)) (50.0.1)
+Requirement already satisfied: cffi>=2.0.0 in d:\sih agri\.venv\lib\site-packages (from cryptography>=3.4.0->python-jose[cryptography]->-r requirements.txt (line 12)) (2.1.1)
+Requirement already satisfied: six>=1.9.0 in d:\sih agri\.venv\lib\site-packages (from ecdsa!=0.15->python-jose[cryptography]->-r requirements.txt (line 12)) (1.17.0)
+Requirement already satisfied: cloudpickle>=3.0 in d:\sih agri\.venv\lib\site-packages (from joblib>=1.4.0->scikit-learn->-r requirements.txt (line 7)) (3.1.2)
+Requirement already satisfied: anyio<5,>=3.6.2 in d:\sih agri\.venv\lib\site-packages (from starlette>=0.46.0->fastapi->-r requirements.txt (line 1)) (4.15.1)
+Requirement already satisfied: idna>=2.8 in d:\sih agri\.venv\lib\site-packages (from anyio<5,>=3.6.2->starlette>=0.46.0->fastapi->-r requirements.txt (line 1)) (3.19)
+Requirement already satisfied: pycparser in d:\sih agri\.venv\lib\site-packages (from cffi>=2.0.0->cryptography>=3.4.0->python-jose[cryptography]->-r requirements.txt (line 12)) (3.0)
+  INFO:     127.0.0.1:50162 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50162 - "GET /static/styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64434 - "GET /static/i18n.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:63048 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63048 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63048 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63048 - "GET /static/manifest.webmanifest HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64434 - "GET /static/icon.svg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57843 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:57843 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:57843 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:57843 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:57843 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59212 - "GET /static/styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65028 - "GET /static/i18n.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51227 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64947 - "GET /static/manifest.webmanifest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65028 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65028 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59212 - "GET /static/icon.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:59212 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Entity
+  INFO:     127.0.0.1:57408 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57408 - "GET /static/i18n.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:49328 - "GET /static/app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:49328 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58865 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58865 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58865 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58865 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58865 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58865 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58865 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57553 - "POST /api/auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:54838 - "POST /api/auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:65447 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65447 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59290 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59290 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59290 - "POST /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59290 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59290 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60692 - "GET /api/orders HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60692 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62725 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62725 - "POST /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62725 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60692 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60692 - "GET /api/orders HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60692 - "GET /api/plants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60692 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53863 - "GET /api/metadata/features HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64458 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52919 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52919 - "GET /api/dashboard HTTP/1.1" 200 OK
+    INFO:     127.0.0.1:65447 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62892 - "GET /static/app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62892 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62892 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65006 - "GET /api/metadata/features HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57838 - "GET /static/icon.svg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58743 - "GET /static/i18n.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64151 - "GET /static/manifest.webmanifest HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56042 - "GET /static/styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55500 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61104 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61104 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54304 - "POST /api/predict HTTP/1.1" 200 OK
+ INFO:     127.0.0.1:55855 - "POST /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55855 - "POST /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55855 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55855 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61177 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63026 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56225 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56225 - "GET /static/styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64717 - "GET /static/i18n.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52724 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65458 - "GET /static/manifest.webmanifest HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52724 - "GET /static/icon.svg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56812 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56812 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51584 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=0001-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=0010-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=0101-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=1016-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=10162-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=101620-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=16200-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=162000-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=275760-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=200000-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=0002-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=0020-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=0202-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52828 - "GET /api/doctors/2/slots?date=2026-02-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58734 - "GET /api/doctors/2/slots?date=2026-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58734 - "GET /api/doctors/2/slots?date=2026-10-01 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56198 - "POST /api/appointments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56198 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56198 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61419 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /static/app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54115 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54115 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53133 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53133 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61800 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60337 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60337 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60337 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51636 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51636 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60337 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60913 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60913 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60913 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60913 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57007 - "GET /api/crops HTTP/1.1" 200 OK
+ INFO:     127.0.0.1:53931 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65448 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55614 - "GET /openapi.json HTTP/1.1" 200 OK
+Terminate batch job (Y/N)? INFO:     127.0.0.1:55221 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55226 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53271 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52516 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52516 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52516 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52516 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53140 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53140 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53140 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53140 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53140 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50761 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /static/styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64660 - "GET /static/i18n.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52367 - "GET /static/manifest.webmanifest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59423 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /static/styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64660 - "GET /static/i18n.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60309 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52367 - "GET /static/manifest.webmanifest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59423 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59423 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65456 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57749 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57749 - "GET /api/doctors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "POST /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/orders HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/plants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/medicines HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/cart HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54644 - "GET /api/plants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59461 - "POST /api/plants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59461 - "GET /api/plants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59461 - "GET /api/appointments/my HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59461 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53712 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53712 - "GET /static/app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53712 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53712 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56177 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53585 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53585 - "GET /static/styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /static/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60090 - "GET /static/i18n.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61782 - "GET /static/manifest.webmanifest HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56995 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /static/icon.svg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /sw.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55885 - "GET /sw.js HTTP/1.1" 200 OK

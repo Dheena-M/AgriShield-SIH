@@ -1,0 +1,7 @@
+INFO:     127.0.0.1:54893 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51726 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54894 - "GET /api/model-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57504 - "GET /api/crops HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57504 - "GET /api/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57526 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57529 - "GET /api/model-status HTTP/1.1" 200 OK

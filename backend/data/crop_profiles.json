@@ -1,0 +1,8 @@
+[
+  {"crop":"Rice","season":"Kharif","n":55,"p":30,"k":35,"ph":6.3,"temp":30,"humidity":82,"rainfall":1200,"soil_type":"Clay"},
+  {"crop":"Maize","season":"Kharif","n":50,"p":28,"k":35,"ph":6.5,"temp":27,"humidity":65,"rainfall":650,"soil_type":"Loamy"},
+  {"crop":"Tomato","season":"Rabi","n":45,"p":30,"k":40,"ph":6.5,"temp":25,"humidity":65,"rainfall":650,"soil_type":"Loamy"},
+  {"crop":"Groundnut","season":"Kharif","n":25,"p":28,"k":32,"ph":6.4,"temp":27,"humidity":60,"rainfall":550,"soil_type":"Sandy"},
+  {"crop":"Millet","season":"Kharif","n":30,"p":22,"k":25,"ph":6.7,"temp":30,"humidity":50,"rainfall":400,"soil_type":"Sandy"},
+  {"crop":"Cotton","season":"Kharif","n":45,"p":25,"k":35,"ph":7.0,"temp":30,"humidity":60,"rainfall":650,"soil_type":"Black"}
+]

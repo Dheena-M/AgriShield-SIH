@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1c3d2a" />
+  <title>AgriShield phone</title>
+  <style>
+    body { margin: 0; font-family: Segoe UI, sans-serif; background: #10251a; color: #f4efe3; }
+    .wrap { max-width: 420px; margin: 0 auto; padding: 28px 20px; }
+    h1 { font-size: 1.5rem; margin: 0 0 8px; }
+    p { line-height: 1.45; color: #d7e3d6; }
+    input, button { font-size: 1.05rem; width: 100%; box-sizing: border-box; padding: 14px; border-radius: 10px; border: 0; }
+    input { margin: 16px 0 10px; }
+    button { background: #10b981; color: #fff; font-weight: 600; }
+    #err { color: #fca5a5; min-height: 1.4em; }
+    small { color: #9bb59a; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>AgriShield</h1>
+    <p>Tap Open. Frontend, backend and LLM all run on your PC. This icon only connects.</p>
+    <input id="ip" inputmode="decimal" placeholder="192.168.1.25" />
+    <button id="go" type="button">Open AgriShield</button>
+    <p id="err"></p>
+    <small>Same Wi-Fi as the PC. On the PC open Desktop AgriShield, then Phone page, and copy the address.</small>
+  </div>
+  <script>
+    const saved = localStorage.getItem("agrishield_origin") || "";
+    if (saved) {
+      document.getElementById("ip").value = saved.replace(/^https?:\/\//, "").replace(/\/$/, "");
+      fetch(saved.replace(/\/$/, "") + "/api/health", { mode: "cors" })
+        .then((r) => { if (r.ok) location.replace(saved.replace(/\/$/, "") + "/"); })
+        .catch(() => {});
+    }
+    document.getElementById("go").onclick = async () => {
+      const err = document.getElementById("err");
+      let raw = document.getElementById("ip").value.trim().replace(/^https?:\/\//, "").replace(/\/$/, "");
+      if (!raw) { err.textContent = "Enter the PC Wi-Fi address."; return; }
+      const origin = raw.indexOf(":") >= 0 ? "http://" + raw : "http://" + raw + ":8000";
+      err.textContent = "Connecting…";
+      try {
+        const r = await fetch(origin + "/api/health");
+        if (!r.ok) throw new Error("offline");
+        localStorage.setItem("agrishield_origin", origin);
+        location.replace(origin + "/");
+      } catch (e) {
+        err.textContent = "Cannot reach the PC. Same Wi-Fi? Is AgriShield running on the computer?";
+      }
+    };
+  </script>
+</body>
+</html>
