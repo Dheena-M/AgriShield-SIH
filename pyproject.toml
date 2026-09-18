@@ -1,2 +1,22 @@
+[project]
+name = "agrishield"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlalchemy",
+  "python-multipart",
+  "pillow",
+  "numpy",
+  "scikit-learn",
+  "pydantic",
+  "passlib[bcrypt]",
+  "bcrypt==4.0.1",
+  "python-jose[cryptography]",
+  "httpx",
+  "pymongo>=4.10,<5",
+]
+
 [tool.vercel]
 entrypoint = "backend.app:app"
