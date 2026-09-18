@@ -1,0 +1,15 @@
+# Local environments and duplicated working copies are not needed by the hosted app.
+.venv-ml/
+node_modules/
+AgriShield-SIH-main/
+
+# Development and reference material not needed at runtime.
+archive/
+stitch_agritech_ui_design_showcase/
+stitch_agritech_ui_design_showcase.zip
+reference-artifacts/
+.firecrawl/
+tests/
+tmp/
+logs/
+*.lnk
