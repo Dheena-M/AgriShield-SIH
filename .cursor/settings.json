@@ -5,6 +5,9 @@
     },
     "firebase": {
       "enabled": true
+    },
+    "higgsfield": {
+      "enabled": true
     }
   }
 }

@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0d261a" />
+  <title>AgriShield AI — Mobile App UI/UX Concept & Prototype</title>
+  <!-- The app is served at /mobile while its files are served from /static. -->
+  <base href="/static/mobile_app_concept/" />
+  
+  <!-- Fonts: Plus Jakarta Sans, Outfit, Fraunces & Noto Sans Tamil -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="styles.css?v=20260917-2" />
+</head>
+<body>
+
+  <!-- Top Showcase Presentation Header -->
+  <header class="showcase-header">
+    <div class="brand-meta">
+      <div class="logo-badge">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M12 8c-2 2-3 4-3 6a3 3 0 0 0 6 0c0-2-1-4-3-6z" fill="#4ade80" fill-opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="brand-title">
+        <h1>AgriShield AI <span class="pill">Mobile UI/UX Prototype</span></h1>
+        <p>Production-Quality Indian AgriTech Mobile Concept • 15 Connected Screens</p>
+      </div>
+    </div>
+
+    <div class="showcase-controls">
+      <!-- Mode Switcher Buttons: Computer vs Mobile -->
+      <div style="display:inline-flex; align-items:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:30px; padding:3px; margin-right:4px;">
+        <a href="/web" class="ctrl-btn" style="background:#2563eb; color:#ffffff; font-weight:700; border-color:#60a5fa; padding:6px 14px; text-decoration:none;" title="Open Computer / Web App">
+          <span>💻</span> <span>Computer Mode</span>
+        </a>
+        <span class="ctrl-btn active" style="font-weight:700; padding:6px 14px; cursor:default;" title="Currently in Mobile Mode">
+          <span>📱</span> <span>Phone Mode</span>
+        </span>
+      </div>
+
+      <button class="ctrl-btn lang-toggle-btn" title="Toggle Language">
+        <span>🌐</span> <span id="currentLangLabel">தமிழ்</span>
+      </button>
+      <button class="ctrl-btn" id="toggleFrameBtn" title="Toggle Device Frame">
+        <span>📱</span> <span>Phone Frame</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleAudioNarration()" title="Listen to Voice Narration">
+        <span>🔊</span> <span>Voice Narration</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Quick Screen Selector Bar -->
+  <nav class="screen-selector-bar" aria-label="Screen Navigator">
+    <button class="screen-chip active" data-screen="screen-splash">01 Splash</button>
+    <button class="screen-chip" data-screen="screen-onboard">02 Onboard</button>
+    <button class="screen-chip" data-screen="screen-profile-setup">03 Profile</button>
+    <button class="screen-chip" data-screen="screen-permission">04 Weather/Loc</button>
+    <button class="screen-chip" data-screen="screen-home">05 Dashboard</button>
+    <button class="screen-chip" data-screen="screen-scanner">06 Scanner</button>
+    <button class="screen-chip" data-screen="screen-analysis">07 AI Analysis</button>
+    <button class="screen-chip" data-screen="screen-diagnosis">08 Diagnosis</button>
+    <button class="screen-chip" data-screen="screen-mcp">09 MCP Context</button>
+    <button class="screen-chip" data-screen="screen-explanation">10 AI Explain</button>
+    <button class="screen-chip" data-screen="screen-higgsfield">11 Higgsfield</button>
+    <button class="screen-chip" data-screen="screen-action">12 Action Plan</button>
+    <button class="screen-chip" data-screen="screen-resources">13 Resources</button>
+    <button class="screen-chip" data-screen="screen-followup">14 Follow-up</button>
+    <button class="screen-chip" data-screen="screen-history">15 History</button>
+  </nav>
+
+  <!-- Showcase Viewport with Realistic Smartphone Frame -->
+  <main class="showcase-viewport">
+    <div class="device-phone" id="phoneDevice">
+      
+      <!-- Dynamic Island / Camera Notch -->
+      <div class="device-notch">
+        <div class="notch-camera"></div>
+        <div class="notch-sensor"></div>
+      </div>
+
+      <!-- Device Screen Wrapper -->
+      <div class="device-screen" id="deviceScreen">
+
+        <!-- Status Bar -->
+        <div class="status-bar dark-mode" id="statusBar">
+          <span class="time-str" id="statusTime">09:42</span>
+          <div class="status-icons">
+            <span>5G</span>
+            <span>📶</span>
+            <span>🔋 94%</span>
+          </div>
+        </div>
+
+        <!-- Screens Container -->
+        <div class="app-screen-container">
+
+          <!-- ============================================================
+               SCREEN 01 — SPLASH SCREEN
+               ============================================================ -->
+          <section class="screen-view active no-nav" id="screen-splash">
+            <div class="splash-container">
+              <div class="splash-bg" style="background-image: url('assets/morning_field.jpg');"></div>
+              <div class="splash-overlay"></div>
+
+              <div class="splash-content">
+                <div class="splash-logo-wrap">
+                  <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M12 8c-2 2-3 4-3 6a3 3 0 0 0 6 0c0-2-1-4-3-6z" fill="#4ade80" fill-opacity="0.4"/>
+                  </svg>
+                </div>
+                <h1 class="splash-title" data-i18n="appTitle">AgriShield AI</h1>
+                <p class="splash-tagline" data-i18n="appTagline">Protecting crops with intelligent early detection</p>
+                <div class="splash-badge-pill" data-i18n="techBadge">AI • MCP • Computer Vision • Smart Agriculture</div>
+              </div>
+
+              <div class="splash-footer">
+                <button class="splash-enter-btn" onclick="navigateToScreen('screen-onboard')">
+                  <span data-i18n="enterApp">Get Started →</span>
+                </button>
+                <span class="splash-ind-text">Designed for Indian Agriculture • Made for Farmers</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 02 — ONBOARDING (3 Story Cards)
+               ============================================================ -->
+          <section class="screen-view no-nav" id="screen-onboard">
+            <div class="onboard-container">
+              <div class="onboard-header">
+                <div class="logo-mini" style="display:flex; align-items:center; gap:6px; font-weight:700; color:var(--primary-800);">
+                  <span>🌱</span> <span>AgriShield</span>
+                </div>
+                <button class="onboard-skip-btn" onclick="navigateToScreen('screen-profile-setup')" data-i18n="skip">Skip</button>
+              </div>
+
+              <!-- Carousel Cards -->
+              <div class="onboard-card-carousel">
+                <!-- Slide 1 -->
+                <div class="onboard-slide active" id="onboardSlide1">
+                  <div class="onboard-illustration-wrap">
+                    <img src="assets/diseased_leaf.png" alt="Crop Disease Scanning" />
+                    <div class="onboard-overlay-badge">
+                      <span>🔍</span> <span>Early Leaf Pathology</span>
+                    </div>
+                  </div>
+                  <h2 data-i18n="onboard1Title">Detect Crop Problems Early</h2>
+                  <p data-i18n="onboard1Desc">Identify diseases and pests from a single leaf photo with instant field validation.</p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="onboard-slide" id="onboardSlide2">
+                  <div class="onboard-illustration-wrap">
+                    <img src="assets/farmer_portrait.png" alt="Indian Farmer Guidance" />
+                    <div class="onboard-overlay-badge">
+                      <span>🌾</span> <span>Farmer First Guidance</span>
+                    </div>
+                  </div>
+                  <h2 data-i18n="onboard2Title">Understand What To Do</h2>
+                  <p data-i18n="onboard2Desc">Get simple, personalized agricultural guidance with clear dosages and safety warnings.</p>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="onboard-slide" id="onboardSlide3">
+                  <div class="onboard-illustration-wrap">
+                    <img src="assets/morning_field.jpg" alt="Visual Guide & Protection" />
+                    <div class="onboard-overlay-badge">
+                      <span>🛡️</span> <span>See. Act. Protect.</span>
+                    </div>
+                  </div>
+                  <h2 data-i18n="onboard3Title">See. Act. Protect.</h2>
+                  <p data-i18n="onboard3Desc">Visual progression timeline, weather context and verified government resources.</p>
+                </div>
+              </div>
+
+              <!-- Indicator Dots -->
+              <div class="onboard-dots">
+                <span class="onboard-dot active" data-slide="1"></span>
+                <span class="onboard-dot" data-slide="2"></span>
+                <span class="onboard-dot" data-slide="3"></span>
+              </div>
+
+              <!-- Actions -->
+              <div class="onboard-actions">
+                <button class="btn-primary-block" onclick="nextOnboardSlide()">
+                  <span data-i18n="continue">Continue</span> <span>→</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 03 — FARMER PROFILE SETUP
+               ============================================================ -->
+          <section class="screen-view no-nav" id="screen-profile-setup">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-onboard')">←</button>
+                <h3 class="bar-title" data-i18n="profileTitle">Farmer Profile Setup</h3>
+              </div>
+              <div class="bar-right">
+                <span style="font-size:0.75rem; font-weight:700; color:var(--primary-600);">Step 1 of 2</span>
+              </div>
+            </header>
+
+            <div class="profile-setup-content">
+              <p class="form-lead" data-i18n="profileDesc">Personalize disease alerts and advice for your field.</p>
+
+              <!-- Farmer Name -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>👤</span> <span data-i18n="farmerName">Farmer Name</span>
+                </label>
+                <input type="text" class="input-text" value="Murugan K." id="inputFarmerName" />
+              </div>
+
+              <!-- Main Crop -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>🌾</span> <span data-i18n="mainCrop">Main Crop</span>
+                </label>
+                <div class="chip-grid" id="cropChips">
+                  <span class="selectable-chip selected">🌾 Rice / Paddy</span>
+                  <span class="selectable-chip">🌱 Cotton</span>
+                  <span class="selectable-chip">🎋 Sugarcane</span>
+                  <span class="selectable-chip">🌽 Maize</span>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>📍</span> <span data-i18n="location">Location</span>
+                </label>
+                <input type="text" class="input-text" value="Thanjavur, Tamil Nadu (Cauvery Delta)" id="inputLocation" />
+              </div>
+
+              <!-- Farm Size -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>📐</span> <span data-i18n="farmSize">Farm Size</span>
+                </label>
+                <div class="chip-grid">
+                  <span class="selectable-chip">0.5 - 1.0 Acre</span>
+                  <span class="selectable-chip selected">1.5 Acres</span>
+                  <span class="selectable-chip">3.0 Acres</span>
+                  <span class="selectable-chip">5+ Acres</span>
+                </div>
+              </div>
+
+              <!-- Farming Stage -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>🌱</span> <span data-i18n="farmingStage">Crop Growth Stage</span>
+                </label>
+                <div class="chip-grid">
+                  <span class="selectable-chip">Nursery</span>
+                  <span class="selectable-chip selected">Tillering</span>
+                  <span class="selectable-chip">Panicle Heading</span>
+                  <span class="selectable-chip">Flowering</span>
+                  <span class="selectable-chip">Maturity</span>
+                </div>
+              </div>
+
+              <!-- Preferred Language -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>🌐</span> <span data-i18n="prefLang">Preferred Language</span>
+                </label>
+                <div class="chip-grid">
+                  <span class="selectable-chip selected">தமிழ் (Tamil)</span>
+                  <span class="selectable-chip">English</span>
+                  <span class="selectable-chip">हिंदी (Hindi)</span>
+                  <span class="selectable-chip">मराठी (Marathi)</span>
+                </div>
+              </div>
+
+              <button class="btn-primary-block" style="margin-top:10px;" onclick="navigateToScreen('screen-permission')">
+                <span data-i18n="saveAndContinue">Save & Continue</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 04 — LOCATION & WEATHER PERMISSION
+               ============================================================ -->
+          <section class="screen-view no-nav" id="screen-permission">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-profile-setup')">←</button>
+                <h3 class="bar-title">Field Weather Access</h3>
+              </div>
+            </header>
+
+            <div class="perm-screen-body">
+              <div class="perm-radar-visual">
+                <span style="font-size:2.8rem;">📍</span>
+              </div>
+
+              <div style="max-width:300px;">
+                <h2 style="font-family:var(--font-display); font-size:1.45rem; color:var(--primary-900); margin-bottom:8px;" data-i18n="permTitle">Know Your Field</h2>
+                <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.45;" data-i18n="permDesc">Allow location access to provide relevant weather and agricultural information.</p>
+              </div>
+
+              <!-- Weather Teaser Card -->
+              <div class="weather-teaser-card">
+                <div class="teaser-top">
+                  <div>
+                    <span style="font-size:0.75rem; font-weight:700; color:#a7f3d0; text-transform:uppercase;">Live Microclimate Teaser</span>
+                    <h4 style="font-size:1rem; font-weight:700;" data-i18n="permLocationTeaser">Thanjavur, Tamil Nadu</h4>
+                    <span style="font-size:0.75rem; color:#e2e8f0;" data-i18n="permWeatherTeaser">Partly Cloudy • High Fungal Risk</span>
+                  </div>
+                  <div class="teaser-temp">29°C</div>
+                </div>
+
+                <div class="teaser-metrics">
+                  <div>💧 Humidity: <strong>72%</strong></div>
+                  <div>🌧 Rain in 48h: <strong>30%</strong></div>
+                  <div>💨 Wind: <strong>11 km/h ENE</strong></div>
+                  <div>☀️ Sunlight: <strong>6.4 hrs</strong></div>
+                </div>
+              </div>
+
+              <div style="width:100%; display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+                <button class="btn-primary-block" onclick="navigateToScreen('screen-home')">
+                  <span>📍</span> <span data-i18n="allowLocation">Allow Location Access</span>
+                </button>
+                <button class="btn-secondary-block" onclick="navigateToScreen('screen-home')">
+                  <span data-i18n="enterManualLoc">Enter Location Manually</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 05 — HOME DASHBOARD
+               ============================================================ -->
+          <section class="screen-view" id="screen-home">
+            <div class="dashboard-content">
+              <!-- Farmer Greeting Header -->
+              <div class="dash-header-row">
+                <div class="farmer-welcome">
+                  <img src="assets/farmer_portrait.png" alt="Farmer Avatar" class="farmer-avatar-img" />
+                  <div class="welcome-texts">
+                    <h3><span data-i18n="goodMorning">Good morning</span>, <span data-i18n="farmerGreeting">Murugan 👋</span></h3>
+                    <p><span>📍</span> <span>Thanjavur, Tamil Nadu</span></p>
+                  </div>
+                </div>
+                <button class="audio-chip-btn" id="audioNarrationChip" onclick="toggleAudioNarration()">
+                  <span>🔊</span> <span data-i18n="listenTamil">தமிழ் ஒலி</span>
+                </button>
+              </div>
+
+              <!-- Weather & Microclimate Card -->
+              <div class="weather-hero-card">
+                <div class="weather-hero-top">
+                  <div class="weather-degree-wrap">
+                    <span class="degree-num">29°C</span>
+                    <span class="degree-condition">Partly Cloudy</span>
+                  </div>
+                  <span style="font-size:2rem;">⛅</span>
+                </div>
+                <div class="weather-stats-row">
+                  <span>💧 Humidity: <strong>72%</strong></span>
+                  <span>🌧 Rain: <strong>30%</strong></span>
+                  <span>💨 11 km/h</span>
+                </div>
+                <div class="weather-alert-badge" data-i18n="weatherAlert">
+                  ⚠️ High Humidity (72%): High risk of Brown Spot and Blast spore spread.
+                </div>
+              </div>
+
+              <!-- Huge Hero Primary Action: SCAN MY CROP -->
+              <div class="scan-hero-cta" onclick="navigateToScreen('screen-scanner')">
+                <div class="scan-cta-text">
+                  <span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a7f3d0;">Primary Action</span>
+                  <h4 data-i18n="scanMyCrop">SCAN MY CROP</h4>
+                  <p>Instant disease detection & validated advice</p>
+                </div>
+                <div class="scan-pulsing-icon">📷</div>
+              </div>
+
+              <!-- Quick Action Pills -->
+              <div class="dash-quick-grid">
+                <div class="dash-quick-item" onclick="openDoctorCallModal()">
+                  <div class="quick-icon-wrap">💬</div>
+                  <span data-i18n="askAi">Ask AgriShield</span>
+                </div>
+                <div class="dash-quick-item" onclick="navigateToScreen('screen-history')">
+                  <div class="quick-icon-wrap">🌾</div>
+                  <span data-i18n="myCrops">My Crops</span>
+                </div>
+                <div class="dash-quick-item" onclick="navigateToScreen('screen-history')">
+                  <div class="quick-icon-wrap">📜</div>
+                  <span data-i18n="history">History</span>
+                </div>
+              </div>
+
+              <!-- Active Crop Summary -->
+              <div class="dash-section-card">
+                <div class="sec-title-row">
+                  <h4 data-i18n="myCropTitle">🌾 My Crop</h4>
+                  <span class="sec-link" onclick="navigateToScreen('screen-history')">View All</span>
+                </div>
+                <div class="crop-summary-pill">
+                  <div class="crop-detail-left">
+                    <span class="crop-avatar-badge">🌾</span>
+                    <div class="crop-meta">
+                      <h5>Paddy / Rice (ADT 43)</h5>
+                      <p>Plot A • Sown 38 days ago</p>
+                    </div>
+                  </div>
+                  <span class="crop-stage-tag">Tillering</span>
+                </div>
+              </div>
+
+              <!-- Recent Diagnosis Tile -->
+              <div class="dash-section-card">
+                <div class="sec-title-row">
+                  <h4 data-i18n="recentDiagTitle">🔍 Recent Diagnosis</h4>
+                  <span class="sec-link" onclick="navigateToScreen('screen-diagnosis')">Details</span>
+                </div>
+                <div class="recent-diag-tile" onclick="navigateToScreen('screen-diagnosis')">
+                  <div class="diag-left-info">
+                    <span class="diag-icon-alert">🍂</span>
+                    <div class="diag-text-wrap">
+                      <h5>Brown Spot (SES 3 - Moderate)</h5>
+                      <p>Stabilizing • 12% affected</p>
+                    </div>
+                  </div>
+                  <span class="diag-rescan-badge" data-i18n="rescanDue">Re-scan in 2 days</span>
+                </div>
+              </div>
+
+              <!-- Government Schemes Module -->
+              <div class="dash-section-card">
+                <div class="sec-title-row">
+                  <h4>🏛 Government Schemes</h4>
+                  <span class="sec-link" onclick="navigateToScreen('screen-resources')">Explore</span>
+                </div>
+                <div style="font-size:0.8rem; color:var(--text-dark); display:flex; justify-content:space-between; align-items:center; background:#f8faf6; padding:10px 12px; border-radius:var(--radius-md);">
+                  <div>
+                    <strong>PM Fasal Bima Yojana (PMFBY)</strong>
+                    <div style="font-size:0.72rem; color:var(--text-muted);">Crop loss claim assistance ready</div>
+                  </div>
+                  <span style="color:var(--primary-600); font-weight:700; font-size:0.75rem;">Active ✓</span>
+                </div>
+              </div>
+
+              <!-- Smart Farming Tip -->
+              <div class="farming-tip-card">
+                <span style="font-size:1.3rem;">💡</span>
+                <div>
+                  <strong data-i18n="smartTipTitle">Smart Farming Tip:</strong>
+                  <p data-i18n="smartTipText">Avoid excess nitrogenous urea top-dressing during cloudy, humid weather to prevent leaf blast and brown spot proliferation.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 06 — CROP SCANNER (Camera Viewfinder)
+               ============================================================ */ -->
+          <section class="screen-view no-nav" id="screen-scanner">
+            <div class="scanner-viewport">
+              <!-- Real leaf camera feed image -->
+              <img src="assets/diseased_leaf.png" alt="Camera Feed Leaf" class="scanner-feed-img" />
+
+              <!-- Flash trigger overlay -->
+              <div id="scannerFlash" style="position:absolute; inset:0; background:#ffffff; opacity:0; pointer-events:none; transition:opacity 0.15s ease; z-index:50;"></div>
+
+              <!-- Top Controls -->
+              <div class="scanner-overlay-top">
+                <button class="back-btn" style="background:rgba(0,0,0,0.5); color:#ffffff;" onclick="navigateToScreen('screen-home')">←</button>
+                <div style="font-weight:700; font-size:0.95rem; text-shadow:0 1px 4px rgba(0,0,0,0.8);" data-i18n="scanTitle">Scan Your Crop</div>
+                <button class="scanner-icon-btn" style="width:36px; height:36px; font-size:1rem;" title="Flash">⚡</button>
+              </div>
+
+              <!-- Centered Reticle with Laser Scan Line -->
+              <div class="scanner-reticle-wrap">
+                <div class="reticle-corner tl"></div>
+                <div class="reticle-corner tr"></div>
+                <div class="reticle-corner bl"></div>
+                <div class="reticle-corner br"></div>
+                <div class="laser-scan-line"></div>
+                <div class="scan-guidance-pill" data-i18n="scanOverlay">Place the affected leaf inside the frame</div>
+              </div>
+
+              <!-- Bottom Shutter & Controls -->
+              <div class="scanner-controls-bottom">
+                <div class="voice-symptom-toggle" id="voiceSymptomBtn">
+                  <span data-i18n="voiceSymptom">🎙 Describe the problem (Tap to speak)</span>
+                </div>
+
+                <div class="scanner-shutter-row">
+                  <button class="scanner-icon-btn" onclick="navigateToScreen('screen-analysis')" title="Upload from Gallery">🖼️</button>
+                  <button class="scanner-shutter-btn" id="shutterBtn" title="Capture Leaf Photo">
+                    <div class="shutter-inner"></div>
+                  </button>
+                  <button class="scanner-icon-btn" onclick="navigateToScreen('screen-analysis')" title="Direct Analyze">⚡</button>
+                </div>
+
+                <div style="text-align:center; font-size:0.68rem; color:#cbd5e1;" data-i18n="privacyNote">
+                  Your image is used for crop pathology. Validation gate rejects non-leaf photos.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 07 — IMAGE ANALYSIS (Animated Progressive Stages)
+               ============================================================ -->
+          <section class="screen-view no-nav" id="screen-analysis">
+            <div class="analysis-screen-wrap">
+              <header style="padding-top:20px;">
+                <span style="font-size:0.75rem; font-weight:700; color:var(--accent-sprout); letter-spacing:0.06em; text-transform:uppercase;">Safety Gate & Computer Vision</span>
+                <h3 style="font-family:var(--font-display); font-size:1.35rem; margin-top:6px;" data-i18n="analyzingTitle">AgriShield AI is analyzing your crop...</h3>
+              </header>
+
+              <div class="analysis-img-card">
+                <img src="assets/diseased_leaf.png" alt="Leaf under analysis" />
+                <div class="analysis-beam"></div>
+              </div>
+
+              <div class="analysis-steps-list">
+                <div class="step-item-row" id="stepImageReceived">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step1">Image received & lighting verified</span>
+                </div>
+                <div class="step-item-row" id="stepLeafGate">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step2">Leaf safety gate: Plant leaf validated</span>
+                </div>
+                <div class="step-item-row" id="stepCropIdentified">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step3">Crop species identified: Rice (Oryza sativa)</span>
+                </div>
+                <div class="step-item-row" id="stepLesionSegmented">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step4">Lesion pattern segmented</span>
+                </div>
+                <div class="step-item-row" id="stepSeverityCalculated">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step5">SES severity rating calculated</span>
+                </div>
+                <div class="step-item-row" id="stepMcpContext">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step6">Hyperlocal weather context aggregated (MCP)</span>
+                </div>
+                <div class="step-item-row" id="stepActionGenerated">
+                  <span class="step-icon-state">○</span>
+                  <span data-i18n="step7">Agronomic action plan synthesized</span>
+                </div>
+              </div>
+
+              <button class="btn-secondary-block" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:#ffffff; margin-top:14px;" onclick="navigateToScreen('screen-diagnosis')">
+                <span>Fast-forward to Result →</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 08 — AI DIAGNOSIS RESULT
+               ============================================================ -->
+          <section class="screen-view" id="screen-diagnosis">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-home')">←</button>
+                <h3 class="bar-title" data-i18n="diagnosisTitle">AI Diagnosis Result</h3>
+              </div>
+              <div class="bar-right">
+                <button class="audio-chip-btn" onclick="toggleAudioNarration()">
+                  <span>🔊</span> <span data-i18n="readAloud">Listen</span>
+                </button>
+              </div>
+            </header>
+
+            <div class="diag-result-body">
+              <!-- Diagnosis Hero Card -->
+              <div class="diag-hero-banner">
+                <div class="diag-badge-top">
+                  <span class="diag-ai-pill" data-i18n="firstIndication">AI First Indication</span>
+                  <span class="diag-conf-pill" data-i18n="confBadge">94.8% High Confidence</span>
+                </div>
+                <h3 class="diag-title-h3" data-i18n="diseaseName">Brown Spot</h3>
+                <div class="diag-latin-sub" data-i18n="latinName">Bipolaris oryzae (Helminthosporium oryzae)</div>
+
+                <div class="diag-severity-meter-box">
+                  <div class="sev-meter-labels">
+                    <span data-i18n="severityTitle">SES Severity Scale: 3 (Moderate)</span>
+                    <span data-i18n="leafAreaAffected">~12% affected</span>
+                  </div>
+                  <div class="sev-progress-track">
+                    <div class="sev-progress-fill"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Leaf & Lesion Heatmap Toggle -->
+              <div class="interactive-leaf-box" id="interactiveLeafBox">
+                <img src="assets/diseased_leaf.png" alt="Analyzed Leaf" class="leaf-view-canvas-img" />
+                <div class="lesion-mask-overlay"></div>
+                <button class="leaf-toggle-floating-btn" id="lesionToggleBtn" onclick="toggleLesionMask()">
+                  <span>🔍</span> <span data-i18n="toggleMaskOn">Show Lesion Colour Map</span>
+                </button>
+              </div>
+
+              <!-- Key Symptoms Checklist -->
+              <div class="symptoms-checklist">
+                <h4 style="font-size:0.9rem; font-weight:700; color:var(--primary-900);" data-i18n="symptomsTitle">Key Identified Symptoms</h4>
+                <div class="symptom-item">
+                  <span>🔴</span> <span data-i18n="sym1">Dark brown oval, sesame-shaped spots with yellow chlorotic halos</span>
+                </div>
+                <div class="symptom-item">
+                  <span>⚪</span> <span data-i18n="sym2">Grey/white necrotic center indicating active mycelial sporulation</span>
+                </div>
+                <div class="symptom-item">
+                  <span>📈</span> <span data-i18n="sym3">Spreading upward from lower tillers due to humid leaf wetness</span>
+                </div>
+              </div>
+
+              <!-- Navigation to next stage in workflow -->
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-mcp')">
+                <span>View Weather & Field Context (MCP)</span> <span>→</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 09 — MCP (MODEL CONTEXT PROTOCOL) CONTEXT ENGINE
+               ============================================================ -->
+          <section class="screen-view" id="screen-mcp">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-diagnosis')">←</button>
+                <h3 class="bar-title" data-i18n="mcpTitle">MCP Context Engine</h3>
+              </div>
+            </header>
+
+            <div class="mcp-grid-container">
+              <p style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;" data-i18n="mcpDesc">Autonomous multi-layer context aggregated via Model Context Protocol</p>
+
+              <!-- Microclimate Tile -->
+              <div class="mcp-tile high-risk">
+                <div class="mcp-tile-head">
+                  <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="mcpWeatherTitle">Hyperlocal Microclimate Layer</h4>
+                  <span class="mcp-tag-pill">Spore Trigger</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;" data-i18n="mcpWeatherDesc">72% Relative Humidity + 29°C temp. Spore germination envelope is active.</p>
+                <div style="font-size:0.75rem; color:var(--text-muted); background:#f8faf6; padding:8px; border-radius:var(--radius-sm);">
+                  <span>🌧 Last Rain: 14mm (3 days ago) • Leaf wetness duration: 8.5 hours</span>
+                </div>
+              </div>
+
+              <!-- Crop Phenology Tile -->
+              <div class="mcp-tile">
+                <div class="mcp-tile-head">
+                  <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="mcpPhenoTitle">Crop Phenology Layer</h4>
+                  <span class="mcp-tag-pill">Day 38</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;" data-i18n="mcpPhenoDesc">Active Tillering (Day 38). Dense leaf canopy restricts air circulation.</p>
+                <div style="font-size:0.75rem; color:var(--text-muted); background:#f8faf6; padding:8px; border-radius:var(--radius-sm);">
+                  <span>🌾 Rice ADT 43 • Canopy closing index: 82%</span>
+                </div>
+              </div>
+
+              <!-- District Outbreak Radar Tile -->
+              <div class="mcp-tile high-risk">
+                <div class="mcp-tile-head">
+                  <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="mcpRadarTitle">District Outbreak Radar</h4>
+                  <span class="mcp-tag-pill">Delta Cluster</span>
+                </div>
+                <div style="display:flex; align-items:baseline; gap:8px;">
+                  <span class="mcp-radar-counter">42</span>
+                  <span style="font-size:0.8rem; color:#b91c1c; font-weight:700;">nearby farms infected</span>
+                </div>
+                <p style="font-size:0.78rem; color:var(--text-muted);" data-i18n="mcpRadarDesc">42 neighboring farms reported Brown Spot in Thanjavur this week.</p>
+              </div>
+
+              <!-- Soil & Nutritional Context -->
+              <div class="mcp-tile">
+                <div class="mcp-tile-head">
+                  <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);">Soil & Nutrient Telemetry</h4>
+                  <span class="mcp-tag-pill">SHC Data</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-dark);">Mild Potassium (K) deficiency detected in Soil Health Card, reducing disease resistance.</p>
+              </div>
+
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-explanation')">
+                <span>See AI Agronomic Explanation</span> <span>→</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 10 — AI EXPLANATION & ROOT CAUSE ANALYSIS
+               ============================================================ -->
+          <section class="screen-view" id="screen-explanation">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-mcp')">←</button>
+                <h3 class="bar-title" data-i18n="explTitle">AI Agronomic Explanation</h3>
+              </div>
+            </header>
+
+            <div class="explanation-body">
+              <!-- Audio Player Widget -->
+              <div class="audio-narration-player">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:0.75rem; font-weight:700; color:#a7f3d0;">Audio Explanation (தமிழ் / English)</span>
+                  <span style="font-size:0.72rem; color:#cbd5e1;">0:42 / 1:30</span>
+                </div>
+                <div class="player-controls-row">
+                  <button class="play-pause-circle" onclick="toggleAudioNarration()">▶</button>
+                  <div class="audio-scrubber-bar">
+                    <div class="audio-scrubber-progress"></div>
+                  </div>
+                  <span style="font-size:0.75rem; font-weight:700; color:#a7f3d0;">1.0x</span>
+                </div>
+              </div>
+
+              <!-- Card 1: Why did this happen now? -->
+              <div class="expl-card">
+                <h4 data-i18n="whyHappened">Why did this happen now?</h4>
+                <p data-i18n="whyDesc">Unseasonal showers followed by high humidity (72%) provided the 8 hours of leaf wetness required for Bipolaris fungal conidia to penetrate stomata.</p>
+              </div>
+
+              <!-- Card 2: Field Risk -->
+              <div class="expl-card">
+                <h4>What is at risk if delayed?</h4>
+                <p data-i18n="riskDesc">If left untreated, spores will splash upward to developing panicles during heading, causing chaffy grain and up to 35% harvest loss.</p>
+              </div>
+
+              <!-- Card 3: Physiological Factors -->
+              <div class="expl-card">
+                <h4>Agronomic Root Cause</h4>
+                <p>Dense tillering foliage restricted aeration near the soil surface. Sandy loam soil with lower potassium buffer allows faster lesion expansion.</p>
+              </div>
+
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-higgsfield')">
+                <span>View Visual Progression (Higgsfield)</span> <span>→</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 11 — HIGGSFIELD VISUAL GUIDE (Progression Simulator)
+               ============================================================ -->
+          <section class="screen-view" id="screen-higgsfield">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-explanation')">←</button>
+                <h3 class="bar-title" data-i18n="higgsfieldTitle">Higgsfield Visual Guide</h3>
+              </div>
+            </header>
+
+            <div class="higgsfield-body">
+              <p style="font-size:0.8rem; color:var(--text-muted);" data-i18n="higgsfieldDesc">Visual disease progression simulation (Untreated vs Timely Management)</p>
+
+              <!-- Generative Simulation Preview Box -->
+              <div class="progression-preview-box">
+                <img src="assets/diseased_leaf.png" alt="Simulation Leaf" id="higgsfieldPreviewImg" />
+                <div class="progression-floating-tag" id="higgsfieldFloatingTag">Day 0 (Current State)</div>
+                <div class="progression-floating-status" id="higgsfieldFloatingStatus">
+                  Isolated brown spots on upper blade. Healthy tillers intact (~12% affected).
+                </div>
+              </div>
+
+              <!-- Timeline Day Steps Scrubber -->
+              <div class="timeline-slider-card">
+                <span style="font-size:0.75rem; font-weight:700; color:var(--primary-900);">Select Timeline Scrubber:</span>
+                <div class="timeline-days-nav">
+                  <button class="day-step-btn active" data-day="0" data-i18n="day0">Day 0</button>
+                  <button class="day-step-btn" data-day="3" data-i18n="day3">Day 3 (Bad)</button>
+                  <button class="day-step-btn" data-day="7" data-i18n="day7Bad">Day 7 (Bad)</button>
+                  <button class="day-step-btn" data-day="8" data-i18n="day7Good">Day 7 (Good)</button>
+                  <button class="day-step-btn" data-day="14" data-i18n="day14">Day 14</button>
+                </div>
+
+                <div class="outcome-comparison-grid">
+                  <div class="outcome-box bad">
+                    <strong>If Untreated:</strong>
+                    <div>Spreads to sheath & panicle. Yield loss: <strong>35%</strong></div>
+                  </div>
+                  <div class="outcome-box good">
+                    <strong>With Treatment:</strong>
+                    <div>Lesions dry up. Green tissue protected: <strong>>92%</strong></div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-action')">
+                <span>Generate Action Plan & Treatment</span> <span>→</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 12 — ACTION PLAN & TREATMENT PROTOCOL
+               ============================================================ -->
+          <section class="screen-view" id="screen-action">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-higgsfield')">←</button>
+                <h3 class="bar-title" data-i18n="actionTitle">Action Plan</h3>
+              </div>
+            </header>
+
+            <div class="action-plan-body">
+              <!-- Tier 1: Cultural -->
+              <div class="action-tier-card">
+                <span class="tier-badge-label cultural">Immediate Cultural Action</span>
+                <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="tier1">Drain & Potash Application</h4>
+                <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;" data-i18n="tier1Desc">Drain standing water to 2-3 cm. Apply 25 kg MOP (Muriate of Potash) per acre to harden epidermal walls.</p>
+              </div>
+
+              <!-- Tier 2: Bio Control -->
+              <div class="action-tier-card">
+                <span class="tier-badge-label bio">Biological / Organic Option</span>
+                <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="tier2">Pseudomonas Fluorescens Spray</h4>
+                <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;" data-i18n="tier2Desc">Foliar spray of Pseudomonas fluorescens @ 2.5 ml/L during cool evening hours.</p>
+              </div>
+
+              <!-- Tier 3: Chemical -->
+              <div class="action-tier-card">
+                <span class="tier-badge-label chemical">CIB&RC Approved Chemical</span>
+                <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="tier3">Mancozeb 75% WP</h4>
+                <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;" data-i18n="tier3Desc">Mancozeb 75% WP @ 2.0 g/L or Tricyclazole 75% WP @ 0.6 g/L. Always observe 14-day pre-harvest interval.</p>
+              </div>
+
+              <!-- Smart Dosage Calculator Card -->
+              <div class="dosage-calc-card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <h4 style="font-size:0.95rem; font-weight:700;" data-i18n="calcTitle">Smart Dosage Calculator</h4>
+                  <span style="font-size:0.8rem; font-weight:800; color:var(--accent-sprout);" id="acreageValueDisplay">1.5 Acres</span>
+                </div>
+
+                <div class="dosage-slider-wrap">
+                  <label style="font-size:0.75rem; color:#d1fae5;">Acreage Slider (0.5 to 5.0 Acres):</label>
+                  <input type="range" class="range-input-custom" id="acreageSlider" min="0.5" max="5.0" step="0.5" value="1.5" />
+                </div>
+
+                <div class="calc-results-row">
+                  <div class="calc-stat-box">
+                    <span class="num" id="calcWaterLitres">300 L</span>
+                    <span class="lbl" data-i18n="calcWater">Water Volume</span>
+                  </div>
+                  <div class="calc-stat-box">
+                    <span class="num" id="calcChemicalGrams">600 g</span>
+                    <span class="lbl" data-i18n="calcChemical">Mancozeb 75% WP</span>
+                  </div>
+                  <div class="calc-stat-box">
+                    <span class="num" id="calcTankCount">19 Tanks</span>
+                    <span class="lbl" data-i18n="calcTanks">Knapsack Tanks (16L)</span>
+                  </div>
+                  <div class="calc-stat-box">
+                    <span class="num" id="calcEstCost">₹330</span>
+                    <span class="lbl" data-i18n="calcCost">Est. Cost</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PPE Safety Row -->
+              <div class="ppe-icons-row">
+                <div class="ppe-pill">
+                  <div class="ppe-circle">🧤</div>
+                  <span>Gloves</span>
+                </div>
+                <div class="ppe-pill">
+                  <div class="ppe-circle">😷</div>
+                  <span>Mask</span>
+                </div>
+                <div class="ppe-pill">
+                  <div class="ppe-circle">🥾</div>
+                  <span>Boots</span>
+                </div>
+                <div class="ppe-pill">
+                  <div class="ppe-circle">⏳</div>
+                  <span>14d PHI</span>
+                </div>
+              </div>
+
+              <!-- Doctor Escalation Button -->
+              <button class="btn-secondary-block" onclick="openDoctorCallModal()">
+                <span data-i18n="doctorEscalate">👨‍⚕️ Request Verified Plant Doctor Call</span>
+              </button>
+
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-resources')">
+                <span>View Resources & Schemes</span> <span>→</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 13 — RESOURCES, SCHEMES & LOCAL SUPPORT
+               ============================================================ -->
+          <section class="screen-view" id="screen-resources">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-action')">←</button>
+                <h3 class="bar-title" data-i18n="resourcesTitle">Resources & Schemes</h3>
+              </div>
+            </header>
+
+            <div class="resources-body">
+              <!-- Nearby Shops -->
+              <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="nearbyShops">Nearby Agri-Input Retailers</h4>
+
+              <div class="resource-item-card">
+                <div class="res-left-info">
+                  <div class="res-icon-avatar">🛒</div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700;" data-i18n="shop1">Cauvery Farmers Agro Service (1.4 km)</h5>
+                    <p style="font-size:0.75rem; color:#15803d; font-weight:600;" data-i18n="shop1Stock">Bio-fungicides & Mancozeb in stock</p>
+                  </div>
+                </div>
+                <button class="res-call-action-btn" title="Call Store">📞</button>
+              </div>
+
+              <div class="resource-item-card">
+                <div class="res-left-info">
+                  <div class="res-icon-avatar">🏢</div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700;">Thanjavur FPO Cooperative (3.2 km)</h5>
+                    <p style="font-size:0.75rem; color:var(--text-muted);">Subsidized bio-fertilizers available</p>
+                  </div>
+                </div>
+                <button class="res-call-action-btn" title="Call FPO">📞</button>
+              </div>
+
+              <!-- Government Schemes -->
+              <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900); margin-top:8px;" data-i18n="govSchemes">Government Schemes Support</h4>
+
+              <div class="resource-item-card">
+                <div class="res-left-info">
+                  <div class="res-icon-avatar">🏛️</div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700;" data-i18n="pmfby">PM Fasal Bima Yojana (PMFBY)</h5>
+                    <p style="font-size:0.75rem; color:var(--text-muted);" data-i18n="pmfbyDesc">Generate geolocated crop damage intimation report in 1 tap.</p>
+                  </div>
+                </div>
+                <button class="btn-primary-block" style="width:auto; padding:6px 12px; font-size:0.75rem;" onclick="openHealthCardModal()">Claim</button>
+              </div>
+
+              <!-- KVK & Scientist Support -->
+              <div class="resource-item-card">
+                <div class="res-left-info">
+                  <div class="res-icon-avatar">🎓</div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700;" data-i18n="kvkSupport">Krishi Vigyan Kendra (KVK) Thanjavur</h5>
+                    <p style="font-size:0.75rem; color:var(--text-muted);">Free soil test & plant doctor clinic</p>
+                  </div>
+                </div>
+                <button class="res-call-action-btn" onclick="openDoctorCallModal()">👨‍⚕️</button>
+              </div>
+
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-followup')">
+                <span>Set Follow-Up Re-Scan</span> <span>→</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 14 — FOLLOW-UP & RE-SCAN SCHEDULE
+               ============================================================ -->
+          <section class="screen-view" id="screen-followup">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-resources')">←</button>
+                <h3 class="bar-title" data-i18n="followupTitle">Follow-up Schedule</h3>
+              </div>
+            </header>
+
+            <div class="followup-body">
+              <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:14px; border-radius:var(--radius-lg);">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:1.4rem;">📅</span>
+                  <div>
+                    <h4 style="font-size:0.92rem; font-weight:700; color:#166534;">Re-Scan Scheduled: Day 5 (Thursday)</h4>
+                    <p style="font-size:0.76rem; color:#15803d;" data-i18n="followupDesc">Scheduled re-scan reminder for Day 5 (Thursday).</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Before and After Comparison Slots -->
+              <h4 style="font-size:0.92rem; font-weight:700; color:var(--primary-900);" data-i18n="beforeAfterTitle">Before & After Recovery Tracker</h4>
+
+              <div class="before-after-card">
+                <div class="ba-slot">
+                  <span style="font-size:0.72rem; font-weight:700; color:var(--primary-800);" data-i18n="day0Photo">Day 0: Initial Scan</span>
+                  <div class="ba-thumb-box">
+                    <img src="assets/diseased_leaf.png" alt="Day 0 Leaf" />
+                  </div>
+                  <span style="font-size:0.7rem; color:#b91c1c; font-weight:700;">SES 3 (12% affected)</span>
+                </div>
+
+                <div class="ba-slot">
+                  <span style="font-size:0.72rem; font-weight:700; color:var(--primary-800);" data-i18n="day5Slot">Day 5: Re-Scan</span>
+                  <div class="ba-thumb-box">
+                    <div class="ba-placeholder-add" onclick="navigateToScreen('screen-scanner')">
+                      <span style="font-size:1.5rem;">📷</span>
+                      <span>Tap to Capture</span>
+                    </div>
+                  </div>
+                  <span style="font-size:0.7rem; color:#15803d; font-weight:700;">Target: &lt;4% affected</span>
+                </div>
+              </div>
+
+              <div style="background:#ffffff; border:1px solid var(--border-card); border-radius:var(--radius-lg); padding:14px; font-size:0.8rem; color:var(--text-dark); line-height:1.4;">
+                <strong>💡 Expected Recovery Signals:</strong>
+                <ul style="margin-left:18px; margin-top:6px; color:var(--text-muted); font-size:0.76rem;">
+                  <li>Lesion centers turn light brown and dry up</li>
+                  <li>No new spots on emerging third tiller leaf</li>
+                  <li>Chlorotic yellow halo fades back to green</li>
+                </ul>
+              </div>
+
+              <button class="btn-primary-block" onclick="navigateToScreen('screen-history')">
+                <span data-i18n="setReminderBtn">Save Reminder & Go to History</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SCREEN 15 — CROP HISTORY & FARM TIMELINE
+               ============================================================ -->
+          <section class="screen-view" id="screen-history">
+            <header class="screen-app-bar">
+              <div class="bar-left">
+                <button class="back-btn" onclick="navigateToScreen('screen-home')">←</button>
+                <h3 class="bar-title" data-i18n="historyTitle">Crop History</h3>
+              </div>
+              <div class="bar-right">
+                <button class="btn-primary-block" style="padding:6px 12px; font-size:0.75rem;" onclick="openHealthCardModal()">Export PDF</button>
+              </div>
+            </header>
+
+            <div class="history-body">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.82rem; font-weight:700; color:var(--primary-900);">Plot A: Rice (ADT 43) • 1.5 Acres</span>
+                <span style="font-size:0.72rem; color:var(--primary-600); font-weight:700;">Active Season</span>
+              </div>
+
+              <!-- History Timeline Item 1 -->
+              <div class="history-timeline-tile" onclick="navigateToScreen('screen-diagnosis')">
+                <div class="hist-left">
+                  <div class="hist-date-box">
+                    <div>16</div>
+                    <div>SEP</div>
+                  </div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700; color:#b91c1c;">Brown Spot Detected</h5>
+                    <p style="font-size:0.72rem; color:var(--text-muted);">SES 3 (12% leaf area) • Treatment applied</p>
+                  </div>
+                </div>
+                <span style="font-size:0.75rem; color:var(--primary-600); font-weight:700;">View →</span>
+              </div>
+
+              <!-- History Timeline Item 2 -->
+              <div class="history-timeline-tile">
+                <div class="hist-left">
+                  <div class="hist-date-box">
+                    <div>02</div>
+                    <div>SEP</div>
+                  </div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700; color:#15803d;">Healthy Crop Scan</h5>
+                    <p style="font-size:0.72rem; color:var(--text-muted);">Nursery to Tillering Stage • No disease</p>
+                  </div>
+                </div>
+                <span style="font-size:0.75rem; color:#15803d; font-weight:700;">Pass ✓</span>
+              </div>
+
+              <!-- Plot B Summary -->
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                <span style="font-size:0.82rem; font-weight:700; color:var(--primary-900);" data-i18n="plotB">Plot B: Cotton (RCH 659) • 2.0 Acres</span>
+              </div>
+
+              <div class="history-timeline-tile">
+                <div class="hist-left">
+                  <div class="hist-date-box">
+                    <div>28</div>
+                    <div>AUG</div>
+                  </div>
+                  <div>
+                    <h5 style="font-size:0.88rem; font-weight:700; color:#15803d;">Routine Bollworm Scan</h5>
+                    <p style="font-size:0.72rem; color:var(--text-muted);">Pest count zero • Healthy canopy</p>
+                  </div>
+                </div>
+                <span style="font-size:0.75rem; color:#15803d; font-weight:700;">Pass ✓</span>
+              </div>
+
+              <!-- Download Crop Health Certificate Button -->
+              <button class="btn-primary-block" style="margin-top:10px;" onclick="openHealthCardModal()">
+                <span data-i18n="downloadCard">📄 Download AgriShield Crop Health Card (PDF)</span>
+              </button>
+            </div>
+          </section>
+
+        </div> <!-- /app-screen-container -->
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav-bar" id="bottomNavBar" aria-label="Bottom Navigation">
+          <button class="nav-tab-item active" id="navTabHome" data-nav-target="screen-home">
+            <span style="font-size:1.1rem;">🏠</span>
+            <span data-i18n="home">Home</span>
+          </button>
+          <button class="nav-tab-item" id="navTabHistory" data-nav-target="screen-history">
+            <span style="font-size:1.1rem;">📜</span>
+            <span data-i18n="history">History</span>
+          </button>
+          
+          <!-- Center Scan Action Tab -->
+          <button class="nav-tab-item scan-center-tab" id="navTabDetect" data-nav-target="screen-scanner">
+            <div class="center-scan-circle">📷</div>
+            <span data-i18n="detect">Detect</span>
+          </button>
+
+          <button class="nav-tab-item" id="navTabSchemes" data-nav-target="screen-resources">
+            <span style="font-size:1.1rem;">🏛️</span>
+            <span data-i18n="schemes">Schemes</span>
+          </button>
+          <button class="nav-tab-item" id="navTabProfile" data-nav-target="screen-profile-setup">
+            <span style="font-size:1.1rem;">👤</span>
+            <span data-i18n="profile">Profile</span>
+          </button>
+        </nav>
+
+      </div> <!-- /device-screen -->
+
+      <!-- Doctor Video Call Consultation Modal -->
+      <div class="modal-backdrop-wrap" id="doctorCallModal">
+        <div class="modal-card-box">
+          <button class="modal-close-x" onclick="closeDoctorCallModal()">✕</button>
+          <img src="assets/doctor_portrait.png" alt="Doctor" class="doctor-call-pulse" />
+          <h4 style="font-size:1.15rem; font-weight:800; color:var(--primary-900);">Dr. Priyadarshini M.Sc. (Agri)</h4>
+          <p style="font-size:0.78rem; color:var(--text-muted);">Senior Plant Pathologist • TNAU & KVK Thanjavur</p>
+          <div style="background:#f0fdf4; border:1px solid #bbf7d0; color:#15803d; padding:8px 14px; border-radius:var(--radius-pill); font-size:0.75rem; font-weight:700;">
+            🟢 Connecting live video tele-clinic...
+          </div>
+          <p style="font-size:0.72rem; color:var(--text-subtle);">Case dossier and scan #AGS-8492 transmitted.</p>
+          <button class="btn-primary-block" style="background:#dc2626;" onclick="closeDoctorCallModal()">End Call</button>
+        </div>
+      </div>
+
+      <!-- AgriShield Crop Health Card Modal -->
+      <div class="modal-backdrop-wrap" id="healthCardModal">
+        <div class="modal-card-box" style="text-align:left;">
+          <button class="modal-close-x" onclick="closeHealthCardModal()">✕</button>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span>🌱</span> <strong style="font-size:1.05rem; color:var(--primary-900);">AgriShield Crop Health Certificate</strong>
+          </div>
+          <div style="font-size:0.75rem; line-height:1.45; color:var(--text-dark); background:#f8faf6; padding:12px; border-radius:var(--radius-md); border:1px solid #e2e8f0; width:100%;">
+            <div><strong>Farmer:</strong> Murugan K. (Thanjavur, TN)</div>
+            <div><strong>Crop:</strong> Paddy ADT 43 • 1.5 Acres</div>
+            <div><strong>Scan Ref:</strong> #AGS-9482 (16-Sep-2026)</div>
+            <div><strong>Diagnosis:</strong> Brown Spot (SES 3 - Controlled)</div>
+            <div><strong>Integrity:</strong> Leaf-Gate Validated • MCP Weather Verified</div>
+          </div>
+          <div style="font-size:0.7rem; color:var(--text-muted);">Certified for Kisan Credit Card (KCC) & PMFBY Crop Insurance claims.</div>
+          <button class="btn-primary-block" onclick="alert('Crop Health Card PDF downloaded successfully!')">
+            <span>⬇ Download Official PDF</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Bottom Sheet Drawer for Screen Navigator -->
+      <div class="mobile-drawer-modal" id="mobileDrawerModal" onclick="if(event.target===this)closeMobileDrawer()">
+        <div class="drawer-sheet">
+          <div class="drawer-top-handle"></div>
+          <div class="drawer-header">
+            <h4 style="font-size:0.95rem; font-weight:800; color:var(--primary-900);">⚡ Screen Navigator</h4>
+            <button onclick="closeMobileDrawer()" style="background:#f1f5f9; border:none; border-radius:50%; width:28px; height:28px; font-size:0.85rem; cursor:pointer;">✕</button>
+          </div>
+          
+          <div style="display:flex; gap:10px;">
+            <a href="/web" class="btn-primary-block" style="background:#2563eb; text-decoration:none; font-size:0.82rem; padding:10px;">
+              <span>💻 Open Computer Mode</span>
+            </a>
+            <button class="btn-secondary-block lang-toggle-btn" style="font-size:0.82rem; padding:10px;">
+              <span>🌐 தமிழ் / English</span>
+            </button>
+          </div>
+
+          <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">Jump to Screen:</span>
+          <div class="drawer-chip-grid">
+            <button class="drawer-chip-item active" onclick="navigateToScreen('screen-splash');closeMobileDrawer();">01 Splash</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-onboard');closeMobileDrawer();">02 Onboard</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-profile-setup');closeMobileDrawer();">03 Profile</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-permission');closeMobileDrawer();">04 Weather</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-home');closeMobileDrawer();">05 Dashboard</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-scanner');closeMobileDrawer();">06 Scanner</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-analysis');closeMobileDrawer();">07 Analysis</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-diagnosis');closeMobileDrawer();">08 Diagnosis</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-mcp');closeMobileDrawer();">09 MCP</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-explanation');closeMobileDrawer();">10 Explain</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-higgsfield');closeMobileDrawer();">11 Higgsfield</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-action');closeMobileDrawer();">12 Action</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-resources');closeMobileDrawer();">13 Resources</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-followup');closeMobileDrawer();">14 Follow-up</button>
+            <button class="drawer-chip-item" onclick="navigateToScreen('screen-history');closeMobileDrawer();">15 History</button>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /device-phone -->
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

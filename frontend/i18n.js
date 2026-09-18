@@ -46,6 +46,7 @@ const I18N = {
     viewTimeline: "14-Day Treatment & Recovery Plan",
     placeholder: "Ask about blight, medicines, booking…",
     needLogin: "Login as farmer to book, order and chat with a doctor.",
+    suite: "AgriShield Suite",
   },
   hi: {
     detect: "रोग पहचान",
@@ -94,6 +95,7 @@ const I18N = {
     viewTimeline: "14-दिवसीय उपचार और सुधार योजना",
     placeholder: "झुलसा, दवा, बुकिंग के बारे में पूछें…",
     needLogin: "बुकिंग, ऑर्डर और डॉक्टर चैट के लिए किसान के रूप में लॉगिन करें।",
+    suite: "एग्रीशील्ड सूट",
   },
   ta: {
     detect: "நோய் கண்டறிதல்",
@@ -142,6 +144,7 @@ const I18N = {
     viewTimeline: "14-நாள் சிகிச்சை மற்றும் மீட்புத் திட்டம்",
     placeholder: "நோய், மருந்து, முன்பதிவு பற்றி கேளுங்கள்…",
     needLogin: "முன்பதிவு மற்றும் ஆர்டருக்கு விவசாயியாக உள்நுழையவும்.",
+    suite: "அக்ரிஷீல்டு சியூட்",
   },
   mr: {
     detect: "रोग ओळख",
@@ -190,5 +193,6 @@ const I18N = {
     viewTimeline: "१४-दिवसीय उपचार व पुनर्प्राप्ती योजना",
     placeholder: "करपा, औषध, बुकिंग विचारा…",
     needLogin: "बुकिंग, ऑर्डर आणि डॉक्टर चॅटसाठी शेतकरी म्हणून लॉगिन करा.",
+    suite: "अग्रिशील्ड सूट",
   },
 };

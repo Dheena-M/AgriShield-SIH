@@ -162,12 +162,12 @@ function renderMobileNavigation(links) {
   const bottom = document.getElementById("bottomNav");
   if (!mobile || !bottom) return;
   mobile.classList.remove("open");
-  mobile.innerHTML = `<div class="mobile-nav__inner"><p class="eyebrow">AgriShield Suite</p>${links
+  mobile.innerHTML = `<div class="mobile-nav__inner"><p class="eyebrow">${t("suite")}</p>${links
     .map(([id, label]) => `<a href="#${id}" class="${state.page === id ? "active" : ""}" onclick="toggleMobileNav(false)"><span class="material-symbols-outlined">${NAV_ICON[id] || "apps"}</span>${label}</a>`)
     .join("")}</div>`;
   const primary = state.user && state.user.role === "doctor"
-    ? [["dash", "Dashboard"], ["detect", "Scan"], ["chat", "Consult"], ["shop", "Store"], ["farm-tools", "Tools"]]
-    : [["farm-dashboard", "My Farm"], ["detect", "AI Scan"], ["doctors", "Consult"], ["shop", "Store"], ["farm-tools", "Tools"]];
+    ? [["dash", t("dash")], ["detect", t("detect")], ["chat", t("chat")], ["shop", t("shop")], ["farm-tools", t("farmTools")]]
+    : [["farm-dashboard", t("myFarm")], ["detect", t("detect")], ["doctors", t("doctors")], ["shop", t("shop")], ["farm-tools", t("farmTools")]];
   bottom.innerHTML = primary
     .map(([id, label]) => `<a href="#${id}" class="${state.page === id ? "active" : ""}"><span class="material-symbols-outlined">${NAV_ICON[id] || "apps"}</span><span>${label}</span></a>`)
     .join("");
@@ -478,9 +478,41 @@ function scannerPage() {
           <button class="ghost" type="button" onclick="captureCameraPhoto()"><span class="material-symbols-outlined">camera</span> Capture Photo</button>
           <button class="icon-btn" type="button" onclick="stopCamera()" title="Close Camera" aria-label="Close camera"><span class="material-symbols-outlined">close</span></button>
         </div>
-        <div class="video-option">
-          <label>Or analyse a short video clip<input type="file" id="leafVideo" accept="video/*" /></label>
-          <button class="text-button" type="button" onclick="analyzeVideoFrame()">Extract Middle Frame</button>
+        <div class="video-option" id="videoOptionContainer">
+          <div class="video-option-top">
+            <label class="video-option-label" for="leafVideo">
+              <span style="display:inline-flex;align-items:center;gap:6px">
+                <span class="material-symbols-outlined" style="font-size:18px;color:var(--leaf,#2E7D32)">movie</span>
+                <strong>Or analyse a short video clip</strong>
+              </span>
+              <small>Auto-extracts clear leaf frame or scrub to pick the sharpest view</small>
+            </label>
+            <div class="video-input-wrap">
+              <input type="file" id="leafVideo" class="video-file-input" accept="video/*" onchange="handleVideoSelected(event)" />
+              <button class="text-button" type="button" id="btnExtractMiddle" onclick="analyzeVideoFrame(0.5, false)" style="display:none">
+                <span class="material-symbols-outlined" style="font-size:15px">center_focus_strong</span> Extract Middle Frame
+              </button>
+            </div>
+          </div>
+          <div id="videoScrubberControls" class="video-scrubber-box" style="display:none">
+            <div class="video-scrubber-row">
+              <span class="material-symbols-outlined" style="font-size:16px;color:var(--muted)">slow_motion_video</span>
+              <input type="range" id="videoScrubber" min="0" max="100" value="50" oninput="onVideoScrub(this.value)" />
+              <span id="videoTimeLabel" class="video-time-badge">0.0s / 0.0s</span>
+            </div>
+            <div class="video-actions-row">
+              <span id="videoStatusHint" class="video-status-hint"></span>
+              <button class="text-button sm" type="button" onclick="analyzeVideoFrame(0.5, false)">
+                <span class="material-symbols-outlined" style="font-size:14px">restart_alt</span> Middle Frame
+              </button>
+              <button class="btn sm light" type="button" onclick="applyCurrentScrubFrame()">
+                <span class="material-symbols-outlined" style="font-size:14px">check_circle</span> Use This Frame
+              </button>
+              <button class="icon-btn sm" type="button" onclick="clearSelectedVideo()" title="Clear video clip" aria-label="Clear video">
+                <span class="material-symbols-outlined" style="font-size:14px">close</span>
+              </button>
+            </div>
+          </div>
         </div>
         <button class="btn scanner-submit" type="button" onclick="runDetect()"><span class="material-symbols-outlined">document_scanner</span> Analyse Leaf with AgriShield AI</button>
       </section>
@@ -545,8 +577,15 @@ window.toggleXaiView = function(mode) {
 
 async function runDetect(fileOverride) {
   const leafInput = document.getElementById("leaf");
-  const file = fileOverride || (leafInput && leafInput.files[0]);
-  if (!file) return alert("Please select or capture a leaf photo first.");
+  let file = fileOverride || (leafInput && leafInput.files && leafInput.files[0]);
+  if (!file) {
+    const vidInput = document.getElementById("leafVideo");
+    const vidFile = (vidInput && vidInput.files && vidInput.files[0]) || (window._videoClipState && window._videoClipState.file);
+    if (vidFile) {
+      return analyzeVideoFrame(0.5, true);
+    }
+    return alert("Please select or capture a leaf photo or short video clip first.");
+  }
   const cropEl = document.getElementById("crop");
   const crop = cropEl ? cropEl.value : "rice";
   const output = document.getElementById("detectOut");
@@ -839,34 +878,318 @@ function captureCameraPhoto() {
   }, "image/jpeg", 0.9);
 }
 
-function analyzeVideoFrame() {
-  const input = document.getElementById("leafVideo");
-  const file = input && input.files && input.files[0];
-  if (!file) return alert("Select a video file first.");
-  const video = document.createElement("video");
-  video.src = URL.createObjectURL(file);
-  video.muted = true;
-  video.playsInline = true;
-  video.onloadedmetadata = () => {
-    video.currentTime = Math.max(0, video.duration / 2 || 0);
-  };
-  video.onseeked = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    canvas.toBlob((blob) => {
-      if (!blob) return alert("Could not extract frame.");
-      const frameFile = new File([blob], "leaf-video-frame.jpg", { type: "image/jpeg" });
-      const imgPrev = document.getElementById("prev");
-      if (imgPrev) {
-        setLeafPreview(frameFile);
+// Global video state tracking
+window._videoClipState = {
+  file: null,
+  objectUrl: null,
+  duration: 0,
+  extractedFrame: null,
+};
+
+async function extractFrameFromVideo(file, targetPosition = 0.5) {
+  if (!file) throw new Error("No video file provided.");
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    video.preload = "auto";
+    video.muted = true;
+    video.playsInline = true;
+    video.crossOrigin = "anonymous";
+    const objectUrl = URL.createObjectURL(file);
+    video.src = objectUrl;
+
+    let isDone = false;
+    let didRetryBlackFrame = false;
+
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error("Video frame extraction timed out. Please verify video format."));
+    }, 12000);
+
+    function cleanup() {
+      clearTimeout(timeout);
+      isDone = true;
+      try {
+        URL.revokeObjectURL(objectUrl);
+        video.removeAttribute("src");
+        video.load();
+      } catch (_) {}
+    }
+
+    video.onerror = () => {
+      cleanup();
+      reject(new Error("Could not decode video file. Format might not be supported."));
+    };
+
+    video.onloadedmetadata = () => {
+      const dur = video.duration;
+      let targetTime = 0.5;
+      if (Number.isFinite(dur) && dur > 0) {
+        if (targetPosition <= 1.0) {
+          targetTime = dur * targetPosition;
+        } else {
+          targetTime = targetPosition;
+        }
+        targetTime = Math.min(Math.max(0.08, targetTime), Math.max(0.08, dur - 0.08));
+      } else {
+        targetTime = targetPosition > 1.0 ? targetPosition : 0.8;
       }
-      runDetect(frameFile);
-    }, "image/jpeg", 0.9);
+
+      // Ensure targetTime is distinctly different from current time so seeked event always fires
+      if (Math.abs(video.currentTime - targetTime) < 0.04) {
+        targetTime += 0.08;
+      }
+
+      const captureFrame = () => {
+        if (isDone) return;
+        try {
+          const vw = video.videoWidth || 640;
+          const vh = video.videoHeight || 480;
+          if (vw === 0 || vh === 0) {
+            if (video.readyState < 2) return;
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = vw;
+          canvas.height = vh;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(video, 0, 0, vw, vh);
+
+          // Check for pitch black frame (common at video start)
+          try {
+            const sample = ctx.getImageData(0, 0, Math.min(32, vw), Math.min(32, vh));
+            let total = 0;
+            for (let i = 0; i < sample.data.length; i += 4) {
+              total += sample.data[i] + sample.data[i + 1] + sample.data[i + 2];
+            }
+            const avg = total / (sample.data.length * 0.75 * 255);
+            if (avg < 0.02 && !didRetryBlackFrame && Number.isFinite(dur) && dur > 0.6) {
+              didRetryBlackFrame = true;
+              targetTime = Math.min(dur * 0.5, Math.max(0.3, dur - 0.2));
+              video.currentTime = targetTime;
+              return;
+            }
+          } catch (_) {}
+
+          canvas.toBlob((blob) => {
+            cleanup();
+            if (!blob) return reject(new Error("Could not convert extracted video frame to image blob."));
+            const frameFile = new File([blob], "leaf-video-frame.jpg", { type: "image/jpeg" });
+            resolve(frameFile);
+          }, "image/jpeg", 0.92);
+        } catch (err) {
+          cleanup();
+          reject(err);
+        }
+      };
+
+      video.onseeked = captureFrame;
+
+      // Fallback timer in case seeked event doesn't fire but video buffer is ready
+      setTimeout(() => {
+        if (!isDone && video.readyState >= 2) {
+          captureFrame();
+        }
+      }, 1400);
+
+      try {
+        video.currentTime = targetTime;
+      } catch (err) {
+        if (video.readyState >= 2) {
+          captureFrame();
+        } else {
+          cleanup();
+          reject(err);
+        }
+      }
+    };
+
+    video.load();
+  });
+}
+
+function syncExtractedFrameToInput(frameFile) {
+  const leafInput = document.getElementById("leaf");
+  if (!leafInput || !frameFile) return;
+  try {
+    const dt = new DataTransfer();
+    dt.items.add(frameFile);
+    leafInput.files = dt.files;
+  } catch (_) {}
+}
+
+async function handleVideoSelected(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const hint = document.getElementById("uploadHint");
+  const scrubberBox = document.getElementById("videoScrubberControls");
+  const timeLabel = document.getElementById("videoTimeLabel");
+  const statusHint = document.getElementById("videoStatusHint");
+  const scrubber = document.getElementById("videoScrubber");
+  const btnMiddle = document.getElementById("btnExtractMiddle");
+
+  if (hint) {
+    hint.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;animation:pulse-dot 1s infinite">sync</span> Decoding video clip & extracting leaf frame...`;
+  }
+  if (statusHint) {
+    statusHint.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;animation:pulse-dot 1s infinite">sync</span> Extracting frame...`;
+  }
+  if (scrubberBox) scrubberBox.style.display = "flex";
+  if (btnMiddle) btnMiddle.style.display = "inline-flex";
+
+  if (window._videoClipState.objectUrl) {
+    try { URL.revokeObjectURL(window._videoClipState.objectUrl); } catch (_) {}
+  }
+  const objUrl = URL.createObjectURL(file);
+  window._videoClipState.file = file;
+  window._videoClipState.objectUrl = objUrl;
+
+  const vTemp = document.createElement("video");
+  vTemp.preload = "metadata";
+  vTemp.src = objUrl;
+  vTemp.onloadedmetadata = () => {
+    const dur = vTemp.duration;
+    window._videoClipState.duration = Number.isFinite(dur) && dur > 0 ? dur : 3.0;
+    if (timeLabel) timeLabel.textContent = `0.0s / ${window._videoClipState.duration.toFixed(1)}s`;
+    if (scrubber) {
+      scrubber.value = 50;
+      updateScrubTimeLabel(50);
+    }
   };
-  video.onerror = () => alert("Could not read video format.");
+
+  try {
+    const frameFile = await extractFrameFromVideo(file, 0.5);
+    window._videoClipState.extractedFrame = frameFile;
+    syncExtractedFrameToInput(frameFile);
+    setLeafPreview(frameFile);
+
+    if (hint) {
+      hint.innerHTML = `<span class="badge ok" style="padding:2px 6px;font-size:0.75rem">✓ Video frame ready</span> Middle frame (${Math.round(frameFile.size / 1024)} KB) extracted from clip`;
+    }
+    if (statusHint) {
+      statusHint.innerHTML = `<span style="color:var(--leaf,#2E7D32);font-weight:600">✓ Middle frame selected</span>`;
+    }
+  } catch (err) {
+    if (hint) hint.textContent = "Could not extract frame from video clip. Try another video or clear photo.";
+    if (statusHint) statusHint.textContent = err.message || "Failed to decode frame.";
+    alert("Video extraction notice: " + (err.message || "Could not read video clip."));
+  }
+}
+
+function updateScrubTimeLabel(val) {
+  const timeLabel = document.getElementById("videoTimeLabel");
+  const dur = window._videoClipState.duration || 0;
+  const curr = (val / 100) * dur;
+  if (timeLabel) {
+    timeLabel.textContent = `${curr.toFixed(1)}s / ${dur.toFixed(1)}s`;
+  }
+}
+
+function onVideoScrub(val) {
+  updateScrubTimeLabel(val);
+  const statusHint = document.getElementById("videoStatusHint");
+  const dur = window._videoClipState.duration || 0;
+  const curr = (val / 100) * dur;
+  if (statusHint) {
+    statusHint.textContent = `Scrubbed to ${curr.toFixed(1)}s — click "Use This Frame" to capture`;
+  }
+}
+
+async function applyCurrentScrubFrame() {
+  const file = window._videoClipState.file;
+  if (!file) return alert("Select a video clip first.");
+  const scrubber = document.getElementById("videoScrubber");
+  const val = scrubber ? parseFloat(scrubber.value) : 50;
+  const ratio = Math.min(Math.max(0.01, val / 100), 0.99);
+  const statusHint = document.getElementById("videoStatusHint");
+  const hint = document.getElementById("uploadHint");
+
+  if (statusHint) {
+    statusHint.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;animation:pulse-dot 1s infinite">sync</span> Capturing frame...`;
+  }
+
+  try {
+    const frameFile = await extractFrameFromVideo(file, ratio);
+    window._videoClipState.extractedFrame = frameFile;
+    syncExtractedFrameToInput(frameFile);
+    setLeafPreview(frameFile);
+
+    const dur = window._videoClipState.duration || 0;
+    const curr = ratio * dur;
+    if (statusHint) {
+      statusHint.innerHTML = `<span style="color:var(--leaf,#2E7D32);font-weight:600">✓ Frame at ${curr.toFixed(1)}s captured</span>`;
+    }
+    if (hint) {
+      hint.innerHTML = `<span class="badge ok" style="padding:2px 6px;font-size:0.75rem">✓ Frame at ${curr.toFixed(1)}s ready</span> Captured from clip`;
+    }
+  } catch (err) {
+    if (statusHint) statusHint.textContent = "Frame capture failed: " + err.message;
+    alert("Could not capture frame at this point: " + err.message);
+  }
+}
+
+async function analyzeVideoFrame(targetRatioOrSeconds = 0.5, autoRun = false) {
+  const input = document.getElementById("leafVideo");
+  const file = (input && input.files && input.files[0]) || (window._videoClipState && window._videoClipState.file);
+  if (!file) return alert("Select a video clip first.");
+
+  const hint = document.getElementById("uploadHint");
+  const statusHint = document.getElementById("videoStatusHint");
+  if (hint) {
+    hint.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;animation:pulse-dot 1s infinite">sync</span> Extracting frame from video clip...`;
+  }
+  if (statusHint) {
+    statusHint.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;animation:pulse-dot 1s infinite">sync</span> Extracting frame...`;
+  }
+
+  try {
+    const ratio = typeof targetRatioOrSeconds === "number" ? targetRatioOrSeconds : 0.5;
+    const frameFile = await extractFrameFromVideo(file, ratio);
+    window._videoClipState.extractedFrame = frameFile;
+    syncExtractedFrameToInput(frameFile);
+    setLeafPreview(frameFile);
+
+    if (hint) {
+      hint.innerHTML = `<span class="badge ok" style="padding:2px 6px;font-size:0.75rem">✓ Video frame extracted</span> Ready for AgriShield AI diagnosis`;
+    }
+    if (statusHint) {
+      statusHint.innerHTML = `<span style="color:var(--leaf,#2E7D32);font-weight:600">✓ Middle frame selected</span>`;
+    }
+
+    if (autoRun) {
+      runDetect(frameFile);
+    }
+  } catch (err) {
+    if (hint) hint.textContent = "Could not extract video frame: " + err.message;
+    if (statusHint) statusHint.textContent = "Extraction failed";
+    alert("Could not extract frame from video: " + err.message);
+  }
+}
+
+function clearSelectedVideo() {
+  const input = document.getElementById("leafVideo");
+  if (input) input.value = "";
+  const leafInput = document.getElementById("leaf");
+  if (leafInput) leafInput.value = "";
+  if (window._videoClipState.objectUrl) {
+    try { URL.revokeObjectURL(window._videoClipState.objectUrl); } catch (_) {}
+  }
+  window._videoClipState = {
+    file: null,
+    objectUrl: null,
+    duration: 0,
+    extractedFrame: null,
+  };
+  const scrubberBox = document.getElementById("videoScrubberControls");
+  if (scrubberBox) scrubberBox.style.display = "none";
+  const btnMiddle = document.getElementById("btnExtractMiddle");
+  if (btnMiddle) btnMiddle.style.display = "none";
+  const hint = document.getElementById("uploadHint");
+  if (hint) hint.textContent = "JPG, PNG or WEBP · Clear daylight photo works best";
+  const preview = document.getElementById("prev");
+  if (preview) {
+    preview.hidden = true;
+    preview.src = "";
+  }
 }
 
 async function doctorsPage() {

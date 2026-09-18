@@ -883,13 +883,16 @@ async def predict(
     gate = evaluate_leaf_image(data)
     if not gate["accepted"]:
         raise HTTPException(400, INVALID_LEAF_MESSAGE)
-    try:
-        crop_identification = identify_crop(data)
-    except CropIdentificationUncertainError as exc:
-        raise HTTPException(422, str(exc)) from exc
-    except CropClassifierUnavailableError as exc:
-        raise HTTPException(503, str(exc)) from exc
-    crop = crop_identification["crop"]
+    if crop not in CROPS:
+        raise HTTPException(400, "Select a supported crop before analysing the leaf.")
+    # Use the farmer's selection. The optional classifier model is not shipped
+    # in every installation and must not block a valid rice scan.
+    crop_identification = {
+        "crop": crop,
+        "confidence": None,
+        "accepted": True,
+        "source": "user_selected",
+    }
     try:
         result = analyze_leaf(data, crop)
     except UnsupportedDiseaseCropError as exc:
@@ -1768,11 +1771,21 @@ def download_report():
     )
 
 
+@app.get("/mobile-concept")
+@app.get("/mobile")
+@app.get("/web")
+def app_view():
+    """One real responsive app for phones, tablets, and computers."""
+    return FileResponse(frontend_dir / "index.html")
+
+
 @app.get("/phone")
-def phone_install():
-    return FileResponse(frontend_dir / "phone.html")
+def phone_install(user_agent: str = Header(None)):
+    return FileResponse(frontend_dir / "index.html")
 
 
 @app.get("/")
 def index():
     return FileResponse(frontend_dir / "index.html")
+
+

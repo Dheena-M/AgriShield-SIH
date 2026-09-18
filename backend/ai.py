@@ -418,9 +418,23 @@ def analyze_leaf(image_bytes: bytes, crop: str = "") -> dict:
     cnn_result = _cnn_predict(img)
     if cnn_result is not None:
         return cnn_result
-    raise DiseaseModelUnavailableError(
-        "The rice disease model is unavailable. Please try again later or consult a plant doctor."
-    )
+    # Keep the scanner useful when optional CNN weights are not installed.
+    # This is explicitly a low-confidence visual screen, not a CNN diagnosis.
+    result = _fallback_predict(img, crop_name)
+    result["action"] = "low_confidence"
+    result["model"] = {
+        "name": "Visual symptom screen",
+        "mode": "fallback",
+        "supported_crop": "rice",
+        "note": "Rice CNN weights are not installed. This is a visual screening result, not a trained CNN diagnosis.",
+    }
+    result["disclaimer"] = {
+        "en": "Visual symptom screening only. The trained rice CNN is unavailable on this server; confirm with a plant doctor before treatment.",
+        "hi": "यह केवल दृश्य लक्षण जांच है। उपचार से पहले कृषि विशेषज्ञ से पुष्टि करें।",
+        "ta": "இது காட்சி அறிகுறி சோதனை மட்டுமே. சிகிச்சைக்கு முன் வேளாண் நிபுணரிடம் உறுதிப்படுத்தவும்.",
+        "mr": "ही केवळ दृश्य लक्षण तपासणी आहे. उपचारापूर्वी कृषी तज्ज्ञांचा सल्ला घ्या.",
+    }
+    return result
 
 
 def crop_simulation(n: float, p: float, k: float, rain: float, temp: float) -> dict:
