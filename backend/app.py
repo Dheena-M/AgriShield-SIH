@@ -868,12 +868,17 @@ def farmer_dashboard(user: User = Depends(current_user), db: Session = Depends(g
 
 @app.post("/api/predict")
 async def predict(
-    crop: str = Form("tomato"),
     file: UploadFile = File(...),
     user: User | None = Depends(optional_user),
     db: Session = Depends(get_db),
 ):
-    crop = crop.strip().lower()
+    leaf_rejection_messages = {
+        "too_dark": "This image is too dark. Move to daylight and retake the leaf photo.",
+        "blurry": "This photo is too blurry. Hold the camera steady and focus on one leaf.",
+        "non_leaf": "We could not find a crop leaf. Photograph one leaf against a plain background.",
+        "face_or_person": "Please photograph the leaf only - do not include a person or face.",
+        "too_small": "This image is too small. Retake a close, clear leaf photo.",
+    }
     data = await file.read()
     if len(data) > 6 * 1024 * 1024:
         raise HTTPException(400, "Image too large")
@@ -882,17 +887,15 @@ async def predict(
         raise HTTPException(400, INVALID_LEAF_MESSAGE)
     gate = evaluate_leaf_image(data)
     if not gate["accepted"]:
-        raise HTTPException(400, INVALID_LEAF_MESSAGE)
-    if crop not in CROPS:
-        raise HTTPException(400, "Select a supported crop before analysing the leaf.")
-    # Use the farmer's selection. The optional classifier model is not shipped
-    # in every installation and must not block a valid rice scan.
-    crop_identification = {
-        "crop": crop,
-        "confidence": None,
-        "accepted": True,
-        "source": "user_selected",
-    }
+        raise HTTPException(400, leaf_rejection_messages.get(gate.get("reason"), INVALID_LEAF_MESSAGE))
+    try:
+        crop_identification = identify_crop(data)
+    except CropClassifierUnavailableError as exc:
+        raise HTTPException(503, "Crop identification model is not installed. Disease diagnosis was not run.") from exc
+    except CropIdentificationUncertainError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    crop = crop_identification["crop"]
+    crop_identification["source"] = "trained_crop_classifier"
     try:
         result = analyze_leaf(data, crop)
     except UnsupportedDiseaseCropError as exc:
@@ -903,6 +906,7 @@ async def predict(
     dest.write_bytes(data)
     result["leaf_validation"] = {"accepted": True, "reason": gate["reason"]}
     result["crop_identification"] = crop_identification
+    result["model_evidence"] = cnn_status(load=False).get("metrics")
     month = datetime.utcnow().month
     crop_idx = CROPS.index(crop) if crop in CROPS else 2
     risk, _ = predict_risk(crop_idx, month, 120, 28, 78, 0)
@@ -1459,6 +1463,17 @@ def list_field_confirmations(
         for row in rows
     ]
 
+
+@app.get("/api/model-evidence")
+def model_evidence():
+    """Public, non-sensitive evaluation evidence for the validated rice CNN."""
+    status = cnn_status(load=False)
+    return {
+        "model": status["name"],
+        "supported_crop": status["supported_crop"],
+        "metrics": status.get("metrics"),
+        "limitations": "Held-out metrics use a small three-class rice dataset. They are not field-generalization claims.",
+    }
 
 @app.get("/api/model-status")
 def model_status():

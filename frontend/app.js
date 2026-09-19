@@ -87,15 +87,17 @@ function setUser(token, user) {
 }
 
 function nav() {
-  const farmer = [
+  const farmerPrimary = [
     ["farm-dashboard", t("myFarm")],
-    ["outbreaks", t("outbreaks")],
-    ["community-map", t("communityMap")],
-    ["weather-risk", t("weatherRisk")],
     ["detect", t("detect")],
+    ["outbreaks", t("outbreaksShort")],
+    ["weather-risk", t("weatherRiskShort")],
     ["doctors", t("doctors")],
-    ["chat", t("chat")],
     ["shop", t("shop")],
+  ];
+  const farmerMore = [
+    ["community-map", t("communityMap")],
+    ["chat", t("chat")],
     ["seeds", t("seeds")],
     ["orders", t("orders")],
     ["plants", t("plants")],
@@ -109,20 +111,55 @@ function nav() {
     ["algorithms", t("algorithms")],
     ["feedback", t("feedback")],
   ];
-  const doctor = [
+  const doctorPrimary = [
     ["dash", t("dash")],
     ["outbreaks", t("outbreaks")],
     ["community-map", t("communityMap")],
     ["chat", t("chat")],
+  ];
+  const doctorMore = [
     ["algorithms", t("algorithms")],
     ["feedback", t("feedback")],
   ];
-  const links = state.user && state.user.role === "doctor" ? doctor : farmer;
-  document.getElementById("nav").innerHTML = links
-    .map(([id, label]) => `<a href="#${id}" class="${state.page === id ? "active" : ""}">${label}</a>`)
-    .join("");
+  const isDoctor = state.user && state.user.role === "doctor";
+  const primary = isDoctor ? doctorPrimary : farmerPrimary;
+  const more = isDoctor ? doctorMore : farmerMore;
+  const allLinks = [...primary, ...more];
+  const moreActive = more.some(([id]) => id === state.page);
+
+  document.getElementById("nav").innerHTML =
+    primary
+      .map(
+        ([id, label]) =>
+          `<a href="#${id}" class="nav-link ${state.page === id ? "active" : ""}"><span class="material-symbols-outlined nav-ico">${NAV_ICON[id] || "apps"}</span><span>${label}</span></a>`
+      )
+      .join("") +
+    `<div class="nav-more ${moreActive ? "active" : ""}">
+      <button type="button" class="nav-more__btn" id="navMoreBtn" aria-expanded="false" aria-haspopup="true">
+        <span class="material-symbols-outlined nav-ico">apps</span>
+        <span>${t("more")}</span>
+        <span class="material-symbols-outlined nav-chevron">expand_more</span>
+      </button>
+      <div class="nav-more__menu" id="navMoreMenu" hidden>
+        ${more
+          .map(
+            ([id, label]) =>
+              `<a href="#${id}" class="${state.page === id ? "active" : ""}" onclick="closeNavMore()"><span class="material-symbols-outlined">${NAV_ICON[id] || "apps"}</span>${label}</a>`
+          )
+          .join("")}
+      </div>
+    </div>`;
+
+  const moreBtn = document.getElementById("navMoreBtn");
+  if (moreBtn) {
+    moreBtn.onclick = (e) => {
+      e.stopPropagation();
+      toggleNavMore();
+    };
+  }
+
   document.getElementById("authBtn").textContent = state.user ? t("logout") : t("login");
-  renderMobileNavigation(links);
+  renderMobileNavigation(allLinks);
   const lang = document.getElementById("lang");
   lang.innerHTML = [
     ["en", "English"],
@@ -132,6 +169,21 @@ function nav() {
   ]
     .map(([v, l]) => `<option value="${v}" ${state.lang === v ? "selected" : ""}>${l}</option>`)
     .join("");
+}
+
+function toggleNavMore(force) {
+  const menu = document.getElementById("navMoreMenu");
+  const btn = document.getElementById("navMoreBtn");
+  const wrap = document.querySelector(".nav-more");
+  if (!menu || !btn) return;
+  const open = typeof force === "boolean" ? force : menu.hidden;
+  menu.hidden = !open;
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+  if (wrap) wrap.classList.toggle("open", open);
+}
+
+function closeNavMore() {
+  toggleNavMore(false);
 }
 
 const NAV_ICON = {
@@ -431,9 +483,9 @@ function scannerPage() {
   return `
     <section class="scanner-page">
       <div class="scanner-intro">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="scanner-intro__top">
           <a class="text-button" href="#farm-dashboard"><span class="material-symbols-outlined">arrow_back</span> Back to Farm</a>
-          <div class="online-badge"><span class="online-dot"></span><span>Edge AI Active (Offline Ready)</span></div>
+          <div class="online-badge scanner-edge-badge"><span class="online-dot"></span><span>Edge AI Ready</span></div>
         </div>
         <p class="eyebrow">AI Leaf Diagnosis</p>
         <h1>Scan Your Crop Leaf</h1>
@@ -441,16 +493,18 @@ function scannerPage() {
       </div>
       <section class="scanner-stage">
         <div class="scan-crop-row">
-          <label for="crop">Crop (identified automatically)</label>
-          <select id="crop" class="field"></select>
-          <div class="hud-controls-bar" style="margin-left:auto">
+          <div class="scan-crop-info">
+            <label>Crop (identified automatically)</label>
+            <p class="muted scan-crop-hint"><span class="material-symbols-outlined">verified</span> Identified by the trained crop model; not selected manually.</p>
+          </div>
+          <div class="hud-controls-bar">
             <div class="zoom-pills">
               <button class="zoom-btn active" type="button" onclick="setScannerZoom(1, this)">1x</button>
-              <button class="zoom-btn" type="button" onclick="setScannerZoom(2, this)">2x Macro</button>
+              <button class="zoom-btn" type="button" onclick="setScannerZoom(2, this)">2x</button>
               <button class="zoom-btn" type="button" onclick="setScannerZoom(4, this)">4x</button>
             </div>
-            <button class="icon-btn" type="button" title="Toggle Torch" onclick="toggleTorch()"><span class="material-symbols-outlined" style="font-size:20px">flashlight_on</span></button>
-            <button class="icon-btn" type="button" title="Audio Guide" onclick="speak('Align one affected leaf inside the center reticle and take a steady photo.')"><span class="material-symbols-outlined" style="font-size:20px">volume_up</span></button>
+            <button class="icon-btn hud-icon" type="button" title="Toggle Torch" onclick="toggleTorch()"><span class="material-symbols-outlined">flashlight_on</span></button>
+            <button class="icon-btn hud-icon" type="button" title="Audio Guide" onclick="speak('Align one affected leaf inside the center reticle and take a steady photo.')"><span class="material-symbols-outlined">volume_up</span></button>
           </div>
         </div>
         <div class="viewfinder" id="scannerViewfinder">
@@ -464,52 +518,52 @@ function scannerPage() {
           <div class="viewfinder__empty">
             <span class="material-symbols-outlined">center_focus_strong</span>
             <span>Center the affected leaf inside the reticle</span>
-            <small style="opacity:0.75;font-weight:400">Target locked: Field #2</small>
+            <small>Hold steady in daylight</small>
           </div>
         </div>
         <label class="upload-drop">
           <span class="material-symbols-outlined">add_a_photo</span>
           <strong>Choose or capture a leaf photo</strong>
-          <small id="uploadHint">JPG, PNG or WEBP · Clear daylight photo works best</small>
+          <small id="uploadHint">JPG, PNG or WEBP · Clear daylight works best</small>
           <input type="file" id="leaf" accept="image/*" capture="environment" onchange="previewLeaf(event)" />
         </label>
         <div class="scanner-buttons">
           <button class="ghost" type="button" onclick="startCamera()"><span class="material-symbols-outlined">photo_camera</span> Open Camera</button>
-          <button class="ghost" type="button" onclick="captureCameraPhoto()"><span class="material-symbols-outlined">camera</span> Capture Photo</button>
+          <button class="ghost" type="button" onclick="captureCameraPhoto()"><span class="material-symbols-outlined">camera</span> Capture</button>
           <button class="icon-btn" type="button" onclick="stopCamera()" title="Close Camera" aria-label="Close camera"><span class="material-symbols-outlined">close</span></button>
         </div>
         <div class="video-option" id="videoOptionContainer">
           <div class="video-option-top">
             <label class="video-option-label" for="leafVideo">
-              <span style="display:inline-flex;align-items:center;gap:6px">
-                <span class="material-symbols-outlined" style="font-size:18px;color:var(--leaf,#2E7D32)">movie</span>
+              <span class="video-option-title">
+                <span class="material-symbols-outlined">movie</span>
                 <strong>Or analyse a short video clip</strong>
               </span>
-              <small>Auto-extracts clear leaf frame or scrub to pick the sharpest view</small>
+              <small>Auto-extracts a clear leaf frame, or scrub to pick the sharpest view</small>
             </label>
             <div class="video-input-wrap">
               <input type="file" id="leafVideo" class="video-file-input" accept="video/*" onchange="handleVideoSelected(event)" />
               <button class="text-button" type="button" id="btnExtractMiddle" onclick="analyzeVideoFrame(0.5, false)" style="display:none">
-                <span class="material-symbols-outlined" style="font-size:15px">center_focus_strong</span> Extract Middle Frame
+                <span class="material-symbols-outlined">center_focus_strong</span> Extract Middle Frame
               </button>
             </div>
           </div>
           <div id="videoScrubberControls" class="video-scrubber-box" style="display:none">
             <div class="video-scrubber-row">
-              <span class="material-symbols-outlined" style="font-size:16px;color:var(--muted)">slow_motion_video</span>
+              <span class="material-symbols-outlined">slow_motion_video</span>
               <input type="range" id="videoScrubber" min="0" max="100" value="50" oninput="onVideoScrub(this.value)" />
               <span id="videoTimeLabel" class="video-time-badge">0.0s / 0.0s</span>
             </div>
             <div class="video-actions-row">
               <span id="videoStatusHint" class="video-status-hint"></span>
               <button class="text-button sm" type="button" onclick="analyzeVideoFrame(0.5, false)">
-                <span class="material-symbols-outlined" style="font-size:14px">restart_alt</span> Middle Frame
+                <span class="material-symbols-outlined">restart_alt</span> Middle
               </button>
               <button class="btn sm light" type="button" onclick="applyCurrentScrubFrame()">
-                <span class="material-symbols-outlined" style="font-size:14px">check_circle</span> Use This Frame
+                <span class="material-symbols-outlined">check_circle</span> Use Frame
               </button>
               <button class="icon-btn sm" type="button" onclick="clearSelectedVideo()" title="Clear video clip" aria-label="Clear video">
-                <span class="material-symbols-outlined" style="font-size:14px">close</span>
+                <span class="material-symbols-outlined">close</span>
               </button>
             </div>
           </div>
@@ -517,7 +571,7 @@ function scannerPage() {
         <button class="btn scanner-submit" type="button" onclick="runDetect()"><span class="material-symbols-outlined">document_scanner</span> Analyse Leaf with AgriShield AI</button>
       </section>
       <div id="detectOut"></div>
-      <p class="disclaimer muted" style="text-align:center;margin-top:14px;font-size:0.8rem">
+      <p class="disclaimer muted scanner-disclaimer">
         Decision support indication only. Laboratory confirmation recommended for widespread epidemics.
       </p>
     </section>
@@ -586,8 +640,6 @@ async function runDetect(fileOverride) {
     }
     return alert("Please select or capture a leaf photo or short video clip first.");
   }
-  const cropEl = document.getElementById("crop");
-  const crop = cropEl ? cropEl.value : "rice";
   const output = document.getElementById("detectOut");
   if (output) {
     output.innerHTML = `<div class="card" style="margin-top:16px">
@@ -604,7 +656,6 @@ async function runDetect(fileOverride) {
   }
   const fd = new FormData();
   fd.append("file", file);
-  fd.append("crop", crop);
   try {
     const data = await api("/api/predict", { method: "POST", body: fd });
     if (!data || data.accepted === false || !data.disease_key) {
@@ -621,6 +672,9 @@ async function runDetect(fileOverride) {
     const escalation = data.escalation || {};
     const origUrl = window._leafPreviewUrl || "";
     const heatB64 = sev.heatmap_base64 || "";
+    const evidence = data.model_evidence || {};
+    const testMetrics = evidence.test || {};
+    const macro = testMetrics.macro_avg || {};
 
     if (output) output.innerHTML = `
       <div class="diagnosis-card card">
@@ -652,6 +706,14 @@ async function runDetect(fileOverride) {
           <span style="font-weight:700;font-size:0.9rem;color:var(--moss)">${confPct}% Confidence</span>
           <span class="badge ${data.risk === "High" ? "high" : data.risk === "Medium" ? "med" : "low"}">${escapeHtml(data.risk)} Outbreak Risk</span>
         </div>
+
+        ${macro["f1-score"] !== undefined ? `
+          <details class="model-evidence-card">
+            <summary>Model evidence: held-out test metrics</summary>
+            <p><b>Precision:</b> ${Math.round((macro.precision || 0) * 100)}% · <b>Recall:</b> ${Math.round((macro.recall || 0) * 100)}% · <b>F1:</b> ${Math.round((macro["f1-score"] || 0) * 100)}%</p>
+            <p class="muted">Independent test split: ${escapeHtml(evidence.split?.method || "not recorded")} · ${evidence.split?.test || 0} images. <a href="#data-catalog">View confusion matrix and model limits</a>.</p>
+          </details>
+        ` : ""}
 
         ${data.model_label ? `<p style="margin:6px 0;font-size:0.88rem"><b>Classified Botanical Disease:</b> <code>${escapeHtml(data.model_label)}</code></p>` : ""}
 
@@ -779,15 +841,15 @@ async function runDetect(fileOverride) {
         <div class="row" style="margin-top:16px;flex-wrap:wrap;gap:8px">
           ${meds.map((id) => `<button class="btn" type="button" onclick="addCart('${id}')"><span class="material-symbols-outlined">add_shopping_cart</span> Order ${escapeHtml(id)}</button>`).join("")}
           <a class="ghost" href="#doctors"><span class="material-symbols-outlined">support_agent</span> Consult Doctor</a>
-          <button class="btn light" type="button" onclick="previewRecoveryPlan('${data.disease_key || 'fungal_blight'}', '${crop}')"><span class="material-symbols-outlined">timeline</span> ${t("viewTimeline")}</button>
+          <button class="btn light" type="button" onclick="previewRecoveryPlan('${data.disease_key || 'fungal_blight'}', '${data.crop || 'rice'}')"><span class="material-symbols-outlined">timeline</span> ${t("viewTimeline")}</button>
           <a href="/api/download-report" download="AgriShield_SIH_Feature_Report.pdf" class="btn light" style="text-decoration:none"><span class="material-symbols-outlined">picture_as_pdf</span> Feature PDF Report</a>
         </div>
       </div>
     `;
     speak(`${pick(data.name)}. ${pick(data.advice)}`);
   } catch (err) {
-    const invalid = /invalid image/i.test(err.message || "");
-    const cropUnavailable = /crop identification is unavailable/i.test(err.message || "");
+    const invalid = /invalid image|too dark|too blurry|could not find a crop leaf|leaf only|image is too small/i.test(err.message || "");
+    const cropUnavailable = /crop identification (is unavailable|model is not installed)/i.test(err.message || "");
     const message = invalid
       ? INVALID_LEAF_MESSAGE
       : err.message;
@@ -796,7 +858,7 @@ async function runDetect(fileOverride) {
       output.innerHTML = invalid
         ? `<div class="card" style="margin-top:14px;border-color:var(--danger)">
             <p style="color:var(--danger);margin:0 0 8px"><b>${escapeHtml(message)}</b></p>
-            <p class="muted" style="margin:0">Disease detection was not run. Use a daylight photo of one crop leaf, filling most of the frame.</p>
+            <p class="muted" style="margin:0">Disease detection was not run. ${escapeHtml(err.message || "Use a daylight photo of one crop leaf, filling most of the frame.")}</p>
           </div>`
         : unavailable
         ? `<div class="card" style="margin-top:14px;border-color:var(--warning,#d97706)">
@@ -2613,7 +2675,15 @@ async function runSowingPlan() {
 }
 
 async function dataCatalogPage() {
-  const data = await api("/api/data-catalog");
+  const [data, evidence] = await Promise.all([api("/api/data-catalog"), api("/api/model-evidence")]);
+  const metrics = evidence.metrics || {};
+  const test = metrics.test || {};
+  const macro = test.macro_avg || {};
+  const matrix = metrics.confusion_matrix || {};
+  const labels = matrix.labels || [];
+  const rows = matrix.matrix || [];
+  const matrixHtml = rows.length ? `<div class="confusion-matrix-wrap"><table class="table confusion-matrix"><caption>Held-out test confusion matrix</caption><thead><tr><th>Actual / predicted</th>${labels.map(label => `<th>${escapeHtml(label)}</th>`).join("")}</tr></thead><tbody>${rows.map((row, index) => `<tr><th>${escapeHtml(labels[index] || "Class")}</th>${row.map(value => `<td>${escapeHtml(value)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : `<p class="muted">Metrics will appear after the validated rice model is installed and evaluated.</p>`;
+  const evidenceCard = `<section class="card model-evidence-panel"><p class="eyebrow"><span class="material-symbols-outlined">fact_check</span> Model evidence</p><h3>${escapeHtml(evidence.model || "Rice disease model")}</h3><p class="subtle">Supported crop: <b>${escapeHtml(evidence.supported_crop || "rice")}</b>. These are held-out test results, not claims for all field conditions.</p>${macro["f1-score"] !== undefined ? `<div class="evidence-stats"><span><b>${Math.round((macro.precision || 0) * 100)}%</b><small>Precision</small></span><span><b>${Math.round((macro.recall || 0) * 100)}%</b><small>Recall</small></span><span><b>${Math.round((macro["f1-score"] || 0) * 100)}%</b><small>F1</small></span><span><b>${Math.round((test.accuracy || 0) * 100)}%</b><small>Accuracy</small></span></div><p class="muted">${escapeHtml(metrics.split?.method || "Held-out split")} · ${metrics.split?.test || 0} test images. ${escapeHtml(evidence.limitations || "")}</p>${matrixHtml}` : matrixHtml}</section>`;
   return `
     <div class="card">
       <p class="eyebrow"><span class="material-symbols-outlined">database</span> Open Data & Catalogs</p>
@@ -2632,7 +2702,8 @@ async function dataCatalogPage() {
         </div>`
         )
         .join("")}
-    </div>`;
+    </div>
+    ${evidenceCard}`;
 }
 
 let currentSchemeCategory = "all";
@@ -3162,6 +3233,13 @@ document.getElementById("bellBtn").onclick = async () => {
 window.addEventListener("hashchange", render);
 window.addEventListener("online", updateConnectivity);
 window.addEventListener("offline", updateConnectivity);
+document.addEventListener("click", (e) => {
+  const wrap = document.querySelector(".nav-more");
+  if (wrap && !wrap.contains(e.target)) closeNavMore();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeNavMore();
+});
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js", { scope: "/" }));
 }
@@ -3171,7 +3249,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPWAInstallPrompt = e;
   const btn = document.getElementById("installAppBtn");
-  if (btn) btn.style.display = "inline-flex";
+  if (btn) btn.classList.add("is-visible");
 });
 
 async function installPWA() {
@@ -3183,14 +3261,14 @@ async function installPWA() {
   const choice = await deferredPWAInstallPrompt.userChoice;
   if (choice.outcome === "accepted") {
     const btn = document.getElementById("installAppBtn");
-    if (btn) btn.style.display = "none";
+    if (btn) btn.classList.remove("is-visible");
   }
   deferredPWAInstallPrompt = null;
 }
 
 window.addEventListener("appinstalled", () => {
   const btn = document.getElementById("installAppBtn");
-  if (btn) btn.style.display = "none";
+  if (btn) btn.classList.remove("is-visible");
   deferredPWAInstallPrompt = null;
 });
 

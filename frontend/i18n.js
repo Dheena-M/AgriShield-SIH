@@ -47,6 +47,9 @@ const I18N = {
     placeholder: "Ask about blight, medicines, booking…",
     needLogin: "Login as farmer to book, order and chat with a doctor.",
     suite: "AgriShield Suite",
+    more: "More",
+    outbreaksShort: "Outbreaks",
+    weatherRiskShort: "Weather",
   },
   hi: {
     detect: "रोग पहचान",
@@ -96,6 +99,9 @@ const I18N = {
     placeholder: "झुलसा, दवा, बुकिंग के बारे में पूछें…",
     needLogin: "बुकिंग, ऑर्डर और डॉक्टर चैट के लिए किसान के रूप में लॉगिन करें।",
     suite: "एग्रीशील्ड सूट",
+    more: "और",
+    outbreaksShort: "प्रकोप",
+    weatherRiskShort: "मौसम",
   },
   ta: {
     detect: "நோய் கண்டறிதல்",
@@ -145,6 +151,9 @@ const I18N = {
     placeholder: "நோய், மருந்து, முன்பதிவு பற்றி கேளுங்கள்…",
     needLogin: "முன்பதிவு மற்றும் ஆர்டருக்கு விவசாயியாக உள்நுழையவும்.",
     suite: "அக்ரிஷீல்டு சியூட்",
+    more: "மேலும்",
+    outbreaksShort: "வெடிப்பு",
+    weatherRiskShort: "வானிலை",
   },
   mr: {
     detect: "रोग ओळख",
@@ -194,5 +203,8 @@ const I18N = {
     placeholder: "करपा, औषध, बुकिंग विचारा…",
     needLogin: "बुकिंग, ऑर्डर आणि डॉक्टर चॅटसाठी शेतकरी म्हणून लॉगिन करा.",
     suite: "अग्रिशील्ड सूट",
+    more: "अधिक",
+    outbreaksShort: "प्रादुर्भाव",
+    weatherRiskShort: "हवामान",
   },
 };

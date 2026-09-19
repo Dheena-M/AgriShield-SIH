@@ -17,6 +17,7 @@ from knowledge import DISEASES
 ROOT = Path(__file__).resolve().parent.parent
 CNN_MODEL_PATH = ROOT / "models" / "rice_leaf_disease.keras"
 CNN_LABELS_PATH = ROOT / "models" / "rice_leaf_disease.labels.json"
+CNN_METRICS_PATH = ROOT / "models" / "rice_leaf_disease.metrics.json"
 CNN_LABEL_TO_DISEASE = {
     "Bacterial leaf blight": "bacterial_blight",
     "Brown spot": "fungal_blight",
@@ -188,18 +189,24 @@ def _load_cnn():
         except Exception as exc:  # Optional dependency and model compatibility failure.
             _cnn_error = f"CNN unavailable: {type(exc).__name__}: {exc}"
             _cnn_model = None
-        return _cnn_model
-
+    return _cnn_model
 
 def cnn_status(load: bool = False) -> dict:
     if load:
         _load_cnn()
+    metrics = None
+    if CNN_METRICS_PATH.exists():
+        try:
+            metrics = json.loads(CNN_METRICS_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            pass
     return {
         "name": "MobileNetV2 rice-leaf CNN",
         "weights_present": CNN_MODEL_PATH.exists(),
         "labels_present": CNN_LABELS_PATH.exists(),
         "loaded": _cnn_model is not None,
         "supported_crop": "rice",
+        "metrics": metrics,
         "classes": _cnn_labels if _cnn_labels else (json.loads(CNN_LABELS_PATH.read_text(encoding="utf-8")) if CNN_LABELS_PATH.exists() else []),
         "error": _cnn_error,
     }
@@ -418,6 +425,9 @@ def analyze_leaf(image_bytes: bytes, crop: str = "") -> dict:
     cnn_result = _cnn_predict(img)
     if cnn_result is not None:
         return cnn_result
+    raise DiseaseModelUnavailableError(
+        "Rice disease model is not installed or could not be loaded. Disease diagnosis was not run."
+    )
     # Keep the scanner useful when optional CNN weights are not installed.
     # This is explicitly a low-confidence visual screen, not a CNN diagnosis.
     result = _fallback_predict(img, crop_name)

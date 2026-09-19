@@ -1,2 +1,3 @@
-wscript.exe "C:\Users\Dinesh Kumar\Desktop\AgriShield-SIH-main\AgriShield-SIH-main\Open-AgriShield.vbs"
-
+@echo off
+cd /d "%~dp0"
+wscript.exe "%~dp0Open-AgriShield.vbs"

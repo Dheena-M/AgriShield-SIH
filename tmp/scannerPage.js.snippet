@@ -1,0 +1,99 @@
+function scannerPage() {
+  return `
+    <section class="scanner-page">
+      <div class="scanner-intro">
+        <div class="scanner-intro__top">
+          <a class="text-button" href="#farm-dashboard"><span class="material-symbols-outlined">arrow_back</span> Back to Farm</a>
+          <div class="online-badge scanner-edge-badge"><span class="online-dot"></span><span>Edge AI Ready</span></div>
+        </div>
+        <p class="eyebrow">AI Leaf Diagnosis</p>
+        <h1>Scan Your Crop Leaf</h1>
+        <p class="subtle">Photograph one affected leaf in clear daylight. For Rice, AgriShield uses trained CNN deep-learning models.</p>
+      </div>
+      <section class="scanner-stage">
+        <div class="scan-crop-row">
+          <div class="scan-crop-info">
+            <label>Crop (identified automatically)</label>
+            <p class="muted scan-crop-hint"><span class="material-symbols-outlined">verified</span> Identified by the trained crop model; not selected manually.</p>
+          </div>
+          <div class="hud-controls-bar">
+            <div class="zoom-pills">
+              <button class="zoom-btn active" type="button" onclick="setScannerZoom(1, this)">1x</button>
+              <button class="zoom-btn" type="button" onclick="setScannerZoom(2, this)">2x</button>
+              <button class="zoom-btn" type="button" onclick="setScannerZoom(4, this)">4x</button>
+            </div>
+            <button class="icon-btn hud-icon" type="button" title="Toggle Torch" onclick="toggleTorch()"><span class="material-symbols-outlined">flashlight_on</span></button>
+            <button class="icon-btn hud-icon" type="button" title="Audio Guide" onclick="speak('Align one affected leaf inside the center reticle and take a steady photo.')"><span class="material-symbols-outlined">volume_up</span></button>
+          </div>
+        </div>
+        <div class="viewfinder" id="scannerViewfinder">
+          <span class="reticle-corner reticle-tl"></span>
+          <span class="reticle-corner reticle-tr"></span>
+          <span class="reticle-corner reticle-bl"></span>
+          <span class="reticle-corner reticle-br"></span>
+          <div class="reticle-center"><div class="reticle-dot"></div></div>
+          <video id="cameraPreview" class="preview" autoplay playsinline hidden></video>
+          <img id="prev" class="preview" alt="Selected leaf preview" hidden />
+          <div class="viewfinder__empty">
+            <span class="material-symbols-outlined">center_focus_strong</span>
+            <span>Center the affected leaf inside the reticle</span>
+            <small>Hold steady in daylight</small>
+          </div>
+        </div>
+        <label class="upload-drop">
+          <span class="material-symbols-outlined">add_a_photo</span>
+          <strong>Choose or capture a leaf photo</strong>
+          <small id="uploadHint">JPG, PNG or WEBP · Clear daylight works best</small>
+          <input type="file" id="leaf" accept="image/*" capture="environment" onchange="previewLeaf(event)" />
+        </label>
+        <div class="scanner-buttons">
+          <button class="ghost" type="button" onclick="startCamera()"><span class="material-symbols-outlined">photo_camera</span> Open Camera</button>
+          <button class="ghost" type="button" onclick="captureCameraPhoto()"><span class="material-symbols-outlined">camera</span> Capture</button>
+          <button class="icon-btn" type="button" onclick="stopCamera()" title="Close Camera" aria-label="Close camera"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="video-option" id="videoOptionContainer">
+          <div class="video-option-top">
+            <label class="video-option-label" for="leafVideo">
+              <span class="video-option-title">
+                <span class="material-symbols-outlined">movie</span>
+                <strong>Or analyse a short video clip</strong>
+              </span>
+              <small>Auto-extracts a clear leaf frame, or scrub to pick the sharpest view</small>
+            </label>
+            <div class="video-input-wrap">
+              <input type="file" id="leafVideo" class="video-file-input" accept="video/*" onchange="handleVideoSelected(event)" />
+              <button class="text-button" type="button" id="btnExtractMiddle" onclick="analyzeVideoFrame(0.5, false)" style="display:none">
+                <span class="material-symbols-outlined">center_focus_strong</span> Extract Middle Frame
+              </button>
+            </div>
+          </div>
+          <div id="videoScrubberControls" class="video-scrubber-box" style="display:none">
+            <div class="video-scrubber-row">
+              <span class="material-symbols-outlined">slow_motion_video</span>
+              <input type="range" id="videoScrubber" min="0" max="100" value="50" oninput="onVideoScrub(this.value)" />
+              <span id="videoTimeLabel" class="video-time-badge">0.0s / 0.0s</span>
+            </div>
+            <div class="video-actions-row">
+              <span id="videoStatusHint" class="video-status-hint"></span>
+              <button class="text-button sm" type="button" onclick="analyzeVideoFrame(0.5, false)">
+                <span class="material-symbols-outlined">restart_alt</span> Middle
+              </button>
+              <button class="btn sm light" type="button" onclick="applyCurrentScrubFrame()">
+                <span class="material-symbols-outlined">check_circle</span> Use Frame
+              </button>
+              <button class="icon-btn sm" type="button" onclick="clearSelectedVideo()" title="Clear video clip" aria-label="Clear video">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="btn scanner-submit" type="button" onclick="runDetect()"><span class="material-symbols-outlined">document_scanner</span> Analyse Leaf with AgriShield AI</button>
+      </section>
+      <div id="detectOut"></div>
+      <p class="disclaimer muted scanner-disclaimer">
+        Decision support indication only. Laboratory confirmation recommended for widespread epidemics.
+      </p>
+    </section>
+  `;
+}
+
